@@ -12,7 +12,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon } from "lucide-react"
+import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, GitCommit, MessageCircle } from "lucide-react"
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
 
@@ -31,9 +31,9 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
     },
     teams: [
       {
-        name: "Acme Inc",
+        name: "Kommit",
         logo: (
-          <GalleryVerticalEndIcon
+          <GitCommit
           />
         ),
         plan: "Enterprise",
@@ -57,101 +57,12 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
     ],
     navMain: [
       {
-        title: "Playground",
+        title: "Chat",
         url: "#",
         icon: (
-          <TerminalSquareIcon
+          <MessageCircle
           />
         ),
-        isActive: true,
-        items: [
-          {
-            title: "History",
-            url: "#",
-          },
-          {
-            title: "Starred",
-            url: "#",
-          },
-          {
-            title: "Settings",
-            url: "#",
-          },
-        ],
-      },
-      {
-        title: "Models",
-        url: "#",
-        icon: (
-          <BotIcon
-          />
-        ),
-        items: [
-          {
-            title: "Genesis",
-            url: "#",
-          },
-          {
-            title: "Explorer",
-            url: "#",
-          },
-          {
-            title: "Quantum",
-            url: "#",
-          },
-        ],
-      },
-      {
-        title: "Documentation",
-        url: "#",
-        icon: (
-          <BookOpenIcon
-          />
-        ),
-        items: [
-          {
-            title: "Introduction",
-            url: "#",
-          },
-          {
-            title: "Get Started",
-            url: "#",
-          },
-          {
-            title: "Tutorials",
-            url: "#",
-          },
-          {
-            title: "Changelog",
-            url: "#",
-          },
-        ],
-      },
-      {
-        title: "Settings",
-        url: "#",
-        icon: (
-          <Settings2Icon
-          />
-        ),
-        items: [
-          {
-            title: "General",
-            url: "#",
-          },
-          {
-            title: "Team",
-            url: "#",
-          },
-          {
-            title: "Billing",
-            url: "#",
-          },
-          {
-            title: "Limits",
-            url: "#",
-          },
-        ],
       },
     ],
     projects: [

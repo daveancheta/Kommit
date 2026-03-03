@@ -58,7 +58,7 @@ function Teams() {
                 ? <TeamState />
                 : team.map((team) => (
                     <div key={team.id} className={cn('flex flex-row items-center gap-2 p-2 px-4',
-                        team.group.id === selectedTeam && "bg-neutral-800 rounded-xl"
+                        team.group.id === selectedTeam && "bg-background dark:bg-neutral-800 rounded-xl"
                     )} onClick={() => {
                         setSelectedTeam(team.group.id)
                         setSelectedTeamName(team.group.group_name)

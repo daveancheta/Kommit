@@ -109,21 +109,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+       
           <div className="z-9999999999">
             <Toaster position="top-center"/>
           </div>
           <TooltipProvider>
             {children}
           </TooltipProvider>
-        </ThemeProvider>
       </body>
     </html>
   );
