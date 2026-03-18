@@ -10,7 +10,7 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { GalleryVerticalEndIcon } from "lucide-react"
+import { GalleryVerticalEndIcon, GitGraph } from "lucide-react"
 import { signIn } from "@/lib/auth-client"
 
 export function LoginForm({
@@ -27,7 +27,7 @@ export function LoginForm({
               className="flex flex-col items-center gap-2 font-medium"
             >
               <div className="flex size-8 items-center justify-center rounded-md">
-                <GalleryVerticalEndIcon className="size-6" />
+                <GitGraph className="size-6" />
               </div>
               <span className="sr-only">Acme Inc.</span>
             </a>
