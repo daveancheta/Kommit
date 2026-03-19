@@ -67,7 +67,7 @@ function page() {
     return (
         <Sidebar>
             <div className='flex flex-row gap-2'>
-                <div className='bg-background p-4 w-130 h-[95vh] border rounded-sm overflow-y-auto'>
+                <div className='bg-neutral-200 dark:bg-neutral-900 p-4 w-130 h-[95vh] border rounded-sm overflow-y-auto'>
                     <header>
                         <h1 className='text-lg'>Chats</h1>
                     </header>
@@ -92,7 +92,7 @@ function page() {
                         ))}
                     </div>
                 </div>
-                <div className='w-full h-[95vh] border rounded-sm overflow-y-auto z-10 bg-gray-200 flex flex-col justify-between'>
+                <div className='w-full h-[95vh] border rounded-sm overflow-y-auto z-10 bg-neutral-200 dark:bg-neutral-900 flex flex-col justify-between'>
                     <div className='flex flex-row gap-4 items-center p-4'>
                         <img className='w-15 h-15 rounded-full' src="https://s3-eu-north-1.amazonaws.com/py3.visitsweden.com/original_images/20180730-gsta_reiland-sunrays_in_a_pine_forest-6901-2_CMSTemplate.jpg" alt="" />
                         <div>
