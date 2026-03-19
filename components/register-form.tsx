@@ -15,11 +15,13 @@ import { signIn } from "@/lib/auth-client"
 import { UseAuthStore } from "@/app/state/use-auth-store"
 import { useState } from "react"
 
-export function LoginForm({
+export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const { isSubmitting, handleSignInValidation } = UseAuthStore()
+  const [name, setName] = useState<string>("")
+  const [date, setDate] = useState<string>("")
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
 
@@ -46,8 +48,31 @@ export function LoginForm({
             </a>
             <h1 className="text-xl font-bold">Welcome to Kommit.</h1>
             <FieldDescription>
-              Don&apos;t have an account? <a href="/signup">Sign up</a>
+              Already have an account? <a href="/login">Sign in</a>
             </FieldDescription>
+          </div>
+          <div className="flex flex-row items-center gap-2">
+             <Field>
+              <FieldLabel htmlFor="name">Name</FieldLabel>
+              <Input
+                id="name"
+                type="text"
+                placeholder="John Doe"
+                required
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+              />
+            </Field>
+             <Field>
+              <FieldLabel htmlFor="date">Birthdate</FieldLabel>
+              <Input
+                id="date"
+                type="date"
+                required
+                onChange={(e) => setDate(e.target.value)}
+                value={date}
+              />
+            </Field>
           </div>
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -73,7 +98,7 @@ export function LoginForm({
               />
             </Field>
             <Field>
-              <Button type="submit" disabled={isSubmitting}>Login</Button>
+              <Button type="submit" disabled={isSubmitting}>Sign up</Button>
             </Field>  
           <FieldSeparator>Or</FieldSeparator>
           <Field>
