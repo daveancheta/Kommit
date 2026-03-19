@@ -1,5 +1,6 @@
 "use client"
 
+import { UseAuthStore } from "@/app/state/use-auth-store"
 import {
   Avatar,
   AvatarFallback,
@@ -20,6 +21,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useInitials } from "@/hooks/use-initials"
 import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
 
 export function NavUser({
@@ -32,6 +34,8 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const { isSubmitting, handleSignOutValidation } = UseAuthStore()
+  const getInitials = useInitials()
 
   return (
     <SidebarMenu>
@@ -43,8 +47,11 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                {user.avatar && user.avatar.length > 0 
+                ? <AvatarImage src={user.avatar} alt={user.name} />
+                : <AvatarFallback className="rounded-lg">{getInitials(user.name)}</AvatarFallback>
+                }
+                
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
@@ -98,7 +105,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem variant="destructive" onClick={handleSignOutValidation}>
               <LogOutIcon
               />
               Log out

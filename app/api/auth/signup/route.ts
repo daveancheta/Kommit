@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
         await auth.api.signUpEmail({
             body: {
                 name,
-                birthdate: date,
+                birthdate: date || null,
                 email,
                 password
             }

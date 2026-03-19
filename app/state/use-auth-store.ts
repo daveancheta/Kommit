@@ -5,6 +5,7 @@ interface AuthState {
     isSubmitting: boolean;
     handleSignInValidation: (email: string, password: string) => Promise<void>;
     handleSignUpValidation: (name: string, date: string, email: string, password: string) => Promise<void>;
+    handleSignOutValidation: () => Promise<void>;
 }
 
 export const UseAuthStore = create<AuthState>((set) => ({
@@ -53,6 +54,19 @@ export const UseAuthStore = create<AuthState>((set) => ({
             console.log(error)
         } finally {
             set({ isSubmitting: false })
+        }
+    },
+
+    handleSignOutValidation: async () => {
+        try {
+            await fetch("/api/auth/signout", {
+                method: "POST",
+                credentials: "include",
+            })
+
+            window.location.reload()
+        } catch (error) {
+            console.log(error)
         }
     }
 }))
