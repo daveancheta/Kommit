@@ -22,7 +22,8 @@ export async function POST(req: NextRequest) {
             .insert({
                 id: crypto.randomUUID(),
                 user_id: session?.user?.id,
-                content
+                content,
+                room_id: crypto.randomUUID(),
             })
 
         return NextResponse.json({

@@ -1,0 +1,1 @@
+ALTER TABLE "chat" ADD COLUMN "room_id" text NOT NULL;

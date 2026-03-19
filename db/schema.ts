@@ -78,6 +78,7 @@ export const chat = pgTable("chat", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull(),
   content: text("content").notNull(),
+  roomId: text("room_id").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
