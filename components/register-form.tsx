@@ -19,7 +19,7 @@ export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { isSubmitting, handleSignInValidation } = UseAuthStore()
+  const { isSubmitting, handleSignUpValidation } = UseAuthStore()
   const [name, setName] = useState<string>("")
   const [date, setDate] = useState<string>("")
   const [email, setEmail] = useState<string>("")
@@ -29,7 +29,7 @@ export function RegisterForm({
   const handleSignin = (e: any) => {
     e.preventDefault()
 
-    handleSignInValidation(email, password)
+    handleSignUpValidation(name, date, email, password)
   }
 
   return (
