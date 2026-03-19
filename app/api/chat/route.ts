@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { supabase } from "@/lib/supbase/cient";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { use } from "react";
 
 export async function POST(req: NextRequest) {
     const { content } = await req.json();
@@ -13,7 +14,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
             success: false,
             message: "Unauthorized. Please sign in to continue."
-        })
+        }, {status: 400})
     }
 
     try {
