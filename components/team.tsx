@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supbase/cient"
 import { useInitials } from "@/hooks/use-initials"
 import { UseChatStore } from "@/app/state/use-chat-store"
 import { cn } from "@/lib/utils"
+import { formatDistance, subDays } from "date-fns"
 
 function Teams() {
     const { team, handleGetGroups } = UseGroupStore()
@@ -69,7 +70,7 @@ function Teams() {
                     <div className='flex-1 min-w-0'>
                         <div className='flex items-center justify-between gap-2'>
                             <h2 className='font-bold truncate'>{team.group.group_name}</h2>
-                            <p className='text-xs text-muted-foreground font-bold shrink-0'>4:31</p>
+                            <p className='text-xs text-muted-foreground font-bold shrink-0'>{formatDistance((new Date(), team.group.chat[team.group.chat.length - 1]?.created_at), new Date(), { addSuffix: true })}</p>
                         </div>
                         <p className={cn('text-muted-foreground text-sm truncate',
                             !team.group.chat[team.group.chat.length - 1]?.user?.name && 'hidden'
