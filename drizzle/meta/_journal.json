@@ -43,6 +43,13 @@
       "when": 1773977803173,
       "tag": "0005_living_killraven",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1773985626241,
+      "tag": "0006_freezing_puff_adder",
+      "breakpoints": true
     }
   ]
 }
