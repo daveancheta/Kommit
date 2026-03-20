@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { use } from "react";
 
 export async function POST(req: NextRequest) {
-    const { content } = await req.json();
+    const { content, id } = await req.json();
     const session = await auth.api.getSession({
         headers: await headers()
     })
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
                 id: crypto.randomUUID(),
                 user_id: session?.user?.id,
                 content,
-                group_id: "2d778c5c-1467-40f8-bba3-c132369d4264",
+                group_id: id,
             })
 
         return NextResponse.json({

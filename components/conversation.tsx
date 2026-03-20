@@ -1,6 +1,6 @@
 "use client"
 
-import React, { use, useEffect } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { Field } from './ui/field'
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupText, InputGroupTextarea } from './ui/input-group'
 import { Send } from 'lucide-react'
@@ -13,9 +13,16 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { useInitials } from '@/hooks/use-initials'
 
 function Conversation() {
-    const { selectedTeam, selectedTeamName, handleGetMessages, messages } = UseChatStore()
+    const { selectedTeam, selectedTeamName, handleGetMessages, messages, handleSendMessageValidation } = UseChatStore()
     const { handleGetSession, auth } = UseAuthStore()
     const getInitials = useInitials()
+    const [content, setContent] = useState<string>("")
+
+    const handleSendMessage = (e: any) => {
+        e.preventDefault()
+
+        handleSendMessageValidation(content, selectedTeam as string)
+    }
 
     useEffect(() => {
         handleGetSession()
@@ -96,20 +103,24 @@ function Conversation() {
                             </div>
                         ))}
                     </div>
-                    <Field className='p-2'>
-                        <InputGroup className='bg-white'>
-                            <InputGroupTextarea
-                                id="block-end-textarea"
-                                placeholder="Write a message..."
-                            />
-                            <InputGroupAddon align="block-end">
-                                <InputGroupText>0/280</InputGroupText>
-                                <InputGroupButton variant="default" size="sm" className="ml-auto">
-                                    <Send />
-                                </InputGroupButton>
-                            </InputGroupAddon>
-                        </InputGroup>
-                    </Field>
+                    <form onSubmit={handleSendMessage}>
+                        <Field className='p-2'>
+                            <InputGroup className='bg-white'>
+                                <InputGroupTextarea
+                                    id="block-end-textarea"
+                                    placeholder="Write a message..."
+                                    onChange={(e) => setContent(e.target.value)}
+                                    value={content}
+                                />
+                                <InputGroupAddon align="block-end">
+                                    <InputGroupText>0/280</InputGroupText>
+                                    <InputGroupButton type='submit' variant="default" size="sm" className="ml-auto">
+                                        <Send />
+                                    </InputGroupButton>
+                                </InputGroupAddon>
+                            </InputGroup>
+                        </Field>
+                    </form>
                 </>
             }
         </div >

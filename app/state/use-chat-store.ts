@@ -34,7 +34,7 @@ interface ChatState {
     setSelectedTeam: (selectedTeam: string) => void;
     setSelectedTeamName: (selectedTeamName: string) => void;
     handleGetMessages: (id: string) => Promise<void>;
-
+    handleSendMessageValidation: (content: string, id: string) => Promise<void>;
 }
 
 export const UseChatStore = create<ChatState>((set) => ({
@@ -52,6 +52,18 @@ export const UseChatStore = create<ChatState>((set) => ({
             const res = await messages.json()
 
             set({ messages: res.message })
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    handleSendMessageValidation: async (content: string, id: string) => {
+        try {
+            await fetch('/api/chat', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content, id })
+            })
         } catch (error) {
             console.log(error)
         }
