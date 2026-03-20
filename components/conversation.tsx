@@ -1,6 +1,6 @@
 "use client"
 
-import React, { use, useEffect, useState } from 'react'
+import React, { use, useEffect, useRef, useState } from 'react'
 import { Field } from './ui/field'
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupText, InputGroupTextarea } from './ui/input-group'
 import { Send } from 'lucide-react'
@@ -17,6 +17,13 @@ function Conversation() {
     const { handleGetSession, auth } = UseAuthStore()
     const getInitials = useInitials()
     const [content, setContent] = useState<string>("")
+    const bottomRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: "smooth" })
+        }
+    })
 
     const handleSendMessage = (e: any) => {
         e.preventDefault()
@@ -104,6 +111,7 @@ function Conversation() {
                                     </div>}
                             </div>
                         ))}
+                        <div ref={bottomRef}></div>
                     </div>
                     <form onSubmit={handleSendMessage}>
                         <Field className='p-2'>
