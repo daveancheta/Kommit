@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { UseAuthStore } from "./use-auth-store";
 
 interface Messages {
     id: string;
@@ -6,7 +7,6 @@ interface Messages {
     content: string,
     group_id: string;
     created_at: string;
-    string: string;
     group: {
         id: string;
         photo: string;
@@ -61,6 +61,28 @@ export const UseChatStore = create<ChatState>((set) => ({
 
     handleSendMessageValidation: async (content: string, id: string) => {
         set({ isSubmitting: true })
+        const auth = UseAuthStore.getState().auth
+
+        const optimisticMessage = {
+            id: crypto.randomUUID(),
+            user_id: auth?.id ?? "",
+            content: content,
+            group_id: id,
+            created_at: new Date().toISOString(),
+            group: { id: "", photo: "", created_at: "", created_by: "", group_name: "", updated_at: "" },
+            user: {
+                id: auth?.id ?? "",
+                name: auth?.name ?? "",
+                email: auth?.email ?? "",
+                image: auth?.image ?? "",
+                birthdate: "",
+                created_at: "",
+                updated_at: "",
+                email_verified: "",
+            }
+        }
+
+        set(state => ({ messages: [...state.messages, optimisticMessage] }))
 
         try {
             await fetch('/api/chat', {
