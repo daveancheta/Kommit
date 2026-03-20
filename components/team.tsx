@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 
 function Teams() {
     const { team, handleGetGroups } = UseGroupStore()
-    const { setSelectedTeam, selectedTeam } = UseChatStore()
+    const { selectedTeam, setSelectedTeam, setSelectedTeamName } = UseChatStore()
     const getInitials = useInitials()
 
     useEffect(() => {
@@ -39,9 +39,12 @@ function Teams() {
     return (
         <div className='flex flex-col gap-4'>
             {team.map((team) => (
-                <div key={team?.id} className={cn('flex flex-row items-center gap-2 p-2 px-4', 
-                    team?.id === selectedTeam && "bg-neutral-800 rounded-xl"
-                )} onClick={() => setSelectedTeam(team?.id)}>
+                <div key={team.id} className={cn('flex flex-row items-center gap-2 p-2 px-4', 
+                    team.group.id === selectedTeam && "bg-neutral-800 rounded-xl"
+                )} onClick={() => {
+                    setSelectedTeam(team.group.id)
+                    setSelectedTeamName(team.group.group_name)
+                    }}>
                     <Avatar className="h-12 w-12 rounded-full">
                         {team.group.photo && team.group.photo.length > 0
                             ? <AvatarImage src={team.group.photo} alt={team.group.group_name} />

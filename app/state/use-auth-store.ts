@@ -1,15 +1,29 @@
 import { sileo } from "sileo";
 import { create } from "zustand";
 
+interface User {
+    id: string;
+    name: string;
+    email: string;
+    image: string;
+    birthdate: string;
+    created_at: string;
+    updated_at: string;
+    email_verified: string;
+}
+
 interface AuthState {
     isSubmitting: boolean;
+    auth: User | null;
     handleSignInValidation: (email: string, password: string) => Promise<void>;
     handleSignUpValidation: (name: string, date: string, email: string, password: string) => Promise<void>;
     handleSignOutValidation: () => Promise<void>;
+    handleGetSession: () => Promise<void>;
 }
 
 export const UseAuthStore = create<AuthState>((set) => ({
     isSubmitting: false,
+    auth: null,
 
     handleSignInValidation: async (email, password) => {
         set({ isSubmitting: true })
@@ -65,6 +79,18 @@ export const UseAuthStore = create<AuthState>((set) => ({
             })
 
             window.location.reload()
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    handleGetSession: async () => {
+        try {
+            const result = await fetch("/api/auth/session")
+
+            const res = await result.json()
+
+            set({ auth: res.session.user })
         } catch (error) {
             console.log(error)
         }

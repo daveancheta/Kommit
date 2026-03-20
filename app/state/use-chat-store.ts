@@ -3,6 +3,7 @@ import { create } from "zustand";
 interface Messages {
     id: string;
     user_id: string;
+    content: string,
     group_id: string;
     created_at: string;
     string: string;
@@ -28,17 +29,21 @@ interface Messages {
 
 interface ChatState {
     selectedTeam: string | null;
+    selectedTeamName: string | null,
     messages: Messages[];
     setSelectedTeam: (selectedTeam: string) => void;
+    setSelectedTeamName: (selectedTeamName: string) => void;
     handleGetMessages: (id: string) => Promise<void>;
 
 }
 
 export const UseChatStore = create<ChatState>((set) => ({
     selectedTeam: null,
+    selectedTeamName: null,
     messages: [],
 
     setSelectedTeam: (selectedTeam: string) => set({ selectedTeam: selectedTeam }),
+    setSelectedTeamName: (selectedTeamName: string) => set({ selectedTeamName: selectedTeamName }),
 
     handleGetMessages: async (id: string) => {
         try {
