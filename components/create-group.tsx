@@ -51,7 +51,7 @@ function CreateGroup() {
             </DialogHeader>
             <FieldGroup>
               <div className="flex justify-center flex-col items-center gap-2">
-                <Avatar className="h-20 w-20 rounded-full">
+                <Avatar className="h-40 w-40 rounded-full">
                   {file
                     ? <AvatarImage src={preview} alt={groupName} />
                     : <AvatarFallback className="rounded-full">{getInitials(groupName)}</AvatarFallback>
