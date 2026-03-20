@@ -7,7 +7,9 @@ export async function GET(req: NextRequest,{ params }: { params: Promise<{ id: s
     try {
         const { data, error } = await supabase
         .from("chat")
-        .select()
+        .select(`*,
+            group (*),
+            user (*)`)
         .eq("group_id", id)
 
         return NextResponse.json({

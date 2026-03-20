@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
                 id: crypto.randomUUID(),
                 user_id: session?.user?.id,
                 content,
-                group_id: crypto.randomUUID(),
+                group_id: "2d778c5c-1467-40f8-bba3-c132369d4264",
             })
 
         return NextResponse.json({
