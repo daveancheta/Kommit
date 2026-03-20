@@ -1,52 +1,22 @@
-import Coversation from '@/components/conversation'
+import Conversation from '@/components/conversation'
 import CreateGroup from '@/components/create-group'
 import Sidebar from '@/components/sidebar-provider'
 import Teams from '@/components/team'
-import { Field } from '@/components/ui/field'
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupText, InputGroupTextarea } from '@/components/ui/input-group'
-import { useInitials } from '@/hooks/use-initials'
-import { Link2, Send } from 'lucide-react'
-
 
 function page() {
-    const getInitials = useInitials()
 
     return (
         <Sidebar>
             <div className='flex flex-row gap-2'>
                 <div className='bg-neutral-200 dark:bg-neutral-900 p-4 w-130 h-[95vh] border rounded-sm overflow-y-auto'>
                     <header className='flex justify-between items-center mb-2'>
-                        <h1 className='text-lg'>Chats</h1> 
-                        <CreateGroup/>
+                        <h1 className='text-lg'>Chats</h1>
+                        <CreateGroup />
                     </header>
                     <hr className='mb-4' />
-                    <Teams/>
+                    <Teams />
                 </div>
-                <div className='w-full h-[95vh] border rounded-sm overflow-y-auto z-10 bg-neutral-200 dark:bg-neutral-900 flex flex-col justify-between'>
-                    <div className='flex flex-row gap-4 items-center p-4'>
-                        <img className='w-15 h-15 rounded-full' src="https://s3-eu-north-1.amazonaws.com/py3.visitsweden.com/original_images/20180730-gsta_reiland-sunrays_in_a_pine_forest-6901-2_CMSTemplate.jpg" alt="" />
-                        <div>
-                            <h1 className='font-bold text-lg'>Team Dev 1</h1>
-                            <p className='text-muted-foreground text-sm'>5 Members</p>
-                        </div>
-                    </div>
-                    <div className='border-b-black border'></div>
-                    <Coversation />
-                    <Field className='p-2'>
-                        <InputGroup className='bg-white'>
-                            <InputGroupTextarea
-                                id="block-end-textarea"
-                                placeholder="Write a message..."
-                            />
-                            <InputGroupAddon align="block-end">
-                                <InputGroupText>0/280</InputGroupText>
-                                <InputGroupButton variant="default" size="sm" className="ml-auto">
-                                    <Send />
-                                </InputGroupButton>
-                            </InputGroupAddon>
-                        </InputGroup>
-                    </Field>
-                </div>
+               <Conversation />
             </div>
         </Sidebar>
     )
