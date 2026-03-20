@@ -78,7 +78,7 @@ export const chat = pgTable("chat", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
-  roomId: text("room_id").notNull(),
+  groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade"}),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()

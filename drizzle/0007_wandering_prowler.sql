@@ -1,0 +1,2 @@
+ALTER TABLE "chat" RENAME COLUMN "room_id" TO "group_id";--> statement-breakpoint
+ALTER TABLE "chat" ADD CONSTRAINT "chat_group_id_group_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."group"("id") ON DELETE cascade ON UPDATE no action;

@@ -50,6 +50,13 @@
       "when": 1773985626241,
       "tag": "0006_freezing_puff_adder",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1773992999315,
+      "tag": "0007_wandering_prowler",
+      "breakpoints": true
     }
   ]
 }

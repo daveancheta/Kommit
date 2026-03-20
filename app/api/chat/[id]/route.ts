@@ -5,10 +5,10 @@ export async function GET(req: NextRequest,{ params }: { params: Promise<{ id: s
     const { id } = await params
 
     try {
-        const { data, error} = await supabase
+        const { data, error } = await supabase
         .from("chat")
         .select()
-        .eq("room_id", id)
+        .eq("group_id", id)
 
         return NextResponse.json({
             success: true,
