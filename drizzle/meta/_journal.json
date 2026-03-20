@@ -15,6 +15,20 @@
       "when": 1773934858045,
       "tag": "0001_eager_betty_ross",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1773974133172,
+      "tag": "0002_military_warbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1773974304618,
+      "tag": "0003_sad_molly_hayes",
+      "breakpoints": true
     }
   ]
 }
