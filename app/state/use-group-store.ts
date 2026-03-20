@@ -12,19 +12,28 @@ export const UseGroupStore = create<Groupstate>((set) => ({
         set({ isSubmitting: true })
 
         try {
-            const reader = new FileReader()
+            if (photo) {
+                const reader = new FileReader()
 
-            reader.onloadend = async () => {
-                const base64 = reader.result as string
+                reader.onloadend = async () => {
+                    const base64 = reader.result as string
 
-                await fetch("/api/group", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ group_name, photo: base64 })
-                })
+                    await fetch("/api/group", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ group_name, photo: base64 })
+                    })
+                }
+
+                reader.readAsDataURL(photo)
             }
 
-            reader.readAsDataURL(photo)
+            await fetch("/api/group", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ group_name, photo: "" })
+            })
+
         } catch (error) {
             console.log(error)
         } finally {
