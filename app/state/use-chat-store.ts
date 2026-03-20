@@ -31,6 +31,7 @@ interface ChatState {
     selectedTeam: string | null;
     selectedTeamName: string | null,
     messages: Messages[];
+    isSubmitting: boolean;
     setSelectedTeam: (selectedTeam: string) => void;
     setSelectedTeamName: (selectedTeamName: string) => void;
     handleGetMessages: (id: string) => Promise<void>;
@@ -41,6 +42,7 @@ export const UseChatStore = create<ChatState>((set) => ({
     selectedTeam: null,
     selectedTeamName: null,
     messages: [],
+    isSubmitting: false,
 
     setSelectedTeam: (selectedTeam: string) => set({ selectedTeam: selectedTeam }),
     setSelectedTeamName: (selectedTeamName: string) => set({ selectedTeamName: selectedTeamName }),
@@ -58,6 +60,8 @@ export const UseChatStore = create<ChatState>((set) => ({
     },
 
     handleSendMessageValidation: async (content: string, id: string) => {
+        set({ isSubmitting: true })
+
         try {
             await fetch('/api/chat', {
                 method: "POST",
@@ -66,6 +70,8 @@ export const UseChatStore = create<ChatState>((set) => ({
             })
         } catch (error) {
             console.log(error)
+        } finally {
+            set({ isSubmitting: false })
         }
     }
 }))

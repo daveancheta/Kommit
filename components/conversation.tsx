@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { useInitials } from '@/hooks/use-initials'
 
 function Conversation() {
-    const { selectedTeam, selectedTeamName, handleGetMessages, messages, handleSendMessageValidation } = UseChatStore()
+    const { selectedTeam, selectedTeamName, handleGetMessages, messages, handleSendMessageValidation, isSubmitting } = UseChatStore()
     const { handleGetSession, auth } = UseAuthStore()
     const getInitials = useInitials()
     const [content, setContent] = useState<string>("")
@@ -22,6 +22,8 @@ function Conversation() {
         e.preventDefault()
 
         handleSendMessageValidation(content, selectedTeam as string)
+
+        setContent("")
     }
 
     useEffect(() => {
@@ -114,7 +116,7 @@ function Conversation() {
                                 />
                                 <InputGroupAddon align="block-end">
                                     <InputGroupText>0/280</InputGroupText>
-                                    <InputGroupButton type='submit' variant="default" size="sm" className="ml-auto">
+                                    <InputGroupButton type='submit' variant="default" size="sm" className="ml-auto" disabled={isSubmitting}>
                                         <Send />
                                     </InputGroupButton>
                                 </InputGroupAddon>
