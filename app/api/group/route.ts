@@ -34,9 +34,18 @@ export async function POST(req: NextRequest) {
                 photo: photo_url,
                 created_by: session.user.id,
             })
+            .select()
+
+        await supabase
+            .from('members')
+            .insert({
+                id: crypto.randomUUID(),
+                user_id: session.user.id,
+                group_id: data?.[0]?.id,
+            })
 
         return NextResponse.json({
-            success: true,  
+            success: true,
             data,
             error
         }, { status: 200 })
