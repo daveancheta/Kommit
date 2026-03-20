@@ -92,11 +92,11 @@ function Conversation() {
                             <div key={msg.id}>
                                 {msg.user.id === auth?.id
                                     ? <div className='flex justify-end'>
-                                        <div className='flex flex-col gap-1'>
+                                        <div className='gap-1'>
                                             <div className='flex flex-row gap-2 items-end'>
-                                                <div className='flex flex-col'>
+                                                <div className='flex flex-col gap-1'>
                                                     <h1 className='text-xs text-muted-foreground text-end mr-1'>You</h1>
-                                                    <span className='bg-black dark:bg-white px-4 py-2.5 rounded-tl-2xl rounded-bl-2xl rounded-br-2xl rounded-tr-sm text-white dark:text-black'>
+                                                    <span className='bg-black dark:bg-white px-4 py-2.5 rounded-tl-2xl rounded-bl-2xl rounded-br-2xl rounded-tr-sm text-white dark:text-black w-fit max-w-sm break-all'>
                                                         {msg.content}
                                                     </span>
                                                 </div>
@@ -110,13 +110,13 @@ function Conversation() {
                                             </div>
                                         </div>
                                     </div>
-                                    : <div className="flex justify-start">
-                                        <div className='grid gap-1'>
+                                    : <div className="grid justify-start">
+                                        <div className='flex flex-col gap-1'>
                                             <div className='flex flex-row gap-2 items-end'>
                                                 <img className='w-8 h-8 rounded-full' src="https://avatars.githubusercontent.com/u/153621050?v=4" alt="" />
                                                 <div className='flex flex-col'>
                                                     <h1 className='text-xs text-muted-foreground ml-1'>{msg.user.name}</h1>
-                                                    <span className='bg-white dark:bg-black px-4 py-2.5 rounded-tl-sm rounded-bl-2xl rounded-br-2xl rounded-tr-2xl text-black dark:text-white'>
+                                                    <span className='bg-white dark:bg-black px-4 py-2.5 rounded-tl-sm rounded-bl-2xl rounded-br-2xl rounded-tr-2xl text-black dark:text-white w-fit max-w-sm break-all'>
                                                         {msg.content}
                                                     </span>
                                                 </div>
@@ -135,6 +135,7 @@ function Conversation() {
                                     placeholder="Write a message..."
                                     onChange={(e) => setContent(e.target.value)}
                                     value={content}
+                                    className='break-all'
                                 />
                                 <InputGroupAddon align="block-end">
                                     <InputGroupText>0/280</InputGroupText>
