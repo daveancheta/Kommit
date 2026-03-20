@@ -57,7 +57,7 @@ function CreateGroup() {
                     : <AvatarFallback className="rounded-full">{getInitials(groupName)}</AvatarFallback>
                   }
                 </Avatar>
-                  <Button className="text-xs" onClick={() => uploadRef.current?.click()}>Upload</Button>
+                  <Button type="button" className="text-xs" onClick={() => uploadRef.current?.click()}>Upload</Button>
               </div>
               <Field>
                 <Label htmlFor="name-1">Group Name</Label>
