@@ -1,3 +1,4 @@
+import { authClient } from "@/lib/auth-client";
 import { sileo } from "sileo";
 import { create } from "zustand";
 
@@ -19,6 +20,7 @@ interface AuthState {
     handleSignUpValidation: (name: string, date: string, email: string, password: string) => Promise<void>;
     handleSignOutValidation: () => Promise<void>;
     handleGetSession: () => Promise<void>;
+    handleGithubSign: () => Promise<void>;
 }
 
 export const UseAuthStore = create<AuthState>((set) => ({
@@ -27,6 +29,7 @@ export const UseAuthStore = create<AuthState>((set) => ({
 
     handleSignInValidation: async (email, password) => {
         set({ isSubmitting: true })
+
         try {
             const result = await fetch("/api/auth/signin", {
                 method: "POST",
@@ -52,6 +55,7 @@ export const UseAuthStore = create<AuthState>((set) => ({
 
     handleSignUpValidation: async (name, date, email, password) => {
         set({ isSubmitting: true })
+
         try {
             const result = await fetch("/api/auth/signup", {
                 method: "POST",
@@ -93,6 +97,20 @@ export const UseAuthStore = create<AuthState>((set) => ({
             set({ auth: res.session.user })
         } catch (error) {
             console.log(error)
+        }
+    },
+
+    handleGithubSign: async () => {
+        set({ isSubmitting: true })
+
+        try {
+            await authClient.signIn.social({
+                provider: "github"
+            })
+        } catch (error) {
+            console.log(error)
+        } finally {
+            set({ isSubmitting: false })
         }
     }
 }))
