@@ -1,18 +1,26 @@
 import { create } from "zustand";
 
 interface Member {
-    id: string,
-    user_id: string,
-    group_id: string,
-    created_at: string,
-    string: string,
+    id: string;
+    user_id: string;
+    group_id: string;
+    created_at: string;
+    string: string;
     group: {
-        id: string,
-        photo: string,
-        created_at: string,
-        created_by: string,
-        group_name: string,
-        updated_at: string
+        id: string;
+        photo: string;
+        created_at: string;
+        created_by: string;
+        group_name: string;
+        updated_at: string;
+        chat: {
+            id: string;
+            content: string;
+            user_id: string;
+            group_id: string;
+            created_at: string;
+            updated_at: string;
+        }[];
     }
 }
 
@@ -40,8 +48,8 @@ export const UseGroupStore = create<Groupstate>((set) => ({
 
             await fetch("/api/group", {
                 method: "POST",
-                headers:  { "Content-Type": "application/json" },
-                body: JSON.stringify({ group_name, photo: base64})
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ group_name, photo: base64 })
             })
         } catch (error) {
             console.log(error)

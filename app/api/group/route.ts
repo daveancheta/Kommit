@@ -74,7 +74,8 @@ export async function GET() {
         const { data, error } = await supabase
             .from('members')
             .select(`*,
-                group (*)
+                group (*,
+                chat (*))
                 `)
             .eq('user_id', session.user.id)
 

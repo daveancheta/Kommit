@@ -18,8 +18,8 @@ function Teams() {
     }, [])
 
     useEffect(() => {
-        const channel = supabase
-            .channel('public:members')
+        const membersChannel = supabase
+            .channel('team:members')
             .on('postgres_changes', {
                 event: "*",
                 schema: "public",
@@ -31,21 +31,35 @@ function Teams() {
             )
             .subscribe()
 
+        const chatChannel = supabase
+            .channel('team:chat')
+            .on('postgres_changes', {
+                event: '*',
+                schema: "public",
+                table: 'chat',
+            },
+                async (payload) => {
+                    await handleGetGroups()
+                }
+            )
+            .subscribe()
+
         return () => {
-            supabase.removeChannel(channel)
+            supabase.removeChannel(membersChannel)
+            supabase.removeChannel(chatChannel)
         }
     }, [])
 
     return (
         <div className='flex flex-col gap-4'>
             {team.map((team) => (
-                <div key={team.id} className={cn('flex flex-row items-center gap-2 p-2 px-4', 
+                <div key={team.id} className={cn('flex flex-row items-center gap-2 p-2 px-4',
                     team.group.id === selectedTeam && "bg-neutral-800 rounded-xl"
                 )} onClick={() => {
                     setSelectedTeam(team.group.id)
                     setSelectedTeamName(team.group.group_name)
                     setSelectedTeamPhoto(team.group.photo as any ?? null)
-                    }}>
+                }}>
                     <Avatar className="h-12 w-12 rounded-full">
                         {team.group.photo && team.group.photo.length > 0
                             ? <AvatarImage src={team.group.photo} alt={team.group.group_name} />
@@ -57,7 +71,7 @@ function Teams() {
                             <h2 className='font-bold truncate'>{team.group.group_name}</h2>
                             <p className='text-xs text-muted-foreground font-bold shrink-0'>4:31</p>
                         </div>
-                        <p className='text-muted-foreground text-sm truncate'>Dave: Hello</p>
+                        <p className='text-muted-foreground text-sm truncate'>team: {team.group.chat[team.group.chat.length - 1]?.content}</p>
                     </div>
                 </div>
             ))}
