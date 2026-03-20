@@ -24,18 +24,23 @@ export async function POST(req: NextRequest) {
                 user_id: member_id,
                 group_id
             })
+            .select(`*,
+                user (*)
+                `)
+            .single()
 
         await supabase
             .from('chat')
             .insert({
                 id: crypto.randomUUID(),
-                user_id: session?.user?.id,
-                content: `${member_id} added by ${session.user.name}`,
+                user_id: 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu',
+                content: `${data?.user?.name} added by ${session.user.name}`,
                 group_id,
             })
 
         return NextResponse.json({
-            success: true
+            success: true,
+            data
         }, { status: 200 })
     } catch (error) {
         console.log(error)

@@ -90,8 +90,16 @@ function Conversation() {
                     <div className='flex-1 p-8 flex flex-col gap-2 overflow-y-auto'>
                         {messages.map((msg) => (
                             <div key={msg.id}>
+                                {msg.user.id === 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu' &&
+                                    <div className='flex justify-center'>
+                                        <p>
+                                            {msg.content}
+                                        </p>
+                                    </div>
+                                }
+
                                 {msg.user.id === auth?.id
-                                    ? <div className='flex justify-end'>
+                                    ? <div className={cn('flex justify-end', msg.user.id === 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu' && 'hidden')}>
                                         <div className='gap-1'>
                                             <div className='flex flex-row gap-2 items-end'>
                                                 <div className='flex flex-col gap-1'>
@@ -110,7 +118,7 @@ function Conversation() {
                                             </div>
                                         </div>
                                     </div>
-                                    : <div className="grid justify-start">
+                                    : <div className={cn('flex justify-start', msg.user.id === 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu' && 'hidden')}>
                                         <div className='flex flex-col gap-1'>
                                             <div className='flex flex-row gap-2 items-end'>
                                                 <img className='w-8 h-8 rounded-full' src="https://avatars.githubusercontent.com/u/153621050?v=4" alt="" />
