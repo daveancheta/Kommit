@@ -46,9 +46,9 @@ function Teams() {
                     <div className='flex-1 min-w-0'>
                         <div className='flex items-center justify-between gap-2'>
                             <h2 className='font-bold truncate'>{team.group.group_name}</h2>
-                            <p className='text-xs text-muted-foreground font-bold shrink-0'>{team.createdAt}</p>
+                            <p className='text-xs text-muted-foreground font-bold shrink-0'>4:31</p>
                         </div>
-                        <p className='text-muted-foreground text-sm truncate'>{team.message}</p>
+                        <p className='text-muted-foreground text-sm truncate'>Dave: Hello</p>
                     </div>
                 </div>
             ))}

@@ -1,8 +1,24 @@
 import { create } from "zustand";
 
+interface Member {
+    id: string,
+    user_id: string,
+    group_id: string,
+    created_at: string,
+    string: string,
+    group: {
+        id: string,
+        photo: string,
+        created_at: string,
+        created_by: string,
+        group_name: string,
+        updated_at: string
+    }
+}
+
 interface Groupstate {
     isSubmitting: boolean;
-    team: any[];
+    team: Member[];
     handleCreateGroupValidation: (group: string, photo: File) => Promise<void>;
     handleGetGroups: () => Promise<void>;
 }
@@ -15,30 +31,18 @@ export const UseGroupStore = create<Groupstate>((set) => ({
         set({ isSubmitting: true })
 
         try {
-            if (photo) {
+            const base64 = photo ? await new Promise<string>((resolve, reject) => {
                 const reader = new FileReader()
-
-                reader.onloadend = async () => {
-                    const base64 = reader.result as string
-
-                    await fetch("/api/group", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ group_name, photo: base64 })
-                    })
-                }
-
+                reader.onloadend = () => resolve(reader.result as string)
+                reader.onerror = reject
                 reader.readAsDataURL(photo)
-            }
+            }) : null
 
-            if (!photo) {
-                await fetch("/api/group", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ group_name, photo: "" })
-                })
-            }
-
+            await fetch("/api/group", {
+                method: "POST",
+                headers:  { "Content-Type": "application/json" },
+                body: JSON.stringify({ group_name, photo: base64})
+            })
         } catch (error) {
             console.log(error)
         } finally {
