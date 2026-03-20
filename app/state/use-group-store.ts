@@ -20,6 +20,16 @@ interface Member {
             group_id: string;
             created_at: string;
             updated_at: string;
+            user: {
+                id: string;
+                name: string;
+                email: string;
+                image: string;
+                birthdate: string;
+                created_at: string;
+                updated_at: string;
+                email_verified: string;
+            };
         }[];
     }
 }

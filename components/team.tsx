@@ -71,7 +71,7 @@ function Teams() {
                             <h2 className='font-bold truncate'>{team.group.group_name}</h2>
                             <p className='text-xs text-muted-foreground font-bold shrink-0'>4:31</p>
                         </div>
-                        <p className='text-muted-foreground text-sm truncate'>team: {team.group.chat[team.group.chat.length - 1]?.content}</p>
+                        <p className='text-muted-foreground text-sm truncate'>{team.group.chat[team.group.chat.length - 1]?.user?.name}: {team.group.chat[team.group.chat.length - 1]?.content}</p>
                     </div>
                 </div>
             ))}

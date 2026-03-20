@@ -75,7 +75,8 @@ export async function GET() {
             .from('members')
             .select(`*,
                 group (*,
-                chat (*))
+                chat (*,
+                user (*)))
                 `)
             .eq('user_id', session.user.id)
 

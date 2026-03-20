@@ -111,7 +111,7 @@ function Conversation() {
                                         </div>
                                     </div>
                                     : <div className="flex justify-start">
-                                        <div className='flex flex-col gap-1'>
+                                        <div className='grid gap-1'>
                                             <div className='flex flex-row gap-2 items-end'>
                                                 <img className='w-8 h-8 rounded-full' src="https://avatars.githubusercontent.com/u/153621050?v=4" alt="" />
                                                 <div className='flex flex-col'>
