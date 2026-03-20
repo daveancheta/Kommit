@@ -89,6 +89,7 @@ export const chat = pgTable("chat", {
 export const group = pgTable("group", {
   id: text("id").primaryKey(),
   groupName: text("group_name").notNull(),
+  photo: text("photo"),
   createdBy: text("created_by").notNull().references(() => user.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

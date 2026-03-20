@@ -41,13 +41,13 @@ function CreateGroup() {
             <DialogHeader>
               <DialogTitle>Create Group</DialogTitle>
               <DialogDescription>
-                Add new Group
+                Group your team members to collaborate and communicate faster.
               </DialogDescription>
             </DialogHeader>
             <FieldGroup>
               <Field>
                 <Label htmlFor="name-1">Group Name</Label>
-                <Input id="name-1" onChange={(e) => setGroupName(e.target.value)}/>
+                <Input id="name-1" onChange={(e) => setGroupName(e.target.value)} />
               </Field>
             </FieldGroup>
             <DialogFooter>

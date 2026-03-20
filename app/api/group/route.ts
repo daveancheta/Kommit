@@ -1,10 +1,11 @@
 import { auth } from "@/lib/auth";
+import cloudinary from "@/lib/cloudinary";
 import { supabase } from "@/lib/supbase/cient";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-    const { group_name } = await req.json()
+    const { group_name, photo } = await req.json()
     const session = await auth.api.getSession({
             headers: await headers()
         })
@@ -17,11 +18,13 @@ export async function POST(req: NextRequest) {
         }
 
     try {
+        const cloud_photo = await cloudinary.uploader.upload(photo)
         const { data, error } = await supabase
         .from('group')
         .insert({
             id: crypto.randomUUID(),
             group_name,
+            photo: cloud_photo.secure_url,
             created_by: session.user.id,
         })
 
