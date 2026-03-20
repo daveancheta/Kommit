@@ -20,16 +20,19 @@ import { useState } from "react"
 function CreateGroup() {
   const { isSubmitting, handleCreateGroupValidation } = UseGroupStore()
   const [groupName, setGroupName] = useState<string>("")
+  const [file, setFile] = useState<any>()
 
   const handleCreateGroup = (e: any) => {
     e.preventDefault()
 
-    handleCreateGroupValidation(groupName)
+      console.log("groupName:", groupName)
+    console.log("file:", file)
+
+    handleCreateGroupValidation(groupName, file)
   }
+
   return (
     <div>
-
-
       <Dialog>
         <DialogTrigger asChild>
           <Button className='rounded-full'>
@@ -47,14 +50,19 @@ function CreateGroup() {
             <FieldGroup>
               <Field>
                 <Label htmlFor="name-1">Group Name</Label>
-                <Input id="name-1" onChange={(e) => setGroupName(e.target.value)} />
+                <Input type="text" id="name-1" onChange={(e) => setGroupName(e.target.value)} />
+              </Field>
+
+                <Field>
+                <Label htmlFor="photo">Group Photo</Label>
+                <input type="file" id="photo" onChange={(e) => setFile(e.target.files?.[0])} />
               </Field>
             </FieldGroup>
             <DialogFooter>
               <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline" disabled={isSubmitting}>Cancel</Button>
               </DialogClose>
-              <Button type="submit">Save changes</Button>
+              <Button type="submit" disabled={isSubmitting}>Save changes</Button>
             </DialogFooter>
           </form>
         </DialogContent>
