@@ -15,7 +15,7 @@ import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useInitials } from "@/hooks/use-initials"
-import { Pen } from "lucide-react"
+import { Loader2, Pen } from "lucide-react"
 import { useRef, useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
@@ -79,7 +79,7 @@ function CreateGroup() {
               <DialogClose asChild>
                 <Button variant="outline" disabled={isSubmitting}>Cancel</Button>
               </DialogClose>
-              <Button type="submit" disabled={isSubmitting}>Save changes</Button>
+              <Button type="submit" disabled={isSubmitting}>{isSubmitting && <Loader2 className="animate-spin w-4 h-4"/>} Create Group</Button>
             </DialogFooter>
           </form>
         </DialogContent>
