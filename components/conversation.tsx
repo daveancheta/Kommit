@@ -3,7 +3,7 @@
 import React, { use, useEffect, useRef, useState } from 'react'
 import { Field } from './ui/field'
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupText, InputGroupTextarea } from './ui/input-group'
-import { Send } from 'lucide-react'
+import { EllipsisVertical, Send, UserRoundPlus, Video } from 'lucide-react'
 import { UseChatStore } from '@/app/state/use-chat-store'
 import ConversationEmptyState from './conversation-empty-state'
 import { supabase } from '@/lib/supbase/cient'
@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils'
 import { UseAuthStore } from '@/app/state/use-auth-store'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { useInitials } from '@/hooks/use-initials'
+import { Button } from './ui/button'
 
 function Conversation() {
     const { selectedTeam, selectedTeamName, handleGetMessages, messages, handleSendMessageValidation, isSubmitting } = UseChatStore()
@@ -65,11 +66,17 @@ function Conversation() {
             {!selectedTeam
                 ? <ConversationEmptyState />
                 : <>
-                    <div className='flex flex-row gap-4 items-center p-4'>
-                        <img className='w-15 h-15 rounded-full' src="https://s3-eu-north-1.amazonaws.com/py3.visitsweden.com/original_images/20180730-gsta_reiland-sunrays_in_a_pine_forest-6901-2_CMSTemplate.jpg" alt="" />
-                        <div>
-                            <h1 className='font-bold text-lg'>{selectedTeamName}</h1>
-                            <p className='text-muted-foreground text-sm'>5 Members</p>
+                    <div className='flex justify-between items-center'>
+                        <div className='flex flex-row gap-4 items-center p-4'>
+                            <img className='w-15 h-15 rounded-full' src="https://s3-eu-north-1.amazonaws.com/py3.visitsweden.com/original_images/20180730-gsta_reiland-sunrays_in_a_pine_forest-6901-2_CMSTemplate.jpg" alt="" />
+                            <div>
+                                <h1 className='font-bold text-lg'>{selectedTeamName}</h1>
+                                <p className='text-muted-foreground text-sm'>5 Members</p>
+                            </div>
+                        </div>
+                        <div className='flex flex-row'>
+                            <Button variant="ghost"><Video className='size-4' /></Button>
+                            <Button className='mr-10' variant="ghost"><EllipsisVertical className='size-4' /></Button>
                         </div>
                     </div>
                     <div className='border-b-black border'></div>
