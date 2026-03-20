@@ -14,11 +14,13 @@ import { useInitials } from '@/hooks/use-initials'
 import { Button } from './ui/button'
 
 function Conversation() {
-    const { selectedTeam, selectedTeamName, handleGetMessages, messages, handleSendMessageValidation, isSubmitting } = UseChatStore()
+    const { selectedTeam, selectedTeamName, handleGetMessages, messages, handleSendMessageValidation, isSubmitting, selectedTeamPhoto } = UseChatStore()
     const { handleGetSession, auth } = UseAuthStore()
     const getInitials = useInitials()
     const [content, setContent] = useState<string>("")
     const bottomRef = useRef<HTMLDivElement>(null)
+
+    console.log(selectedTeamPhoto)
 
     useEffect(() => {
         if (bottomRef.current) {
@@ -68,7 +70,12 @@ function Conversation() {
                 : <>
                     <div className='flex justify-between items-center'>
                         <div className='flex flex-row gap-4 items-center p-4'>
-                            <img className='w-15 h-15 rounded-full' src="https://s3-eu-north-1.amazonaws.com/py3.visitsweden.com/original_images/20180730-gsta_reiland-sunrays_in_a_pine_forest-6901-2_CMSTemplate.jpg" alt="" />
+                            <Avatar key={selectedTeam} className="h-12 w-12 rounded-full">
+                                {selectedTeamPhoto !== null
+                                    ? <AvatarImage src={selectedTeamPhoto as string} alt={selectedTeam} />
+                                    : <AvatarFallback className="rounded-full">{getInitials(selectedTeamName as string)}</AvatarFallback>
+                                }
+                            </Avatar>
                             <div>
                                 <h1 className='font-bold text-lg'>{selectedTeamName}</h1>
                                 <p className='text-muted-foreground text-sm'>5 Members</p>

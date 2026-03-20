@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 
 function Teams() {
     const { team, handleGetGroups } = UseGroupStore()
-    const { selectedTeam, setSelectedTeam, setSelectedTeamName } = UseChatStore()
+    const { selectedTeam, setSelectedTeam, setSelectedTeamName, setSelectedTeamPhoto } = UseChatStore()
     const getInitials = useInitials()
 
     useEffect(() => {
@@ -44,6 +44,7 @@ function Teams() {
                 )} onClick={() => {
                     setSelectedTeam(team.group.id)
                     setSelectedTeamName(team.group.group_name)
+                    setSelectedTeamPhoto(team.group.photo as any ?? null)
                     }}>
                     <Avatar className="h-12 w-12 rounded-full">
                         {team.group.photo && team.group.photo.length > 0
