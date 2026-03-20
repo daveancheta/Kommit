@@ -14,19 +14,21 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useInitials } from "@/hooks/use-initials"
 import { Pen } from "lucide-react"
-import { useState } from "react"
+import { useRef, useState } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
 function CreateGroup() {
   const { isSubmitting, handleCreateGroupValidation } = UseGroupStore()
-  const [groupName, setGroupName] = useState<string>("")
+  const [groupName, setGroupName] = useState<string>("The Warriors")
   const [file, setFile] = useState<any>()
+  const getInitials = useInitials()
+  const [preview, setPreview] = useState<any>()
+  const uploadRef = useRef<HTMLInputElement>(null)
 
   const handleCreateGroup = (e: any) => {
     e.preventDefault()
-
-      console.log("groupName:", groupName)
-    console.log("file:", file)
 
     handleCreateGroupValidation(groupName, file)
   }
@@ -48,14 +50,29 @@ function CreateGroup() {
               </DialogDescription>
             </DialogHeader>
             <FieldGroup>
+              <div className="flex justify-center flex-col items-center gap-2">
+                <Avatar className="h-20 w-20 rounded-full">
+                  {file
+                    ? <AvatarImage src={preview} alt={groupName} />
+                    : <AvatarFallback className="rounded-full">{getInitials(groupName)}</AvatarFallback>
+                  }
+                </Avatar>
+                  <Button onClick={() => uploadRef.current?.click()}>Upload</Button>
+              </div>
               <Field>
                 <Label htmlFor="name-1">Group Name</Label>
-                <Input type="text" id="name-1" onChange={(e) => setGroupName(e.target.value)} />
+                <Input type="text" id="name-1" onChange={(e) => setGroupName(e.target.value)} value={groupName}/>
               </Field>
 
-                <Field>
+              <Field className="hidden">
                 <Label htmlFor="photo">Group Photo</Label>
-                <input type="file" id="photo" onChange={(e) => setFile(e.target.files?.[0])} />
+                <input ref={uploadRef} type="file" id="photo" onChange={(e) => {
+                  const selected = e.target.files?.[0]
+                  if (selected) {
+                    setFile(selected)
+                    setPreview(URL.createObjectURL(selected))
+                  }
+                }} />
               </Field>
             </FieldGroup>
             <DialogFooter>
