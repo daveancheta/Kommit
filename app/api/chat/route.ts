@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
             success: false,
             message: "Unauthorized. Please sign in to continue."
-        }, {status: 400})
+        }, { status: 400 })
     }
 
     try {
@@ -34,6 +34,47 @@ export async function POST(req: NextRequest) {
     } catch (error) {
         console.log(error)
 
+        return NextResponse.json({
+            success: false
+        }, { status: 400 })
+    }
+}
+
+export async function PATCH(req: NextRequest) {
+    const { content, id } = await req.json()
+
+    try {
+        const { data, error } = await supabase
+            .from('chat')
+            .update({ content })
+            .eq('id', id)
+
+
+        return NextResponse.json({
+            success: true,
+            message: data,
+            error
+        })
+    } catch (error) {
+        return NextResponse.json({
+            success: false
+        }, { status: 400 })
+    }
+}
+
+export async function DELETE(req: NextRequest) {
+    const { id } = await req.json()
+    try {
+        const response = await supabase
+            .from('chat')
+            .delete()
+            .eq('id', id)
+
+        return NextResponse.json({
+            success: true,
+            response
+        })
+    } catch (error) {
         return NextResponse.json({
             success: false
         }, { status: 400 })
