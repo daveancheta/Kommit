@@ -95,7 +95,7 @@ function Conversation() {
                                 <div key={msg.id}>
                                     {msg.user.id === 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu' &&
                                         <div className='flex justify-center'>
-                                            <p>
+                                            <p className='text-sm text-muted-foreground'>
                                                 {msg.content}
                                             </p>
                                         </div>
