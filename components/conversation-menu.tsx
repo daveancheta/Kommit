@@ -120,7 +120,7 @@ function ConversationMenu() {
                                 <h1 className='text-lg font-bold mb-4'>Suggested</h1>
                                 <div className='flex flex-col gap-2 items-start'>
                                     {user.slice(0, 5).map((user) =>
-                                        <div key={user.id} className={cn('cursor-pointer', !user.name.toLocaleLowerCase().includes(search?.toLocaleLowerCase() || "") && "hidden")} onClick={() => {
+                                        <div key={user.id} className={cn('cursor-pointer w-full hover:bg-neutral-800 rounded-md p-2 px-4 duration-300 transition-all ease-in-out', !user.name.toLocaleLowerCase().includes(search?.toLocaleLowerCase() || "") && "hidden")} onClick={() => {
                                             setUsername(user.name)
                                             setId(user.id)
                                             setImage(user.image)
