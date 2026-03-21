@@ -71,7 +71,7 @@ function Conversation() {
                 {!selectedTeam
                     ? <ConversationEmptyState />
                     : <>
-                        <div className='flex justify-between items-center'>
+                        <div className='flex justify-between items-center px-4'>
                             <div className='flex flex-row gap-4 items-center p-4'>
                                 <Avatar key={selectedTeam} className="h-12 w-12 rounded-full">
                                     {selectedTeamPhoto !== null
@@ -86,7 +86,7 @@ function Conversation() {
                             </div>
                             <div className='flex flex-row'>
                                 <Button variant="ghost"><Video className='size-4' /></Button>
-                                <Button className='mr-10' variant="ghost" onClick={() => setIsActive(!isActive)}><EllipsisVertical className='size-4' /></Button>
+                                <Button variant="ghost" onClick={() => setIsActive(!isActive)}><EllipsisVertical className='size-4' /></Button>
                             </div>
                         </div>
                         <div className='border-b-black border'></div>
@@ -100,7 +100,6 @@ function Conversation() {
                                             </p>
                                         </div>
                                     }
-
                                     {msg.user.id === auth?.id
                                         ? <div className={cn('flex justify-end', msg.user.id === 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu' && 'hidden')}>
                                             <div className='gap-1'>
