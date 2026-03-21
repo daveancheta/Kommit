@@ -52,7 +52,7 @@ function Teams() {
     }, [])
 
     return (
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-4 cursor-pointer'>
             {team.map((team) => (
                 <div key={team.id} className={cn('flex flex-row items-center gap-2 p-2 px-4',
                     team.group.id === selectedTeam && "bg-neutral-800 rounded-xl"
