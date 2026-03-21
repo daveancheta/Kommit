@@ -17,12 +17,13 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const isAlreadyMember = await supabase
+        const { data: isExistingMember } = await supabase
             .from('members')
             .select()
             .eq('user_id', member_id)
+            .eq('group_id', group_id)
 
-        if (isAlreadyMember) {
+        if (isExistingMember && isExistingMember.length > 0) {
             return NextResponse.json({
                 success: false,
                 message: `Already in the team.`
