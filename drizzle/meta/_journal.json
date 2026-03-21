@@ -57,6 +57,13 @@
       "when": 1773992999315,
       "tag": "0007_wandering_prowler",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1774024076661,
+      "tag": "0008_glossy_oracle",
+      "breakpoints": true
     }
   ]
 }

@@ -78,8 +78,8 @@ export const chat = pgTable("chat", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
-  groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade"}),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
