@@ -1,7 +1,20 @@
 import { UseChatStore } from '@/app/state/use-chat-store'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { useInitials } from '@/hooks/use-initials'
-import { Button } from './ui/button'
+import { Button } from "@/components/ui/button"
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Field, FieldGroup } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Bell, Ellipsis, Files, Images, Link, Pen, Search, UserRoundPlus } from 'lucide-react'
 import {
     Accordion,
@@ -9,6 +22,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+import { InputGroup, InputGroupAddon, InputGroupInput } from './ui/input-group'
 
 function ConversationMenu() {
     const { selectedTeam, selectedTeamName, selectedTeamPhoto } = UseChatStore()
@@ -38,9 +52,41 @@ function ConversationMenu() {
                 <Button variant='secondary' className='p-4 rounded-full'>
                     <Search className='size-4' />
                 </Button>
-                <Button variant='secondary' className='p-4 rounded-full'>
-                    <UserRoundPlus className='size-4' />
-                </Button>
+
+                <Dialog>
+                    <form>
+                        <DialogTrigger asChild>
+                            <Button variant='secondary' className='p-4 rounded-full'>
+                                <UserRoundPlus className='size-4' />
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-xl">
+                            <DialogHeader>
+                                <DialogTitle>Add Team Member</DialogTitle>
+                            </DialogHeader>
+                            <FieldGroup>
+                                <Field>
+                                    <Label htmlFor="name-1">Search</Label>
+                                    <InputGroup>
+                                        <InputGroupInput placeholder="Search..." />
+                                        <InputGroupAddon>
+                                            <Search />
+                                        </InputGroupAddon>
+                                    </InputGroup>
+                                </Field>
+                            </FieldGroup>
+                            <div>
+                                <h1 className='text-lg font-bold'>Suggested</h1>
+                            </div>
+                            <DialogFooter>
+                                <DialogClose asChild>
+                                    <Button variant="outline">Cancel</Button>
+                                </DialogClose>
+                                <Button type="submit">Add</Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </form>
+                </Dialog>
             </div>
 
             <div>
