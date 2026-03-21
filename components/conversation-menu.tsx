@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Label } from "@/components/ui/label"
-import { Bell, Ellipsis, Files, Images, Link, Loader2, Pen, Search, UserRoundPlus } from 'lucide-react'
+import { Bell, Ellipsis, Files, Images, Link, Loader2, Pen, Search, UserRoundPlus, X } from 'lucide-react'
 import {
     Accordion,
     AccordionContent,
@@ -100,7 +100,7 @@ function ConversationMenu() {
                                 {username &&
                                     <div>
                                         <h1 className='text-sm mb-4 text-muted-foreground'>Selected Member</h1>
-                                        <div key={id} className=''>
+                                        <div key={id} className='flex justify-between items-center'>
                                             <div className='flex flex-row items-center gap-2'>
                                                 <Avatar key={id} className='rounded-full w-15 h-15'>
                                                     {image && image.length > 0
@@ -112,6 +112,11 @@ function ConversationMenu() {
                                                     <h1>{username}</h1>
                                                 </div>
                                             </div>
+                                            <Button className='cursor-pointer rounded-full' variant='destructive' onClick={() => {
+                                                setUsername(null)
+                                                setId(null)
+                                                setImage(null)
+                                            }}><X /></Button>
                                         </div>
                                     </div>
                                 }
