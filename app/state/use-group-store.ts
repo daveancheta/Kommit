@@ -41,6 +41,7 @@ interface Groupstate {
     handleCreateGroupValidation: (group: string, photo: File) => Promise<void>;
     handleGetGroups: () => Promise<void>;
     handleAddMemberValidation: (member_id: string, group_id: string) => Promise<void>;
+    handlePhotoUpdateValidation: (photo: File, group_id: string) => Promise<void>;
 }
 
 export const UseGroupStore = create<Groupstate>((set) => ({
@@ -103,6 +104,27 @@ export const UseGroupStore = create<Groupstate>((set) => ({
             console.log(error)
         } finally {
             set({ isSubmitting: false })
+        }
+    },
+
+    handlePhotoUpdateValidation: async (photo: File, group_id: string) => {
+        try {
+            const base64 = photo ? await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader()
+                reader.onloadend = () => resolve(reader.result as string)
+                reader.onerror = reject
+                reader.readAsDataURL(photo)
+            }) : null 
+
+            await fetch('/api/group/photo', {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json"},
+                body: JSON.stringify({ photo: base64, group_id })
+            })
+
+
+        } catch (error) {
+            console.log(error)
         }
     }
 }))

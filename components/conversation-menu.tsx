@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/accordion"
 import { InputGroup, InputGroupAddon, InputGroupInput } from './ui/input-group'
 import { UseUserStore } from '@/app/state/use-user-store'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { UseGroupStore } from '@/app/state/use-group-store'
@@ -32,12 +32,15 @@ import { UseGroupStore } from '@/app/state/use-group-store'
 function ConversationMenu() {
     const { selectedTeam, selectedTeamName, selectedTeamPhoto } = UseChatStore()
     const { user, handleGetUser } = UseUserStore()
-    const { handleAddMemberValidation, isSubmitting } = UseGroupStore()
+    const { handleAddMemberValidation, isSubmitting, handlePhotoUpdateValidation } = UseGroupStore()
     const getInitials = useInitials()
     const [username, setUsername] = useState<string | null>(null)
     const [id, setId] = useState<string | null>(null)
     const [image, setImage] = useState<string | null>(null)
     const [search, setSearch] = useState<string | null>(null)
+    const [groupPhoto, setGroupPhoto] = useState<any>()
+    const [preview, setPreview] = useState<any>()
+    const uploadRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         handleGetUser()
@@ -47,6 +50,12 @@ function ConversationMenu() {
         e.preventDefault()
 
         handleAddMemberValidation(id || "", selectedTeam as string)
+    }
+
+    const handleUpdateGroupPhoto = (e: any) => {
+        e.preventDefault()
+
+        handlePhotoUpdateValidation(groupPhoto, selectedTeam as string)
     }
 
     return (
@@ -173,9 +182,52 @@ function ConversationMenu() {
                                 </Button>
                             </AccordionContent>
                             <AccordionContent>
-                                <Button variant='ghost' className='w-full flex justify-start'>
-                                    <Images /> Change Photo
-                                </Button>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button variant='ghost' className='w-full flex justify-start'>
+                                            <Images /> Change Photo
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-sm">
+                                        <form onSubmit={handleUpdateGroupPhoto} className="space-y-4">
+                                            <DialogHeader>
+                                                <DialogTitle>Create Group</DialogTitle>
+                                                <DialogDescription>
+                                                    Group your team members to collaborate and communicate faster.
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <FieldGroup>
+                                                <div className="flex justify-center flex-col items-center gap-2">
+                                                    <Avatar className="h-40 w-40 rounded-full">
+                                                        {groupPhoto
+                                                            ? <AvatarImage src={preview} alt={selectedTeamName as string} />
+                                                            : selectedTeamPhoto
+                                                                ? <AvatarImage src={selectedTeamPhoto} alt={selectedTeamName as string} />
+                                                                : <AvatarFallback className="rounded-full">{getInitials(selectedTeamName as string)}</AvatarFallback>
+                                                        }
+                                                    </Avatar>
+                                                    <Button type="button" className="text-xs" onClick={() => uploadRef.current?.click()}>Upload</Button>
+                                                </div>
+                                                <Field className="hidden">
+                                                    <Label htmlFor="photo">Group Photo</Label>
+                                                    <input ref={uploadRef} type="file" id="photo" onChange={(e) => {
+                                                        const selected = e.target.files?.[0]
+                                                        if (selected) {
+                                                            setGroupPhoto(selected)
+                                                            setPreview(URL.createObjectURL(selected))
+                                                        }
+                                                    }} />
+                                                </Field>
+                                            </FieldGroup>
+                                            <DialogFooter>
+                                                <DialogClose asChild>
+                                                    <Button variant="outline" disabled={isSubmitting}>Cancel</Button>
+                                                </DialogClose>
+                                                <Button type="submit" disabled={isSubmitting}>{isSubmitting && <Loader2 className="animate-spin w-4 h-4" />} Create Group</Button>
+                                            </DialogFooter>
+                                        </form>
+                                    </DialogContent>
+                                </Dialog>
                             </AccordionContent>
                         </div>
                     </AccordionItem>
