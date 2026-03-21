@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Label } from "@/components/ui/label"
-import { Bell, Ellipsis, Files, Images, Link, Pen, Search, UserRoundPlus } from 'lucide-react'
+import { Bell, Ellipsis, Files, Images, Link, Loader2, Pen, Search, UserRoundPlus } from 'lucide-react'
 import {
     Accordion,
     AccordionContent,
@@ -27,10 +27,12 @@ import { UseUserStore } from '@/app/state/use-user-store'
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
+import { UseGroupStore } from '@/app/state/use-group-store'
 
 function ConversationMenu() {
     const { selectedTeam, selectedTeamName, selectedTeamPhoto } = UseChatStore()
     const { user, handleGetUser } = UseUserStore()
+    const { handleAddMemberValidation, isSubmitting } = UseGroupStore()
     const getInitials = useInitials()
     const [username, setUsername] = useState<string | null>(null)
     const [id, setId] = useState<string | null>(null)
@@ -40,6 +42,12 @@ function ConversationMenu() {
     useEffect(() => {
         handleGetUser()
     }, [handleGetUser])
+
+    const handleAddMember = (e: any) => {
+        e.preventDefault()
+
+        handleAddMemberValidation(id || "", selectedTeam as string)
+    }
 
     return (
         <div className='bg-neutral-200 dark:bg-neutral-900 p-4 w-100 h-[95vh] border rounded-sm overflow-y-auto'>
@@ -67,13 +75,13 @@ function ConversationMenu() {
                 </Button>
 
                 <Dialog>
-                    <form>
-                        <DialogTrigger asChild>
-                            <Button variant='secondary' className='p-4 rounded-full'>
-                                <UserRoundPlus className='size-4' />
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-xl">
+                    <DialogTrigger asChild>
+                        <Button variant='secondary' className='p-4 rounded-full'>
+                            <UserRoundPlus className='size-4' />
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-xl">
+                        <form onSubmit={handleAddMember} className='space-y-4'>
                             <DialogHeader>
                                 <DialogTitle>Add Team Member</DialogTitle>
                             </DialogHeader>
@@ -112,7 +120,7 @@ function ConversationMenu() {
                                 <h1 className='text-lg font-bold mb-4'>Suggested</h1>
                                 <div className='flex flex-col gap-2 items-start'>
                                     {user.slice(0, 5).map((user) =>
-                                        <div key={user.id} className={cn(!user.name.toLocaleLowerCase().includes(search?.toLocaleLowerCase() || "") && "hidden")} onClick={() => {
+                                        <div key={user.id} className={cn('cursor-pointer', !user.name.toLocaleLowerCase().includes(search?.toLocaleLowerCase() || "") && "hidden")} onClick={() => {
                                             setUsername(user.name)
                                             setId(user.id)
                                             setImage(user.image)
@@ -137,10 +145,10 @@ function ConversationMenu() {
                                 <DialogClose asChild>
                                     <Button variant="outline">Cancel</Button>
                                 </DialogClose>
-                                <Button type="submit">Add Member</Button>
+                                <Button type="submit" disabled={!username || !id || isSubmitting}>{isSubmitting && <Loader2 className='animate-spin w-4 h-4' />}Add Member</Button>
                             </DialogFooter>
-                        </DialogContent>
-                    </form>
+                        </form>
+                    </DialogContent>
                 </Dialog>
             </div>
 
