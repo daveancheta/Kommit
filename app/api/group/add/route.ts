@@ -17,6 +17,18 @@ export async function POST(req: NextRequest) {
     }
 
     try {
+        const isAlreadyMember = await supabase
+            .from('members')
+            .select()
+            .eq('user_id', member_id)
+
+        if (isAlreadyMember) {
+            return NextResponse.json({
+                success: false,
+                message: `Already in the team.`
+            }, { status: 400 })
+        }
+
         const { data, error } = await supabase
             .from('members')
             .insert({

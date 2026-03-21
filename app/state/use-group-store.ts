@@ -1,3 +1,4 @@
+import { sileo } from "sileo";
 import { create } from "zustand";
 
 interface Member {
@@ -85,11 +86,19 @@ export const UseGroupStore = create<Groupstate>((set) => ({
         set({ isSubmitting: true })
 
         try {
-            await fetch('/api/group/add', {
+            const result = await fetch('/api/group/add', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ member_id, group_id })
             })
+
+            const res = await result.json()
+
+            if (!res.success) {
+                sileo.error({
+                    title: res.message,
+                });
+            }
         } catch (error) {
             console.log(error)
         } finally {
