@@ -3,7 +3,7 @@ import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { useInitials } from '@/hooks/use-initials'
 import { Button } from './ui/button'
-import { Bell, Files, Images, Link, Pen, Search, UserRoundPlus } from 'lucide-react'
+import { Bell, Ellipsis, Files, Images, Link, Pen, Search, UserRoundPlus } from 'lucide-react'
 import {
     Accordion,
     AccordionContent,
@@ -53,7 +53,8 @@ function ConversationMenu() {
                 >
                     <AccordionItem value="shipping">
                         <AccordionTrigger>Customize Team</AccordionTrigger>
-                        <AccordionContent>
+                        <div className='mb-2'>
+                            <AccordionContent>
                             <Button variant='ghost' className='w-full flex justify-start'>
                                 <Pen /> Change Team Name
                             </Button>
@@ -63,12 +64,44 @@ function ConversationMenu() {
                                 <Images /> Change Photo
                             </Button>
                         </AccordionContent>
+                        </div>
                     </AccordionItem>
                     <AccordionItem value="returns">
                         <AccordionTrigger>Team Members</AccordionTrigger>
-                        <AccordionContent>
-                            Display Team here
+                       <div className='flex flex-col gap-2 mb-2'>
+                         <AccordionContent>
+                           <div className='flex justify-between items-center'>
+                             <div className='flex flex-row items-center gap-2'>
+                                <Avatar key={selectedTeam} className='rounded-full w-10 h-10'>
+                                {selectedTeamPhoto
+                                    ? <AvatarImage src={selectedTeamPhoto} alt={selectedTeamName as string} />
+                                    : <AvatarFallback className="rounded-full">{getInitials(selectedTeamName as string)}</AvatarFallback>
+                                }
+                            </Avatar>
+                            <h1>{selectedTeamName}</h1>
+                            </div>
+                            <Button variant='ghost'>
+                                <Ellipsis />
+                            </Button>
+                           </div>
                         </AccordionContent>
+                         <AccordionContent>
+                           <div className='flex justify-between items-center'>
+                             <div className='flex flex-row items-center gap-2'>
+                                <Avatar key={selectedTeam} className='rounded-full w-10 h-10'>
+                                {selectedTeamPhoto
+                                    ? <AvatarImage src={selectedTeamPhoto} alt={selectedTeamName as string} />
+                                    : <AvatarFallback className="rounded-full">{getInitials(selectedTeamName as string)}</AvatarFallback>
+                                }
+                            </Avatar>
+                            <h1>{selectedTeamName}</h1>
+                            </div>
+                            <Button variant='ghost'>
+                                <Ellipsis />
+                            </Button>
+                           </div>
+                        </AccordionContent>
+                       </div>
                     </AccordionItem>
                     <AccordionItem value="support">
                         <AccordionTrigger>Media, Files, and Links</AccordionTrigger>
