@@ -108,10 +108,10 @@ function Conversation() {
                                                         {msg.content}
                                                     </span>
                                                 </div>
-                                                <Avatar>
+                                                <Avatar className='rounded-full w-8 h-8'>
                                                     {msg.user.image && msg.user.image.length > 0
                                                         ? <AvatarImage src={msg.user.image} alt={msg.user.name} />
-                                                        : <AvatarFallback className="rounded-lg">{getInitials(msg.user.name)}</AvatarFallback>
+                                                        : <AvatarFallback className="rounded-full">{getInitials(msg.user.name)}</AvatarFallback>
                                                     }
                                                 </Avatar>
 
@@ -121,7 +121,12 @@ function Conversation() {
                                     : <div className={cn('flex justify-start', msg.user.id === 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu' && 'hidden')}>
                                         <div className='flex flex-col gap-1'>
                                             <div className='flex flex-row gap-2 items-end'>
-                                                <img className='w-8 h-8 rounded-full' src="https://avatars.githubusercontent.com/u/153621050?v=4" alt="" />
+                                                <Avatar className='rounded-full w-8 h-8'>
+                                                    {msg.user.image && msg.user.image.length > 0
+                                                        ? <AvatarImage src={msg.user.image} alt={msg.user.name} />
+                                                        : <AvatarFallback className="rounded-full">{getInitials(msg.user.name)}</AvatarFallback>
+                                                    }
+                                                </Avatar>
                                                 <div className='flex flex-col'>
                                                     <h1 className='text-xs text-muted-foreground ml-1'>{msg.user.name}</h1>
                                                     <span className='bg-white dark:bg-black px-4 py-2.5 rounded-tl-sm rounded-bl-2xl rounded-br-2xl rounded-tr-2xl text-black dark:text-white w-fit max-w-sm break-all'>
