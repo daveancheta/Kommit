@@ -1,3 +1,4 @@
+"use client"
 import { UseChatStore } from '@/app/state/use-chat-store'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { useInitials } from '@/hooks/use-initials'
@@ -13,7 +14,6 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Field, FieldGroup } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Bell, Ellipsis, Files, Images, Link, Pen, Search, UserRoundPlus } from 'lucide-react'
 import {
@@ -23,10 +23,23 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { InputGroup, InputGroupAddon, InputGroupInput } from './ui/input-group'
+import { UseUserStore } from '@/app/state/use-user-store'
+import { useEffect, useState } from 'react'
+import { format } from 'date-fns'
+import { cn } from '@/lib/utils'
 
 function ConversationMenu() {
     const { selectedTeam, selectedTeamName, selectedTeamPhoto } = UseChatStore()
+    const { user, handleGetUser } = UseUserStore()
     const getInitials = useInitials()
+    const [username, setUsername] = useState<string | null>(null)
+    const [id, setId] = useState<string | null>(null)
+    const [image, setImage] = useState<string | null>(null)
+    const [search, setSearch] = useState<string | null>(null)
+
+    useEffect(() => {
+        handleGetUser()
+    }, [handleGetUser])
 
     return (
         <div className='bg-neutral-200 dark:bg-neutral-900 p-4 w-100 h-[95vh] border rounded-sm overflow-y-auto'>
@@ -68,7 +81,7 @@ function ConversationMenu() {
                                 <Field>
                                     <Label htmlFor="name-1">Search</Label>
                                     <InputGroup>
-                                        <InputGroupInput placeholder="Search..." />
+                                        <InputGroupInput placeholder="Search..." onChange={(e) => setSearch(e.target.value)} />
                                         <InputGroupAddon>
                                             <Search />
                                         </InputGroupAddon>
@@ -76,13 +89,55 @@ function ConversationMenu() {
                                 </Field>
                             </FieldGroup>
                             <div>
-                                <h1 className='text-lg font-bold'>Suggested</h1>
+                                {username &&
+                                    <div>
+                                        <h1 className='text-sm mb-4 text-muted-foreground'>Selected Member</h1>
+                                        <div key={id} className=''>
+                                            <div className='flex flex-row items-center gap-2'>
+                                                <Avatar key={id} className='rounded-full w-15 h-15'>
+                                                    {image && image.length > 0
+                                                        ? <AvatarImage src={image} alt={username as string} />
+                                                        : <AvatarFallback className="rounded-full">{getInitials(username as string)}</AvatarFallback>
+                                                    }
+                                                </Avatar>
+                                                <div>
+                                                    <h1>{username}</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div>
+                                <h1 className='text-lg font-bold mb-4'>Suggested</h1>
+                                <div className='flex flex-col gap-2 items-start'>
+                                    {user.slice(0, 5).map((user) =>
+                                        <div key={user.id} className={cn(!user.name.toLocaleLowerCase().includes(search?.toLocaleLowerCase() || "") && "hidden")} onClick={() => {
+                                            setUsername(user.name)
+                                            setId(user.id)
+                                            setImage(user.image)
+                                        }}>
+                                            <div className='flex flex-row items-center gap-2'>
+                                                <Avatar key={user.id} className='rounded-full w-15 h-15'>
+                                                    {user.image && user.image.length > 0
+                                                        ? <AvatarImage src={user.image} alt={user.name as string} />
+                                                        : <AvatarFallback className="rounded-full">{getInitials(user.name as string)}</AvatarFallback>
+                                                    }
+                                                </Avatar>
+                                                <div>
+                                                    <h1>{user.name}</h1>
+                                                    <p className='text-muted-foreground text-xs'>Joined {format(user.created_at, 'MMM dd, yyyy')}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                             <DialogFooter>
                                 <DialogClose asChild>
                                     <Button variant="outline">Cancel</Button>
                                 </DialogClose>
-                                <Button type="submit">Add</Button>
+                                <Button type="submit">Add Member</Button>
                             </DialogFooter>
                         </DialogContent>
                     </form>
