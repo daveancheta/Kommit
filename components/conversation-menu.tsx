@@ -100,7 +100,7 @@ function ConversationMenu() {
                                 {username &&
                                     <div>
                                         <h1 className='text-sm mb-4 text-muted-foreground'>Selected Member</h1>
-                                        <div key={id} className='flex justify-between items-center'>
+                                        <div key={id} className='flex justify-between items-center p-2 px-4'>
                                             <div className='flex flex-row items-center gap-2'>
                                                 <Avatar key={id} className='rounded-full w-15 h-15'>
                                                     {image && image.length > 0
