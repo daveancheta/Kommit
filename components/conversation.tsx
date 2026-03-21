@@ -171,7 +171,7 @@ function Conversation() {
                         initial={{ x: 700 }}
                         animate={{ x: 0 }}
                         exit={{ x: 700 }}
-                        transition={{ duration: 0.35, ease: "easeInOut" }}>
+                        transition={{ duration: 0.25, ease: "easeInOut" }}>
                         <ConversationMenu />
                     </motion.div>
                 }
