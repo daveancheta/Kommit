@@ -37,15 +37,18 @@ interface Member {
 
 interface Groupstate {
     isSubmitting: boolean;
+    isValidating: boolean;
     team: Member[];
     handleCreateGroupValidation: (group: string, photo: File) => Promise<void>;
     handleGetGroups: () => Promise<void>;
     handleAddMemberValidation: (member_id: string, group_id: string) => Promise<void>;
     handlePhotoUpdateValidation: (photo: File, group_id: string) => Promise<void>;
+    handleNameUpdateValidation: (name: string, group_id: string) => Promise<void>;
 }
 
 export const UseGroupStore = create<Groupstate>((set) => ({
     isSubmitting: false,
+    isValidating: false,
     team: [],
 
     handleCreateGroupValidation: async (group_name: string, photo: File) => {
@@ -108,23 +111,43 @@ export const UseGroupStore = create<Groupstate>((set) => ({
     },
 
     handlePhotoUpdateValidation: async (photo: File, group_id: string) => {
+        set({ isValidating: true })
+
         try {
             const base64 = photo ? await new Promise<string>((resolve, reject) => {
                 const reader = new FileReader()
                 reader.onloadend = () => resolve(reader.result as string)
                 reader.onerror = reject
                 reader.readAsDataURL(photo)
-            }) : null 
+            }) : null
 
             await fetch('/api/group/photo', {
                 method: "PATCH",
-                headers: { "Content-Type": "application/json"},
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ photo: base64, group_id })
             })
 
 
         } catch (error) {
             console.log(error)
+        } finally {
+            set({ isValidating: false })
+        }
+    },
+
+    handleNameUpdateValidation: async (name: string, group_id: string) => {
+        set({ isValidating: true })
+
+        try {
+            await fetch('/api/group/name', {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, group_id })
+            })
+        } catch (error) {
+            console.log(error)
+        } finally {
+            set({ isValidating: false })
         }
     }
 }))

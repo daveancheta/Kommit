@@ -28,11 +28,12 @@ import { useEffect, useRef, useState } from 'react'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { UseGroupStore } from '@/app/state/use-group-store'
+import { Input } from './ui/input'
 
 function ConversationMenu() {
     const { selectedTeam, selectedTeamName, selectedTeamPhoto } = UseChatStore()
     const { user, handleGetUser } = UseUserStore()
-    const { handleAddMemberValidation, isSubmitting, handlePhotoUpdateValidation } = UseGroupStore()
+    const { handleAddMemberValidation, isSubmitting, handlePhotoUpdateValidation, handleNameUpdateValidation, isValidating } = UseGroupStore()
     const getInitials = useInitials()
     const [username, setUsername] = useState<string | null>(null)
     const [id, setId] = useState<string | null>(null)
@@ -41,6 +42,7 @@ function ConversationMenu() {
     const [groupPhoto, setGroupPhoto] = useState<any>()
     const [preview, setPreview] = useState<any>()
     const uploadRef = useRef<HTMLInputElement>(null)
+    const [groupName, setGroupName] = useState<string>()
 
     useEffect(() => {
         handleGetUser()
@@ -52,10 +54,16 @@ function ConversationMenu() {
         handleAddMemberValidation(id || "", selectedTeam as string)
     }
 
-    const handleUpdateGroupPhoto = (e: any) => {
+    const handlePhotoUpdate = (e: any) => {
         e.preventDefault()
 
         handlePhotoUpdateValidation(groupPhoto, selectedTeam as string)
+    }
+
+    const handleNameUpdate = (e: any) => {
+        e.preventDefault()
+
+        handleNameUpdateValidation(groupName as string, selectedTeam as string)
     }
 
     return (
@@ -177,9 +185,32 @@ function ConversationMenu() {
                         <AccordionTrigger>Customize Team</AccordionTrigger>
                         <div className='mb-2'>
                             <AccordionContent>
-                                <Button variant='ghost' className='w-full flex justify-start'>
-                                    <Pen /> Change Team Name
-                                </Button>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button variant='ghost' className='w-full flex justify-start'>
+                                            <Pen /> Change Team Name
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-sm">
+                                        <form onSubmit={handleNameUpdate} className="space-y-4">
+                                            <DialogHeader>
+                                                <DialogTitle>Change Team Name</DialogTitle>
+                                            </DialogHeader>
+                                            <FieldGroup>
+                                                <Field>
+                                                    <Label htmlFor="name">Team Name</Label>
+                                                    <Input type='text' id='name' onChange={(e) => setGroupName(e.target.value)}/>
+                                                </Field>
+                                            </FieldGroup>
+                                            <DialogFooter>
+                                                <DialogClose asChild>
+                                                    <Button variant="outline" disabled={isValidating}>Cancel</Button>
+                                                </DialogClose>
+                                                <Button type="submit" disabled={isValidating}>{isValidating && <Loader2 className="animate-spin w-4 h-4" />} Change Name</Button>
+                                            </DialogFooter>
+                                        </form>
+                                    </DialogContent>
+                                </Dialog>
                             </AccordionContent>
                             <AccordionContent>
                                 <Dialog>
@@ -189,12 +220,9 @@ function ConversationMenu() {
                                         </Button>
                                     </DialogTrigger>
                                     <DialogContent className="sm:max-w-sm">
-                                        <form onSubmit={handleUpdateGroupPhoto} className="space-y-4">
+                                        <form onSubmit={handlePhotoUpdate} className="space-y-4">
                                             <DialogHeader>
-                                                <DialogTitle>Create Group</DialogTitle>
-                                                <DialogDescription>
-                                                    Group your team members to collaborate and communicate faster.
-                                                </DialogDescription>
+                                                <DialogTitle>Create Photo</DialogTitle>
                                             </DialogHeader>
                                             <FieldGroup>
                                                 <div className="flex justify-center flex-col items-center gap-2">
@@ -221,9 +249,9 @@ function ConversationMenu() {
                                             </FieldGroup>
                                             <DialogFooter>
                                                 <DialogClose asChild>
-                                                    <Button variant="outline" disabled={isSubmitting}>Cancel</Button>
+                                                    <Button variant="outline" disabled={isValidating}>Cancel</Button>
                                                 </DialogClose>
-                                                <Button type="submit" disabled={isSubmitting}>{isSubmitting && <Loader2 className="animate-spin w-4 h-4" />} Create Group</Button>
+                                                <Button type="submit" disabled={isValidating}>{isValidating && <Loader2 className="animate-spin w-4 h-4" />} change Photo</Button>
                                             </DialogFooter>
                                         </form>
                                     </DialogContent>
