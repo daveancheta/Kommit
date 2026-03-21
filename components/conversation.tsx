@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { useInitials } from '@/hooks/use-initials'
 import { Button } from './ui/button'
 import { AnimatePresence, motion } from "motion/react"
+import ConversationMenu from './conversation-menu'
 
 function Conversation() {
     const { selectedTeam, selectedTeamName, handleGetMessages, messages, handleSendMessageValidation, isSubmitting, selectedTeamPhoto } = UseChatStore()
@@ -171,7 +172,7 @@ function Conversation() {
                         animate={{ x: 0 }}
                         exit={{ x: 700 }}
                         transition={{ duration: 0.35, ease: "easeInOut" }}>
-                        <div className='bg-neutral-200 dark:bg-neutral-900 p-4 w-100 h-[95vh] border rounded-sm overflow-y-auto'></div>
+                        <ConversationMenu />
                     </motion.div>
                 }
             </AnimatePresence>
