@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Button } from './ui/button'
-import { Crown, Ellipsis, UserX } from 'lucide-react'
+import { Crown, Ellipsis, LogOut, UserX } from 'lucide-react'
 import { UseChatStore } from '@/app/state/use-chat-store'
 import { useInitials } from '@/hooks/use-initials'
 import { UseGroupStore } from '@/app/state/use-group-store'
@@ -14,12 +14,17 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { supabase } from '@/lib/supbase/cient'
-import { auth } from '@/lib/auth'
+import { UseAuthStore } from '@/app/state/use-auth-store'
 
 function TeamMembers() {
+    const { auth, handleGetSession } = UseAuthStore()
     const { selectedTeam, selectedGroupCreator } = UseChatStore()
     const { handleGetTeamMembers, members, handleRemoveMemberValidation } = UseGroupStore()
     const getInitials = useInitials()
+
+    useEffect(() => {
+        handleGetSession()
+    }, [handleGetSession])
 
     useEffect(() => {
         handleGetTeamMembers(selectedTeam as string)
@@ -70,9 +75,21 @@ function TeamMembers() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem variant="destructive" onClick={() => handleRemoveMemberValidation(members.user.id, selectedTeam as string)}>
+                                    <DropdownMenuItem>
+                                        <UserX />
+                                        View Profile
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem variant="destructive"
+                                        onClick={() => handleRemoveMemberValidation(members.user.id, selectedTeam as string)}
+                                        hidden={auth?.id !== selectedGroupCreator}>
                                         <UserX />
                                         Kick
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem variant="destructive"
+                                        onClick={() => handleRemoveMemberValidation(members.user.id, selectedTeam as string)}
+                                        hidden={auth?.id !== members.user.id}>
+                                        <LogOut />
+                                        Leave
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>
