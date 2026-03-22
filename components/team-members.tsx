@@ -18,7 +18,7 @@ import { UseAuthStore } from '@/app/state/use-auth-store'
 
 function TeamMembers() {
     const { auth, handleGetSession } = UseAuthStore()
-    const { selectedTeam, selectedGroupCreator } = UseChatStore()
+    const { selectedTeam, selectedGroupCreator, setSelectedTeam, setSelectedTeamName } = UseChatStore()
     const { handleGetTeamMembers, members, handleRemoveMemberValidation, handleLeaveGroupValidation, isSubmitting } = UseGroupStore()
     const getInitials = useInitials()
 
@@ -87,7 +87,11 @@ function TeamMembers() {
                                         Kick
                                     </DropdownMenuItem>
                                     <DropdownMenuItem variant="destructive"
-                                        onClick={() => handleLeaveGroupValidation(selectedTeam as string)}
+                                        onClick={() => {
+                                            handleLeaveGroupValidation(selectedTeam as string)
+                                            setSelectedTeam("")
+                                            setSelectedTeamName("")
+                                        }}
                                         hidden={auth?.id !== members.user.id}
                                         disabled={isSubmitting}>
                                         <LogOut />
