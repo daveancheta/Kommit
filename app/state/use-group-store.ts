@@ -72,6 +72,7 @@ interface Groupstate {
     handlePhotoUpdateValidation: (photo: File, group_id: string) => Promise<void>;
     handleNameUpdateValidation: (name: string, group_id: string) => Promise<void>;
     handleGetTeamMembers: (id: string) => Promise<void>;
+    handleRemoveMemberValidation: (user_id: string, group_id: string) => Promise<void>;
 }
 
 export const UseGroupStore = create<Groupstate>((set) => ({
@@ -189,6 +190,23 @@ export const UseGroupStore = create<Groupstate>((set) => ({
             set({ members: res.data })
         } catch (error) {
             console.log(error)
+        }
+    },
+
+    handleRemoveMemberValidation: async (user_id: string, group_id: string) => {
+        set({ isSubmitting: true })
+
+        try {
+            await fetch('/api/group/remove', {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user_id, group_id })
+            })
+            
+        } catch (error) {
+            console.log(error)
+        } finally {
+            set({ isSubmitting: false })
         }
     }
 }))
