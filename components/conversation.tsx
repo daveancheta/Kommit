@@ -1,9 +1,9 @@
 "use client"
 
-import React, { use, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Field } from './ui/field'
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupText, InputGroupTextarea } from './ui/input-group'
-import { EllipsisVertical, Send, UserRoundPlus, Video } from 'lucide-react'
+import { EllipsisVertical, Send } from 'lucide-react'
 import { UseChatStore } from '@/app/state/use-chat-store'
 import ConversationEmptyState from './conversation-empty-state'
 import { supabase } from '@/lib/supbase/cient'
@@ -14,6 +14,7 @@ import { useInitials } from '@/hooks/use-initials'
 import { Button } from './ui/button'
 import { AnimatePresence, motion } from "motion/react"
 import ConversationMenu from './conversation-menu'
+import { CalendarDrawer } from './calendar-drawer'
 
 function Conversation() {
     const { selectedTeam, selectedTeamName, handleGetMessages, messages, handleSendMessageValidation, isSubmitting, selectedTeamPhoto } = UseChatStore()
@@ -86,7 +87,7 @@ function Conversation() {
                                 </div>
                             </div>
                             <div className='flex flex-row'>
-                                <Button variant="ghost"><Video className='size-4' /></Button>
+                                <CalendarDrawer />
                                 <Button variant="ghost" onClick={() => setIsActive(!isActive)}><EllipsisVertical className='size-4' /></Button>
                             </div>
                         </div>
