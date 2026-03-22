@@ -31,11 +31,13 @@ interface ChatState {
     selectedTeam: string | null;
     selectedTeamName: string | null;
     selectedTeamPhoto: string | null;
+    selectedGroupCreator: string | null;
     messages: Messages[];
     isSubmitting: boolean;
     setSelectedTeam: (selectedTeam: string) => void;
     setSelectedTeamName: (selectedTeamName: string) => void;
     setSelectedTeamPhoto: (selectedTeamPhoto: null) => void;
+    setSelectedGroupCreator: (selectedGroupCreator: string) => void;
     handleGetMessages: (id: string) => Promise<void>;
     handleSendMessageValidation: (content: string, id: string) => Promise<void>;
 }
@@ -44,12 +46,14 @@ export const UseChatStore = create<ChatState>((set) => ({
     selectedTeam: null,
     selectedTeamName: null,
     selectedTeamPhoto: null,
+    selectedGroupCreator: null,
     messages: [],
     isSubmitting: false,
 
     setSelectedTeam: (selectedTeam: string) => set({ selectedTeam: selectedTeam }),
     setSelectedTeamName: (selectedTeamName: string) => set({ selectedTeamName: selectedTeamName }),
     setSelectedTeamPhoto: (selectedTeamPhoto: null) => set({ selectedTeamPhoto: selectedTeamPhoto}),
+    setSelectedGroupCreator: (selectedGroupCreator: string) => set({ selectedGroupCreator: selectedGroupCreator}),
 
     handleGetMessages: async (id: string) => {
         try {

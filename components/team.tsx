@@ -11,7 +11,7 @@ import { formatDistance, subDays } from "date-fns"
 
 function Teams() {
     const { team, handleGetGroups } = UseGroupStore()
-    const { selectedTeam, setSelectedTeam, setSelectedTeamName, setSelectedTeamPhoto } = UseChatStore()
+    const { selectedTeam, setSelectedTeam, setSelectedTeamName, setSelectedTeamPhoto, setSelectedGroupCreator } = UseChatStore()
     const getInitials = useInitials()
 
     useEffect(() => {
@@ -60,6 +60,7 @@ function Teams() {
                     setSelectedTeam(team.group.id)
                     setSelectedTeamName(team.group.group_name)
                     setSelectedTeamPhoto(team.group.photo as any ?? null)
+                    setSelectedGroupCreator(team.group.created_by as string ?? null)
                 }}>
                     <Avatar className="h-12 w-12 rounded-full">
                         {team.group.photo && team.group.photo.length > 0

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Button } from './ui/button'
-import { Ellipsis, UserX } from 'lucide-react'
+import { Crown, Ellipsis, UserX } from 'lucide-react'
 import { UseChatStore } from '@/app/state/use-chat-store'
 import { useInitials } from '@/hooks/use-initials'
 import { UseGroupStore } from '@/app/state/use-group-store'
@@ -14,9 +14,10 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { supabase } from '@/lib/supbase/cient'
+import { auth } from '@/lib/auth'
 
 function TeamMembers() {
-    const { selectedTeam } = UseChatStore()
+    const { selectedTeam, selectedGroupCreator } = UseChatStore()
     const { handleGetTeamMembers, members, handleRemoveMemberValidation } = UseGroupStore()
     const getInitials = useInitials()
 
@@ -55,7 +56,11 @@ function TeamMembers() {
                                     : <AvatarFallback className="rounded-full">{getInitials(members.user.name as string)}</AvatarFallback>
                                 }
                             </Avatar>
-                            <h1>{members.user.name}</h1>
+                            <div className='flex flex-row items-center gap-2'>
+                                <h1>{members.user.name}</h1>
+                                {members.user.id === selectedGroupCreator && <Crown
+                                    className='w-4 h-4 fill-yellow-500 text-yellow-500' />}
+                            </div>
                         </div>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
