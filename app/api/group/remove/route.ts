@@ -33,7 +33,7 @@ export async function PATCH(req: NextRequest) {
             .insert({
                 id: crypto.randomUUID(),
                 user_id: 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu',
-                content: `${data?.user?.name} kicked by ${session.user.name}`,
+                content: `${session.user.name} kicked ${data?.user?.name} from the team`,
                 group_id,
             })
 
