@@ -11,6 +11,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
                 group (*), 
                 user (*)`)
             .eq('group_id', id)
+            .neq('status', 'removed')
 
         return NextResponse.json({
             success: true,
