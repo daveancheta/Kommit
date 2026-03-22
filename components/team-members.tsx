@@ -81,7 +81,7 @@ function TeamMembers() {
                                     </DropdownMenuItem>
                                     <DropdownMenuItem variant="destructive"
                                         onClick={() => handleRemoveMemberValidation(members.user.id, selectedTeam as string)}
-                                        hidden={auth?.id !== selectedGroupCreator}
+                                        hidden={auth?.id !== selectedGroupCreator || auth?.id === members.user.id}
                                         disabled={isSubmitting}>
                                         <UserX />
                                         Kick
