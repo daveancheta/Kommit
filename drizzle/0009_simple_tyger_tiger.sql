@@ -1,0 +1,1 @@
+ALTER TABLE "members" ADD COLUMN "status" text DEFAULT 'member' NOT NULL;

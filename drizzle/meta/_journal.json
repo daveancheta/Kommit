@@ -64,6 +64,13 @@
       "when": 1774024076661,
       "tag": "0008_glossy_oracle",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1774156329156,
+      "tag": "0009_simple_tyger_tiger",
+      "breakpoints": true
     }
   ]
 }

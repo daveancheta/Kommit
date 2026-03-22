@@ -102,6 +102,7 @@ export const members = pgTable("members", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
   groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade" }),
+  status: text("status").notNull().default("member"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
