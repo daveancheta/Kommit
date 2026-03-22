@@ -12,6 +12,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
                 user (*)`)
             .eq('group_id', id)
             .neq('status', 'removed')
+            .order('created_at', { ascending: true })
 
         return NextResponse.json({
             success: true,
