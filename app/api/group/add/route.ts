@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
             .select()
             .eq('user_id', member_id)
             .eq('group_id', group_id)
+            .neq('status', 'removed')
 
         if (isExistingMember && isExistingMember.length > 0) {
             return NextResponse.json({
