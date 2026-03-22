@@ -19,7 +19,7 @@ import { UseAuthStore } from '@/app/state/use-auth-store'
 function TeamMembers() {
     const { auth, handleGetSession } = UseAuthStore()
     const { selectedTeam, selectedGroupCreator } = UseChatStore()
-    const { handleGetTeamMembers, members, handleRemoveMemberValidation } = UseGroupStore()
+    const { handleGetTeamMembers, members, handleRemoveMemberValidation, handleLeaveGroupValidation, isSubmitting } = UseGroupStore()
     const getInitials = useInitials()
 
     useEffect(() => {
@@ -75,19 +75,21 @@ function TeamMembers() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem disabled={isSubmitting}>
                                         <UserX />
                                         View Profile
                                     </DropdownMenuItem>
                                     <DropdownMenuItem variant="destructive"
                                         onClick={() => handleRemoveMemberValidation(members.user.id, selectedTeam as string)}
-                                        hidden={auth?.id !== selectedGroupCreator}>
+                                        hidden={auth?.id !== selectedGroupCreator}
+                                        disabled={isSubmitting}>
                                         <UserX />
                                         Kick
                                     </DropdownMenuItem>
                                     <DropdownMenuItem variant="destructive"
-                                        onClick={() => handleRemoveMemberValidation(members.user.id, selectedTeam as string)}
-                                        hidden={auth?.id !== members.user.id}>
+                                        onClick={() => handleLeaveGroupValidation(selectedTeam as string)}
+                                        hidden={auth?.id !== members.user.id}
+                                        disabled={isSubmitting}>
                                         <LogOut />
                                         Leave
                                     </DropdownMenuItem>
