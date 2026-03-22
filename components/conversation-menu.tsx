@@ -29,6 +29,7 @@ import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { UseGroupStore } from '@/app/state/use-group-store'
 import { Input } from './ui/input'
+import TeamMembers from './team-members'
 
 function ConversationMenu() {
     const { selectedTeam, selectedTeamName, selectedTeamPhoto } = UseChatStore()
@@ -261,40 +262,7 @@ function ConversationMenu() {
                     </AccordionItem>
                     <AccordionItem value="returns">
                         <AccordionTrigger>Team Members</AccordionTrigger>
-                        <div className='flex flex-col gap-2 mb-2'>
-                            <AccordionContent>
-                                <div className='flex justify-between items-center'>
-                                    <div className='flex flex-row items-center gap-2'>
-                                        <Avatar key={selectedTeam} className='rounded-full w-10 h-10'>
-                                            {selectedTeamPhoto
-                                                ? <AvatarImage src={selectedTeamPhoto} alt={selectedTeamName as string} />
-                                                : <AvatarFallback className="rounded-full">{getInitials(selectedTeamName as string)}</AvatarFallback>
-                                            }
-                                        </Avatar>
-                                        <h1>{selectedTeamName}</h1>
-                                    </div>
-                                    <Button variant='ghost'>
-                                        <Ellipsis />
-                                    </Button>
-                                </div>
-                            </AccordionContent>
-                            <AccordionContent>
-                                <div className='flex justify-between items-center'>
-                                    <div className='flex flex-row items-center gap-2'>
-                                        <Avatar key={selectedTeam} className='rounded-full w-10 h-10'>
-                                            {selectedTeamPhoto
-                                                ? <AvatarImage src={selectedTeamPhoto} alt={selectedTeamName as string} />
-                                                : <AvatarFallback className="rounded-full">{getInitials(selectedTeamName as string)}</AvatarFallback>
-                                            }
-                                        </Avatar>
-                                        <h1>{selectedTeamName}</h1>
-                                    </div>
-                                    <Button variant='ghost'>
-                                        <Ellipsis />
-                                    </Button>
-                                </div>
-                            </AccordionContent>
-                        </div>
+                        <TeamMembers />
                     </AccordionItem>
                     <AccordionItem value="support">
                         <AccordionTrigger>Media, Files, and Links</AccordionTrigger>

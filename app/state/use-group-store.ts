@@ -1,7 +1,7 @@
 import { sileo } from "sileo";
 import { create } from "zustand";
 
-interface Member {
+interface Team {
     id: string;
     user_id: string;
     group_id: string;
@@ -35,21 +35,50 @@ interface Member {
     }
 }
 
+interface Member {
+    id: string;
+    user_id: string;
+    group_id: string;
+    created_at: string;
+    string: string;
+    group: {
+        id: string;
+        photo: string;
+        created_at: string;
+        created_by: string;
+        group_name: string;
+        updated_at: string;
+    },
+    user: {
+        id: string;
+        name: string;
+        email: string;
+        image: string;
+        birthdate: string;
+        created_at: string;
+        updated_at: string;
+        email_verified: boolean;
+    }
+}
+
 interface Groupstate {
     isSubmitting: boolean;
     isValidating: boolean;
-    team: Member[];
+    team: Team[];
+    members: Member[];
     handleCreateGroupValidation: (group: string, photo: File) => Promise<void>;
     handleGetGroups: () => Promise<void>;
     handleAddMemberValidation: (member_id: string, group_id: string) => Promise<void>;
     handlePhotoUpdateValidation: (photo: File, group_id: string) => Promise<void>;
     handleNameUpdateValidation: (name: string, group_id: string) => Promise<void>;
+    handleGetTeamMembers: (id: string) => Promise<void>;
 }
 
 export const UseGroupStore = create<Groupstate>((set) => ({
     isSubmitting: false,
     isValidating: false,
     team: [],
+    members: [],
 
     handleCreateGroupValidation: async (group_name: string, photo: File) => {
         set({ isSubmitting: true })
@@ -148,6 +177,18 @@ export const UseGroupStore = create<Groupstate>((set) => ({
             console.log(error)
         } finally {
             set({ isValidating: false })
+        }
+    },
+
+    handleGetTeamMembers: async (id: string) => {
+        try {
+            const result = await fetch(`/api/group/members/${id}`)
+
+            const res = await result.json()
+
+            set({ members: res.data })
+        } catch (error) {
+            console.log(error)
         }
     }
 }))
