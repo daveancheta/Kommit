@@ -1,6 +1,5 @@
 "use client"
 
-import React from 'react'
 import { MessageSquare, Users, ArrowLeft } from 'lucide-react'
 import { motion } from 'motion/react'
 
@@ -41,11 +40,9 @@ function ConversationEmptyState() {
           </div>
         </motion.div>
 
-        {/* Subtle glow */}
         <div className='absolute inset-0 -z-10 blur-3xl opacity-20 dark:opacity-10 bg-linear-to-r from-blue-400 to-violet-400 rounded-full scale-150' />
       </div>
 
-      {/* Text content */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -60,7 +57,6 @@ function ConversationEmptyState() {
         </p>
       </motion.div>
 
-      {/* Decorative dots */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
