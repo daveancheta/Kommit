@@ -80,6 +80,7 @@ export async function GET() {
                 `)
             .eq('user_id', session.user.id)
             .neq('status', 'removed')
+            .neq('status', 'leaved')
 
         return NextResponse.json({
             success: true,
