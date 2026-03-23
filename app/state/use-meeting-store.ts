@@ -14,13 +14,16 @@ interface Meeting {
 interface Meetingstate {
     isSubmitting: boolean;
     meeting: Meeting[];
+    token: string | null;
     handleCreateMeetingValidation: (title: string, date: string, time: string, group_id: string) => Promise<void>;
     handleGetMeeting: (group_id: string) => Promise<void>;
+    handleJoinMeeting: (group_id: string) => Promise<void>;
 }
 
 export const UseMeetingStore = create<Meetingstate>((set) => ({
     isSubmitting: false,
     meeting: [],
+    token: null,
 
     handleCreateMeetingValidation: async (title: string, date: string, time: string, group_id: string) => {
         set({ isSubmitting: true })
@@ -49,6 +52,22 @@ export const UseMeetingStore = create<Meetingstate>((set) => ({
             const res = await result.json()
 
             set({ meeting: res.data })
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    handleJoinMeeting: async (group_id: string) => {
+        try {
+            const result = await fetch(`/api/group/meeting/${group_id}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ group_id })
+            })
+
+            const res = await result.json()
+
+            set({ token: res.token })
         } catch (error) {
             console.log(error)
         }

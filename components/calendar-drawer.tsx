@@ -28,6 +28,7 @@ import { UseMeetingStore } from "@/app/state/use-meeting-store"
 import { UseChatStore } from "@/app/state/use-chat-store"
 import MeetingEmptystate from "./meeting-empty-state"
 import { format } from "date-fns"
+import JoinMeeting from "./join-meeting"
 
 export function CalendarDrawer() {
     const scrollRef = useRef<HTMLDivElement>(null)
@@ -91,7 +92,7 @@ export function CalendarDrawer() {
                                                     Time: {format(new Date(`${meeting.date}T${meeting.time}`), 'hh:mm aa')}
                                                 </div>
                                             </div>
-                                            <Button variant='outline'>Join</Button>
+                                        <JoinMeeting />
                                         </div>
                                     ))
                                     : <MeetingEmptystate />
