@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-    const { title, date, duration, group_id } = await req.json()
+    const { title, date, time, group_id } = await req.json()
     const session = await auth.api.getSession({
         headers: await headers()
     })
@@ -17,16 +17,18 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        await supabase
+        const {data, error} = await supabase
         .from('meeting')
         .insert({
             id: crypto.randomUUID(),
             title,
             date, 
-            duration,
+            time,
             created_by: session.user.id,
             group_id
         })
+        
+        console.log(error)
 
         return NextResponse.json({
             success: true

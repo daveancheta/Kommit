@@ -115,7 +115,6 @@ export const meeting = pgTable("meeting", {
   title: text("title").notNull(),
   date: date("date").notNull(),
   time: time("time").notNull(),
-  duration: text("duration").notNull(),
   createdBy: text("created_by").notNull().references(() => user.id, { onDelete: "cascade"}),
   groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade"}),
   createdAt: timestamp("created_at").defaultNow().notNull(),

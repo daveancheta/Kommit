@@ -9,7 +9,7 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Calendar, ChevronLeft, ChevronRight, Clock, Minus, Plus } from "lucide-react"
+import { Calendar, ChevronLeft, ChevronRight, Clock, Loader2, Loader2Icon, Minus, Plus } from "lucide-react"
 import {
     Dialog,
     DialogClose,
@@ -23,7 +23,9 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useRef } from "react"
+import { useRef, useState } from "react"
+import { UseMeetingStore } from "@/app/state/use-meeting-store"
+import { UseChatStore } from "@/app/state/use-chat-store"
 
 export function CalendarDrawer() {
     const data = [
@@ -93,6 +95,11 @@ export function CalendarDrawer() {
         }
     ]
     const scrollRef = useRef<HTMLDivElement>(null)
+    const { isSubmitting, handleCreateMeetingValidation } = UseMeetingStore()
+    const { selectedTeam } = UseChatStore()
+    const [title, setTitle] = useState<string>("")
+    const [date, setDate] = useState<string>("")
+    const [time, setTime] = useState<string>("")
 
     const scrollToRight = () => {
         if (scrollRef.current) {
@@ -104,6 +111,12 @@ export function CalendarDrawer() {
         if (scrollRef.current) {
             scrollRef.current.scrollBy({ left: -300, behavior: "smooth" })
         }
+    }
+
+    const handleCreateMeeting = (e: any) => {
+        e.preventDefault()
+
+        handleCreateMeetingValidation(title, date, time, selectedTeam as string)
     }
 
     return (
@@ -154,36 +167,39 @@ export function CalendarDrawer() {
                     </div>
                     <DrawerFooter className="flex justify-center items-center w-full">
                         <Dialog>
-                            <form>
-                                <DialogTrigger asChild>
-                                    <Button className="w-full max-w-sm ">Set a Meeting</Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-sm">
+                            <DialogTrigger asChild>
+                                <Button className="w-full max-w-sm ">Set a Meeting</Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-sm">
+                                <form onSubmit={handleCreateMeeting} className="space-y-4">
                                     <DialogHeader>
-                                        <DialogTitle>Edit profile</DialogTitle>
+                                        <DialogTitle>Set a Meeting</DialogTitle>
                                         <DialogDescription>
-                                            Make changes to your profile here. Click save when you&apos;re
-                                            done.
+                                            Fill in the details below to schedule a meeting with your team
                                         </DialogDescription>
                                     </DialogHeader>
                                     <FieldGroup>
                                         <Field>
-                                            <Label htmlFor="name-1">Name</Label>
-                                            <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
+                                            <Label htmlFor="title">Title</Label>
+                                            <Input id="title" type="text" onChange={(e) => setTitle(e.target.value)} />
                                         </Field>
                                         <Field>
-                                            <Label htmlFor="username-1">Username</Label>
-                                            <Input id="username-1" name="username" defaultValue="@peduarte" />
+                                            <Label htmlFor="date">Date</Label>
+                                            <Input id="date" type="date" onChange={(e) => setDate(e.target.value)} />
+                                        </Field>
+                                        <Field>
+                                            <Label htmlFor="time">Time</Label>
+                                            <Input id="time" type="time" onChange={(e) => setTime(e.target.value)} />
                                         </Field>
                                     </FieldGroup>
                                     <DialogFooter>
                                         <DialogClose asChild>
-                                            <Button variant="outline">Cancel</Button>
+                                            <Button variant="outline" disabled={isSubmitting}>Cancel</Button>
                                         </DialogClose>
-                                        <Button type="submit">Save changes</Button>
+                                        <Button type="submit" disabled={isSubmitting}>{isSubmitting && <Loader2 className="animate-spin w-4 h-4" />}Create Meeting</Button>
                                     </DialogFooter>
-                                </DialogContent>
-                            </form>
+                                </form>
+                            </DialogContent>
                         </Dialog>
                     </DrawerFooter>
                 </div>
