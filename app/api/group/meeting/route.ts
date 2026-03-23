@@ -28,8 +28,6 @@ export async function POST(req: NextRequest) {
             group_id
         })
         
-        console.log(error)
-
         return NextResponse.json({
             success: true
         }, { status: 200 })
