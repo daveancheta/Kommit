@@ -23,83 +23,23 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { UseMeetingStore } from "@/app/state/use-meeting-store"
 import { UseChatStore } from "@/app/state/use-chat-store"
+import MeetingEmptystate from "./meeting-empty-state"
+import { format } from "date-fns"
 
 export function CalendarDrawer() {
-    const data = [
-        {
-            id: 1,
-            name: "SDLC Metting - one",
-            date: "2026-03-23",
-            time: "10:00 AM",
-            duration: "1 hour",
-            status: "confirmed"
-        },
-        {
-            id: 2,
-            name: "Cloud Plan Meeting - two",
-            date: "2026-03-23",
-            time: "10:00 AM",
-            duration: "1 hour",
-            status: "pending"
-        },
-        {
-            id: 3,
-            name: "SDLC Metting - three",
-            date: "2026-03-23",
-            time: "10:00 AM",
-            duration: "1 hour",
-            status: "confirmed"
-        },
-        {
-            id: 4,
-            name: "Cloud Plan Meeting - four",
-            date: "2026-03-23",
-            time: "10:00 AM",
-            duration: "1 hour",
-            status: "pending"
-        },
-        {
-            id: 5,
-            name: "SDLC Metting - five",
-            date: "2026-03-23",
-            time: "10:00 AM",
-            duration: "1 hour",
-            status: "confirmed"
-        },
-        {
-            id: 6,
-            name: "Cloud Plan Meeting - six",
-            date: "2026-03-23",
-            time: "10:00 AM",
-            duration: "1 hour",
-            status: "pending"
-        },
-        {
-            id: 7,
-            name: "SDLC Metting - five",
-            date: "2026-03-23",
-            time: "10:00 AM",
-            duration: "1 hour",
-            status: "confirmed"
-        },
-        {
-            id: 8,
-            name: "Cloud Plan Meeting - six",
-            date: "2026-03-23",
-            time: "10:00 AM",
-            duration: "1 hour",
-            status: "pending"
-        }
-    ]
     const scrollRef = useRef<HTMLDivElement>(null)
-    const { isSubmitting, handleCreateMeetingValidation } = UseMeetingStore()
+    const { isSubmitting, handleCreateMeetingValidation, meeting, handleGetMeeting } = UseMeetingStore()
     const { selectedTeam } = UseChatStore()
     const [title, setTitle] = useState<string>("")
     const [date, setDate] = useState<string>("")
     const [time, setTime] = useState<string>("")
+
+    useEffect(() => {
+        handleGetMeeting(selectedTeam as string)
+    }, [handleGetMeeting, selectedTeam])
 
     const scrollToRight = () => {
         if (scrollRef.current) {
@@ -131,36 +71,33 @@ export function CalendarDrawer() {
                     </DrawerHeader>
                     <div className="p-4 pb-0">
                         <div ref={scrollRef} className="grid grid-flow-col auto-cols-[calc((100%-2.25rem)/4)] gap-3 w-full overflow-x-auto pb-4 snap-x scrollable-div">
-                            {data.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="snap-start flex flex-col gap-2 rounded-xl border bg-background shadow-xs dark:bg-input/30 dark:border-input p-4 w-full text-left"
-                                >
-                                    <div className="flex justify-between items-start gap-2">
-                                        <h3 className="font-semibold text-sm leading-none">{item.name.trim()}</h3>
-                                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full capitalize ${item.status === 'confirmed'
-                                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                                            : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-                                            }`}>
-                                            {item.status}
-                                        </span>
-                                    </div>
-                                    <div className="flex flex-col text-xs text-muted-foreground mt-1 gap-2">
-                                        <div className="flex items-center gap-1.5">
-                                            <Calendar className="size-3.5" />
-                                            <span>{item.date} • {item.time}</span>
+                            {
+                                meeting.length > 0
+                                    ? meeting.map((meeting) => (
+                                        <div
+                                            key={meeting.id}
+                                            className="snap-start flex flex-col gap-2 rounded-xl border bg-background shadow-xs dark:bg-input/30 dark:border-input p-4 w-full text-left"
+                                        >
+                                            <div className="flex justify-between items-start gap-2">
+                                                <h3 className="font-semibold text-sm leading-none">{meeting.title.trim()}</h3>
+                                            </div>
+                                            <div className="flex flex-col text-xs text-muted-foreground mt-1 gap-2">
+                                                <div className="flex items-center gap-1.5">
+                                                    <Calendar className="size-3.5" />
+                                                    <span>{format(new Date(meeting.date), 'MMMM dd, yyyy')}</span>
+                                                </div>
+                                                <div className="flex items-center gap-1.5">
+                                                    <Clock className="size-3.5" />
+                                                    Time: {format(new Date(`${meeting.date}T${meeting.time}`), 'hh:mm aa')}
+                                                </div>
+                                            </div>
+                                            <Button variant='outline'>Join</Button>
                                         </div>
-                                        <div className="flex items-center gap-1.5">
-                                            <Clock className="size-3.5" />
-                                            Duration: {item.duration}
-                                        </div>
-                                    </div>
-                                    <Button variant='outline'>Join</Button>
-                                </div>
-                            ))
+                                    ))
+                                    : <MeetingEmptystate />
                             }
                         </div>
-                        <div className="flex flex-row justify-center gap-2">
+                        <div className="flex flex-row justify-center gap-2" hidden={meeting.length === 0}>
                             <Button onClick={scrollToLeft} variant='outline'><ChevronLeft /></Button>
                             <Button onClick={scrollToRight} variant='outline'><ChevronRight /></Button>
                         </div>
