@@ -3,6 +3,7 @@ import { Button } from './ui/button'
 import { LiveKitRoom, VideoConference } from "@livekit/components-react"
 import { UseMeetingStore } from '@/app/state/use-meeting-store'
 import { UseChatStore } from '@/app/state/use-chat-store'
+import { redirect } from 'next/navigation'
 
 function JoinMeeting() {
   const [joined, setJoined] = useState<boolean>(false)
@@ -20,19 +21,9 @@ function JoinMeeting() {
     )
   }
 
-
-  return (
-    <LiveKitRoom
-      serverUrl="wss://practice-objwahy1.livekit.cloud"
-      token={token as string}
-      connect
-      video
-      audio
-      style={{ height: "100vh" }}
-    >
-      <VideoConference />
-    </LiveKitRoom>
-  )
+  if (token) {
+    redirect(`/meeting/${token}`)
+  }
 }
 
 export default JoinMeeting
