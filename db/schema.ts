@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index, date, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, index, date, uuid, time } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -103,6 +103,21 @@ export const members = pgTable("members", {
   userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
   groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade" }),
   status: text("status").notNull().default("member"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
+
+export const meeting = pgTable("meeting", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  date: date("date").notNull(),
+  time: time("time").notNull(),
+  duration: text("duration").notNull(),
+  createdBy: text("created_by").notNull().references(() => user.id, { onDelete: "cascade"}),
+  groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade"}),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
