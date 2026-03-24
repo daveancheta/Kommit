@@ -92,7 +92,7 @@ export function CalendarDrawer() {
                                                     Time: {format(new Date(`${meeting.date}T${meeting.time}`), 'hh:mm aa')}
                                                 </div>
                                             </div>
-                                        <JoinMeeting />
+                                            <JoinMeeting date={meeting.date} time={meeting.time} created_by={meeting.created_by} />
                                         </div>
                                     ))
                                     : <MeetingEmptystate />

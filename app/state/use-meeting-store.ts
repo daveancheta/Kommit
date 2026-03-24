@@ -17,7 +17,7 @@ interface Meetingstate {
     token: string | null;
     handleCreateMeetingValidation: (title: string, date: string, time: string, group_id: string) => Promise<void>;
     handleGetMeeting: (group_id: string) => Promise<void>;
-    handleJoinMeeting: (group_id: string) => Promise<void>;
+    handleJoinMeeting: (group_id: string, date: string, time: string, created_by: string) => Promise<void>;
 }
 
 export const UseMeetingStore = create<Meetingstate>((set) => ({
@@ -57,12 +57,12 @@ export const UseMeetingStore = create<Meetingstate>((set) => ({
         }
     },
 
-    handleJoinMeeting: async (group_id: string) => {
+    handleJoinMeeting: async (group_id: string, date: string, time: string, created_by: string) => {
         try {
             const result = await fetch(`/api/group/meeting/${group_id}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ group_id })
+                body: JSON.stringify({ group_id, date, time, created_by })
             })
 
             const res = await result.json()

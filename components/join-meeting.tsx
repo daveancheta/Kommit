@@ -4,18 +4,28 @@ import { LiveKitRoom, VideoConference } from "@livekit/components-react"
 import { UseMeetingStore } from '@/app/state/use-meeting-store'
 import { UseChatStore } from '@/app/state/use-chat-store'
 import { redirect } from 'next/navigation'
+import { time } from 'console'
 
-function JoinMeeting() {
-  const [joined, setJoined] = useState<boolean>(false)
+function JoinMeeting(
+  {
+    date,
+    time,
+    created_by
+  }
+    :
+    {
+      date: string,
+      time: string,
+      created_by: string
+    }) {
   const { handleJoinMeeting, token } = UseMeetingStore()
   const { selectedTeam } = UseChatStore()
 
-  if (!joined) {
+  if (!token) {
     return (
       <div>
         <Button className='w-full' variant='outline' onClick={() => {
-          setJoined(true)
-          handleJoinMeeting(selectedTeam as string)
+          handleJoinMeeting(selectedTeam as string, date, time, created_by)
         }}>Join</Button>
       </div>
     )

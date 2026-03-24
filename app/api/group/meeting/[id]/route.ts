@@ -31,6 +31,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     const API_KEY = process.env.LIVEKIT_API_KEY;
     const API_SECRET = process.env.LIVEKIT_API_KEY_SECRET;
     const { id } = await params
+    const { date, time, created_by } = await req.json()
     const session = await auth.api.getSession({
         headers: await headers()
     })
@@ -47,6 +48,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
             .from('meeting')
             .select()
             .eq('group_id', id)
+            .eq('date', date)
+            .eq('time', time)
+            .eq('created_by', created_by)
             .single()
 
         const at = new AccessToken(API_KEY, API_SECRET, { identity: session.user.name })
@@ -61,6 +65,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
             error
         }, { status: 200 })
     } catch (error) {
+        console.log(error)
+        
         return NextResponse.json({
             success: false
         }, { status: 400 })
