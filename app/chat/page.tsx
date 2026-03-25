@@ -8,7 +8,7 @@ function page() {
     return (
         <Sidebar>
             <div className='flex flex-row gap-2'>
-                <div className='bg-neutral-200 dark:bg-neutral-900 p-4 w-130 h-[95vh] border rounded-sm overflow-y-auto'>
+                <div className='scrollable-div bg-neutral-200 dark:bg-neutral-900 p-4 w-130 h-[95vh] border rounded-sm overflow-y-auto'>
                     <header className='flex justify-between items-center mb-2'>
                         <h1 className='text-lg'>Chats</h1>
                         <CreateGroup />

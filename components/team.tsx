@@ -8,9 +8,10 @@ import { useInitials } from "@/hooks/use-initials"
 import { UseChatStore } from "@/app/state/use-chat-store"
 import { cn } from "@/lib/utils"
 import { formatDistance, subDays } from "date-fns"
+import TeamState from "./team-state"
 
 function Teams() {
-    const { team, handleGetGroups } = UseGroupStore()
+    const { team, handleGetGroups, isLoading } = UseGroupStore()
     const { selectedTeam, setSelectedTeam, setSelectedTeamName, setSelectedTeamPhoto, setSelectedGroupCreator } = UseChatStore()
     const getInitials = useInitials()
 
@@ -53,33 +54,36 @@ function Teams() {
 
     return (
         <div className='flex flex-col gap-4 cursor-pointer'>
-            {team.map((team) => (
-                <div key={team.id} className={cn('flex flex-row items-center gap-2 p-2 px-4',
-                    team.group.id === selectedTeam && "bg-neutral-800 rounded-xl"
-                )} onClick={() => {
-                    setSelectedTeam(team.group.id)
-                    setSelectedTeamName(team.group.group_name)
-                    setSelectedTeamPhoto(team.group.photo as any ?? null)
-                    setSelectedGroupCreator(team.group.created_by as string ?? null)
-                }}>
-                    <Avatar className="h-12 w-12 rounded-full">
-                        {team.group.photo && team.group.photo.length > 0
-                            ? <AvatarImage src={team.group.photo} alt={team.group.group_name} />
-                            : <AvatarFallback className="rounded-full">{getInitials(team.group.group_name)}</AvatarFallback>
-                        }
-                    </Avatar>
-                    <div className='flex-1 min-w-0'>
-                        <div className='flex items-center justify-between gap-2'>
-                            <h2 className='font-bold truncate'>{team.group.group_name}</h2>
-                            {team.group.chat[team.group.chat.length - 1]?.created_at &&
-                                <p className='text-xs text-muted-foreground font-bold shrink-0'>{formatDistance((new Date(), team.group.chat[team.group.chat.length - 1]?.created_at), new Date(), { addSuffix: true })}</p>}
+            {isLoading
+                ? <TeamState />
+                : team.map((team) => (
+                    <div key={team.id} className={cn('flex flex-row items-center gap-2 p-2 px-4',
+                        team.group.id === selectedTeam && "bg-neutral-800 rounded-xl"
+                    )} onClick={() => {
+                        setSelectedTeam(team.group.id)
+                        setSelectedTeamName(team.group.group_name)
+                        setSelectedTeamPhoto(team.group.photo as any ?? null)
+                        setSelectedGroupCreator(team.group.created_by as string ?? null)
+                    }}>
+                        <Avatar className="h-12 w-12 rounded-full">
+                            {team.group.photo && team.group.photo.length > 0
+                                ? <AvatarImage src={team.group.photo} alt={team.group.group_name} />
+                                : <AvatarFallback className="rounded-full">{getInitials(team.group.group_name)}</AvatarFallback>
+                            }
+                        </Avatar>
+                        <div className='flex-1 min-w-0'>
+                            <div className='flex items-center justify-between gap-2'>
+                                <h2 className='font-bold truncate'>{team.group.group_name}</h2>
+                                {team.group.chat[team.group.chat.length - 1]?.created_at &&
+                                    <p className='text-xs text-muted-foreground font-bold shrink-0'>{formatDistance((new Date(), team.group.chat[team.group.chat.length - 1]?.created_at), new Date(), { addSuffix: true })}</p>}
+                            </div>
+                            <p className={cn('text-muted-foreground text-sm truncate',
+                                !team.group.chat[team.group.chat.length - 1]?.user?.name && 'hidden'
+                            )}>{team.group.chat[team.group.chat.length - 1]?.user?.name}: {team.group.chat[team.group.chat.length - 1]?.content}</p>
                         </div>
-                        <p className={cn('text-muted-foreground text-sm truncate',
-                            !team.group.chat[team.group.chat.length - 1]?.user?.name && 'hidden'
-                        )}>{team.group.chat[team.group.chat.length - 1]?.user?.name}: {team.group.chat[team.group.chat.length - 1]?.content}</p>
                     </div>
-                </div>
-            ))}
+                ))
+            }
         </div>
     )
 }
