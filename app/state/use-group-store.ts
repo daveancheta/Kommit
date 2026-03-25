@@ -68,7 +68,7 @@ interface Groupstate {
     team: Team[];
     members: Member[];
     handleCreateGroupValidation: (group: string, photo: File) => Promise<void>;
-    handleGetGroups: () => Promise<void>;
+    handleGetGroups: (showLoading: boolean) => Promise<void>;
     handleAddMemberValidation: (member_id: string, group_id: string) => Promise<void>;
     handlePhotoUpdateValidation: (photo: File, group_id: string) => Promise<void>;
     handleNameUpdateValidation: (name: string, group_id: string) => Promise<void>;
@@ -107,9 +107,11 @@ export const UseGroupStore = create<Groupstate>((set) => ({
         }
     },
 
-    handleGetGroups: async () => {
-        set({ isLoading: true })
-        
+    handleGetGroups: async (showLoading: boolean) => {
+        if (showLoading) {
+            set({ isLoading: true })
+        }
+
         try {
             const result = await fetch("/api/group")
 

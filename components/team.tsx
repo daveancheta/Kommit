@@ -16,7 +16,7 @@ function Teams() {
     const getInitials = useInitials()
 
     useEffect(() => {
-        handleGetGroups()
+        handleGetGroups(true)
     }, [])
 
     useEffect(() => {
@@ -28,7 +28,7 @@ function Teams() {
                 table: "members"
             },
                 async (payload) => {
-                    await handleGetGroups()
+                    await handleGetGroups(false)
                 }
             )
             .subscribe()
@@ -41,7 +41,7 @@ function Teams() {
                 table: 'chat',
             },
                 async (payload) => {
-                    await handleGetGroups()
+                    await handleGetGroups(false)
                 }
             )
             .subscribe()
