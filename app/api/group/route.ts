@@ -34,13 +34,14 @@ export async function POST(req: NextRequest) {
                 created_by: session.user.id,
             })
             .select()
+            .single()
 
         await supabaseAdmin
             .from('members')
             .insert({
                 id: crypto.randomUUID(),
                 user_id: session.user.id,
-                group_id: data?.[0]?.id,
+                group_id: data.id,
             })
 
         await supabaseAdmin
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
                 id: crypto.randomUUID(),
                 user_id: 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu',
                 content: `Group created by ${session.user.name}`,
-                group_id: data?.[0]?.id,
+                group_id: data.id,
             })
 
         return NextResponse.json({
