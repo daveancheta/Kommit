@@ -67,6 +67,10 @@ export const UseAuthStore = create<AuthState>((set) => ({
 
             if (res.success) {
                 window.location.reload()
+            } else {
+                sileo.error({
+                    title: res.message,
+                });
             }
         } catch (error) {
             console.log(error)

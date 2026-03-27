@@ -17,10 +17,18 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
             success: true
         }, { status: 200 })
-    } catch (error) {
+    } catch (error: any) {
         console.log(error)
+
+        const message =
+            error?.message?.toLowerCase().includes("exists") ||
+                error?.message?.toLowerCase().includes("another")
+                ? "User already exists"
+                : "Unable to sign up";
+
         return NextResponse.json({
-            success: false
+            success: false,
+            message
         }, { status: 400 })
     }
 }
