@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     description: "Kommit is a project management tool that helps teams stay organized and on track.",
     images: [
       {
-        url: `/kommit.png`,
+        url: `/kommit.jpg`,
         width: 1200,
         height: 630,
         alt: "Kommit",
@@ -91,7 +91,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Kommit",
     description: "Kommit is a project management tool that helps teams stay organized and on track.",
-    images: [`/profile.jpg`],
+    images: [`/kommit.jpg`],
   },
 
   alternates: {
