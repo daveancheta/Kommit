@@ -1,11 +1,11 @@
-import { supabase } from "@/lib/supbase/cient";
+import { supabaseAdmin } from "@/lib/supbase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
             .from('members')
             .select(`*, 
                 group (*), 

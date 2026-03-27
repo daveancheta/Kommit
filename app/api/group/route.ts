@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import cloudinary from "@/lib/cloudinary";
-import { supabase } from "@/lib/supbase/cient";
+import { supabaseAdmin } from "@/lib/supbase/server";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
             photo_url = cloud_photo.secure_url
         }
 
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
             .from('group')
             .insert({
                 id: crypto.randomUUID(),
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
             })
             .select()
 
-        await supabase
+        await supabaseAdmin
             .from('members')
             .insert({
                 id: crypto.randomUUID(),
@@ -71,7 +71,7 @@ export async function GET() {
     }
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
             .from('members')
             .select(`*,
                 group (*,

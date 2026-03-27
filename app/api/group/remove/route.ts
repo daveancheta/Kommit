@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { supabase } from "@/lib/supbase/cient";
+import { supabaseAdmin } from "@/lib/supbase/server";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -17,7 +17,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
             .from('members')
             .update({
                 status: 'removed'
@@ -28,7 +28,7 @@ export async function PATCH(req: NextRequest) {
             .eq('group_id', group_id)
             .single()
 
-        await supabase
+        await supabaseAdmin
             .from('chat')
             .insert({
                 id: crypto.randomUUID(),

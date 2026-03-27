@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supbase/cient";
+import { supabaseAdmin } from "@/lib/supbase/server";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { AccessToken } from "livekit-server-sdk";
@@ -10,7 +10,7 @@ import "dotenv/config"
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
             .from('meeting')
             .select()
             .eq('group_id', id)
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     }
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
             .from('meeting')
             .select()
             .eq('group_id', id)

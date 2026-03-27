@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { supabase } from "@/lib/supbase/cient";
+import { supabaseAdmin } from "@/lib/supbase/server";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { use } from "react";
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const { error } = await supabase
+        const { error } = await supabaseAdmin
             .from('chat')
             .insert({
                 id: crypto.randomUUID(),
@@ -44,7 +44,7 @@ export async function PATCH(req: NextRequest) {
     const { content, id } = await req.json()
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
             .from('chat')
             .update({ content })
             .eq('id', id)
@@ -65,7 +65,7 @@ export async function PATCH(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
     const { id } = await req.json()
     try {
-        const response = await supabase
+        const response = await supabaseAdmin
             .from('chat')
             .delete()
             .eq('id', id)

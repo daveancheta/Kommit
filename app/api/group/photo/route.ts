@@ -1,5 +1,5 @@
 import cloudinary from "@/lib/cloudinary";
-import { supabase } from "@/lib/supbase/cient";
+import { supabaseAdmin } from "@/lib/supbase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(req: NextRequest) {
@@ -13,7 +13,7 @@ export async function PATCH(req: NextRequest) {
             photo_url = cloud_photo.secure_url
         }
 
-        const { error } = await supabase
+        const { error } = await supabaseAdmin
             .from('group')
             .update({ photo: photo_url })
             .eq('id', group_id)

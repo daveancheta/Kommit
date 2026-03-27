@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { supabase } from "@/lib/supbase/cient";
+import { supabaseAdmin } from "@/lib/supbase/server";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const { data: isExistingMember } = await supabase
+        const { data: isExistingMember } = await supabaseAdmin
             .from('members')
             .select()
             .eq('user_id', member_id)
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
             }, { status: 400 })
         }
 
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
             .from('members')
             .insert({
                 id: crypto.randomUUID(),
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
                 `)
             .single()
 
-        await supabase
+        await supabaseAdmin
             .from('chat')
             .insert({
                 id: crypto.randomUUID(),
