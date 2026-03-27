@@ -9,7 +9,7 @@ async function layout({ children }: { children: React.ReactNode }) {
     })
 
     if (session) {
-        redirect('/dashboard')
+        redirect('/chat')
     }
 return (
     <div>
