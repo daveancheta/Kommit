@@ -18,7 +18,6 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-
         let photo_url: string | null = null
 
         if (photo) {
@@ -41,6 +40,15 @@ export async function POST(req: NextRequest) {
             .insert({
                 id: crypto.randomUUID(),
                 user_id: session.user.id,
+                group_id: data?.[0]?.id,
+            })
+
+        await supabaseAdmin
+            .from('chat')
+            .insert({
+                id: crypto.randomUUID(),
+                user_id: 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu',
+                content: `Group created by ${session.user.name}`,
                 group_id: data?.[0]?.id,
             })
 
