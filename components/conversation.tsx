@@ -15,9 +15,10 @@ import { Button } from './ui/button'
 import { AnimatePresence, motion } from "motion/react"
 import ConversationMenu from './conversation-menu'
 import { CalendarDrawer } from './calendar-drawer'
+import MessageSkeleton from './message-skeleton'
 
 function Conversation() {
-    const { selectedTeam, selectedTeamName, handleGetMessages, messages, handleSendMessageValidation, isSubmitting, selectedTeamPhoto } = UseChatStore()
+    const { selectedTeam, selectedTeamName, handleGetMessages, messages, handleSendMessageValidation, isSubmitting, selectedTeamPhoto, isLoading } = UseChatStore()
     const { handleGetSession, auth } = UseAuthStore()
     const getInitials = useInitials()
     const [content, setContent] = useState<string>("")
@@ -45,7 +46,7 @@ function Conversation() {
     }, [handleGetSession])
 
     useEffect(() => {
-        handleGetMessages(selectedTeam as string)
+        handleGetMessages(selectedTeam as string, true)
     }, [selectedTeam])
 
     useEffect(() => {
@@ -57,7 +58,7 @@ function Conversation() {
                 table: 'chat'
             },
                 async (payload) => {
-                    await handleGetMessages(selectedTeam as string)
+                    await handleGetMessages(selectedTeam as string, false)
                 }
             )
             .subscribe()
@@ -93,55 +94,57 @@ function Conversation() {
                         </div>
                         <div className='border-b-black border'></div>
                         <div className='flex-1 p-8 flex flex-col gap-2 overflow-auto scrollable-div'>
-                            {messages.map((msg) => (
-                                <div key={msg.id}>
-                                    {msg.user.id === 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu' &&
-                                        <div className='flex justify-center'>
-                                            <p className='text-sm text-muted-foreground'>
-                                                {msg.content}
-                                            </p>
-                                        </div>
-                                    }
-                                    {msg.user.id === auth?.id
-                                        ? <div className={cn('flex justify-end', msg.user.id === 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu' && 'hidden')}>
-                                            <div className='gap-1'>
-                                                <div className='flex flex-row gap-2 items-end'>
-                                                    <div className='flex flex-col gap-1'>
-                                                        <h1 className='text-xs text-muted-foreground text-end mr-1'>You</h1>
-                                                        <span className='bg-black dark:bg-white px-4 py-2.5 rounded-tl-2xl rounded-bl-2xl rounded-br-2xl rounded-tr-sm text-white dark:text-black w-fit max-w-sm break-all'>
-                                                            {msg.content}
-                                                        </span>
-                                                    </div>
-                                                    <Avatar className='rounded-full w-8 h-8'>
-                                                        {msg.user.image && msg.user.image.length > 0
-                                                            ? <AvatarImage src={msg.user.image} alt={msg.user.name} />
-                                                            : <AvatarFallback className="rounded-full">{getInitials(msg.user.name)}</AvatarFallback>
-                                                        }
-                                                    </Avatar>
+                            {isLoading
+                                ? <MessageSkeleton />
+                                : messages.map((msg) => (
+                                    <div key={msg.id}>
+                                        {msg.user.id === 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu' &&
+                                            <div className='flex justify-center'>
+                                                <p className='text-sm text-muted-foreground'>
+                                                    {msg.content}
+                                                </p>
+                                            </div>
+                                        }
+                                        {msg.user.id === auth?.id
+                                            ? <div className={cn('flex justify-end', msg.user.id === 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu' && 'hidden')}>
+                                                <div className='gap-1'>
+                                                    <div className='flex flex-row gap-2 items-end'>
+                                                        <div className='flex flex-col gap-1'>
+                                                            <h1 className='text-xs text-muted-foreground text-end mr-1'>You</h1>
+                                                            <span className='bg-black dark:bg-white px-4 py-2.5 rounded-tl-2xl rounded-bl-2xl rounded-br-2xl rounded-tr-sm text-white dark:text-black w-fit max-w-sm break-all'>
+                                                                {msg.content}
+                                                            </span>
+                                                        </div>
+                                                        <Avatar className='rounded-full w-8 h-8'>
+                                                            {msg.user.image && msg.user.image.length > 0
+                                                                ? <AvatarImage src={msg.user.image} alt={msg.user.name} />
+                                                                : <AvatarFallback className="rounded-full">{getInitials(msg.user.name)}</AvatarFallback>
+                                                            }
+                                                        </Avatar>
 
-                                                </div>
-                                            </div>
-                                        </div>
-                                        : <div className={cn('flex justify-start', msg.user.id === 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu' && 'hidden')}>
-                                            <div className='flex flex-col gap-1'>
-                                                <div className='flex flex-row gap-2 items-end'>
-                                                    <Avatar className='rounded-full w-8 h-8'>
-                                                        {msg.user.image && msg.user.image.length > 0
-                                                            ? <AvatarImage src={msg.user.image} alt={msg.user.name} />
-                                                            : <AvatarFallback className="rounded-full">{getInitials(msg.user.name)}</AvatarFallback>
-                                                        }
-                                                    </Avatar>
-                                                    <div className='flex flex-col'>
-                                                        <h1 className='text-xs text-muted-foreground ml-1'>{msg.user.name}</h1>
-                                                        <span className='bg-white dark:bg-black px-4 py-2.5 rounded-tl-sm rounded-bl-2xl rounded-br-2xl rounded-tr-2xl text-black dark:text-white w-fit max-w-sm break-all'>
-                                                            {msg.content}
-                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>}
-                                </div>
-                            ))}
+                                            : <div className={cn('flex justify-start', msg.user.id === 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu' && 'hidden')}>
+                                                <div className='flex flex-col gap-1'>
+                                                    <div className='flex flex-row gap-2 items-end'>
+                                                        <Avatar className='rounded-full w-8 h-8'>
+                                                            {msg.user.image && msg.user.image.length > 0
+                                                                ? <AvatarImage src={msg.user.image} alt={msg.user.name} />
+                                                                : <AvatarFallback className="rounded-full">{getInitials(msg.user.name)}</AvatarFallback>
+                                                            }
+                                                        </Avatar>
+                                                        <div className='flex flex-col'>
+                                                            <h1 className='text-xs text-muted-foreground ml-1'>{msg.user.name}</h1>
+                                                            <span className='bg-white dark:bg-black px-4 py-2.5 rounded-tl-sm rounded-bl-2xl rounded-br-2xl rounded-tr-2xl text-black dark:text-white w-fit max-w-sm break-all'>
+                                                                {msg.content}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>}
+                                    </div>
+                                ))}
                             <div ref={bottomRef}></div>
                         </div>
                         <form onSubmit={handleSendMessage}>

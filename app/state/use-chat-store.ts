@@ -34,11 +34,12 @@ interface ChatState {
     selectedGroupCreator: string | null;
     messages: Messages[];
     isSubmitting: boolean;
+    isLoading: boolean;
     setSelectedTeam: (selectedTeam: string) => void;
     setSelectedTeamName: (selectedTeamName: string) => void;
     setSelectedTeamPhoto: (selectedTeamPhoto: null) => void;
     setSelectedGroupCreator: (selectedGroupCreator: string) => void;
-    handleGetMessages: (id: string) => Promise<void>;
+    handleGetMessages: (id: string, showLoading: boolean) => Promise<void>;
     handleSendMessageValidation: (content: string, id: string) => Promise<void>;
 }
 
@@ -49,13 +50,17 @@ export const UseChatStore = create<ChatState>((set) => ({
     selectedGroupCreator: null,
     messages: [],
     isSubmitting: false,
+    isLoading: false,
 
     setSelectedTeam: (selectedTeam: string) => set({ selectedTeam: selectedTeam }),
     setSelectedTeamName: (selectedTeamName: string) => set({ selectedTeamName: selectedTeamName }),
-    setSelectedTeamPhoto: (selectedTeamPhoto: null) => set({ selectedTeamPhoto: selectedTeamPhoto}),
-    setSelectedGroupCreator: (selectedGroupCreator: string) => set({ selectedGroupCreator: selectedGroupCreator}),
+    setSelectedTeamPhoto: (selectedTeamPhoto: null) => set({ selectedTeamPhoto: selectedTeamPhoto }),
+    setSelectedGroupCreator: (selectedGroupCreator: string) => set({ selectedGroupCreator: selectedGroupCreator }),
 
-    handleGetMessages: async (id: string) => {
+    handleGetMessages: async (id: string, showLoading: boolean) => {
+        if (showLoading) {
+            set({ isLoading: true })
+        }
         try {
             const messages = await fetch(`/api/chat/${id}`)
 
@@ -64,6 +69,8 @@ export const UseChatStore = create<ChatState>((set) => ({
             set({ messages: res.message })
         } catch (error) {
             console.log(error)
+        } finally {
+            set({ isLoading: false })
         }
     },
 
