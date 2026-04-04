@@ -41,7 +41,7 @@ function TeamTask() {
                 </div>
                 <CreateGroup />
             </div>
-            
+
             {isLoading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {[1, 2, 3, 4].map((i) => (
@@ -62,14 +62,11 @@ function TeamTask() {
                                         </span>
                                     )}
                                 </div>
-                                <button className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-md hover:bg-muted opacity-0 group-hover:opacity-100 focus:opacity-100">
-                                    <MoreVertical className="h-4 w-4" />
-                                </button>
                             </div>
 
                             <div>
                                 <h2 className="font-semibold text-lg truncate">{t.group?.group_name}</h2>
-                                
+
                                 <div className="flex items-center gap-4 text-sm mt-3 text-muted-foreground">
                                     <div className="flex items-center gap-1.5">
                                         <Users className="h-3.5 w-3.5" />
