@@ -6,8 +6,6 @@ import { supabase } from '@/lib/supbase/cient'
 import { UseGroupStore } from '@/app/state/use-group-store'
 import { Plus, Users, CheckSquare, MoreVertical } from 'lucide-react'
 import CreateGroup from './create-group-fr-task'
-import { TaskList } from './task-list'
-import { MemberList } from './member-list'
 
 function TeamTask() {
     const { handleGetGroups, team, isLoading } = UseGroupStore()
@@ -70,8 +68,14 @@ function TeamTask() {
                                 <h2 className="font-semibold text-lg truncate">{t.group?.group_name}</h2>
 
                                 <div className="flex items-center gap-4 text-sm mt-3 text-muted-foreground">
-                                    <MemberList />
-                                    <TaskList />
+                                    <div className="flex items-center gap-1.5">
+                                        <Users className="h-3.5 w-3.5" />
+                                        <span>4</span>
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <CheckSquare className="h-3.5 w-3.5" />
+                                        <span>12</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
