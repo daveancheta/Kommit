@@ -110,6 +110,19 @@ export const members = pgTable("members", {
     .notNull(),
 });
 
+export const task = pgTable("task", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade" }),
+  description: text('description').notNull(),
+  status: text("status").notNull().default("pending"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
+
 export const meeting = pgTable("meeting", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
