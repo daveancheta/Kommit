@@ -8,9 +8,15 @@ import { Plus, Users, CheckSquare, MoreVertical } from 'lucide-react'
 import CreateGroup from './create-group-fr-task'
 import { TaskList } from './task-list'
 import { MemberList } from './member-list'
+import { UseChatStore } from '@/app/state/use-chat-store'
 
 function TeamTask() {
-    const { handleGetGroups, team, isLoading } = UseGroupStore()
+    const { handleGetGroups, team, isLoading, handleGetTeamMembers, members } = UseGroupStore()
+    const { selectedTeam, setSelectedTeam } = UseChatStore()
+
+    useEffect(() => {
+        handleGetTeamMembers(selectedTeam as string)
+    }, [handleGetTeamMembers, selectedTeam])
 
     useEffect(() => {
         handleGetGroups(true)
@@ -70,7 +76,9 @@ function TeamTask() {
                                 <h2 className="font-semibold text-lg truncate">{t.group?.group_name}</h2>
 
                                 <div className="flex items-center gap-4 text-sm mt-3 text-muted-foreground">
-                                    <MemberList />
+                                    <button onClick={() => setSelectedTeam(t.group.id)}>
+                                        <MemberList members={members}/>
+                                    </button>
                                     <TaskList />
                                 </div>
                             </div>
