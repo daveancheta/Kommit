@@ -1,11 +1,15 @@
 import { create } from "zustand";
 
 interface TaskState {
-    handleAddTaskValidation: (user_id: string, group_id: string, description: string) => Promise<void>
+    isSubmitting: boolean;
+    handleAddTaskValidation: (user_id: string, group_id: string, description: string) => Promise<void>;
 }
 
 export const UseTaskStore = create<TaskState>((set) => ({
+    isSubmitting: false,
+    
     handleAddTaskValidation: async (user_id: string, group_id: string, description: string) => {
+        set({ isSubmitting: true })
         try {
             await fetch('/api/group/task', {
                 method: "POST",
@@ -14,6 +18,8 @@ export const UseTaskStore = create<TaskState>((set) => ({
             })
         } catch (error) {
             console.log(error)
+        } finally {
+            set({ isSubmitting: false })
         }
     }
 }))

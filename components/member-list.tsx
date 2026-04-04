@@ -17,9 +17,8 @@ import { UseChatStore } from "@/app/state/use-chat-store"
 
 export function MemberList({ members }: { members: any[] }) {
     const [selectedMember, setSelectedMember] = useState<string | null>(null)
-    const [taskInput, setTaskInput] = useState("")
     const getInitials = useInitials()
-    const { handleAddTaskValidation } = UseTaskStore()
+    const { handleAddTaskValidation, isSubmitting } = UseTaskStore()
     const { selectedTeam } = UseChatStore()
     const [description, setDescription] = useState<string>("")
 
@@ -77,7 +76,7 @@ export function MemberList({ members }: { members: any[] }) {
                                         <button
                                             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-8 w-8 shrink-0"
 
-                                            disabled={!description.trim()}
+                                            disabled={!description.trim() || isSubmitting}
                                         >
                                             <Send className="h-4 w-4" />
                                         </button>
