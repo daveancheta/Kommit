@@ -7,7 +7,7 @@ interface TaskState {
 export const UseTaskStore = create<TaskState>((set) => ({
     handleAddTaskValidation: async (user_id: string, group_id: string, description: string) => {
         try {
-            await fetch('/api/group/task/add', {
+            await fetch('/api/group/task', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ user_id, group_id, description })

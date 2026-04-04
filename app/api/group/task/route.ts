@@ -14,6 +14,8 @@ export async function POST(req: NextRequest) {
                 description
             })
 
+        console.log(error)
+        
         return NextResponse.json({
             success: true,
             data,
