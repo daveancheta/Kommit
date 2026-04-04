@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { supabase } from '@/lib/supbase/cient'
 import { UseGroupStore } from '@/app/state/use-group-store'
 import { Plus, Users, CheckSquare, MoreVertical } from 'lucide-react'
+import CreateGroup from './create-group-fr-task'
 
 function TeamTask() {
     const { handleGetGroups, team, isLoading } = UseGroupStore()
@@ -38,10 +39,7 @@ function TeamTask() {
                     <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Your Teams</h1>
                     <p className="text-muted-foreground mt-2">Manage your groups, members, and upcoming tasks.</p>
                 </div>
-                <button className="flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0">
-                    <Plus className="h-4 w-4" />
-                    Create New Group
-                </button>
+                <CreateGroup />
             </div>
             
             {isLoading ? (
