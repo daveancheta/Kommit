@@ -15,7 +15,6 @@ export function TaskList() {
                 <DialogTrigger asChild>
                     <div className="flex items-center gap-1.5 cursor-pointer">
                         <CheckSquare className="h-3.5 w-3.5" />
-                        <span>12</span>
                     </div>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">

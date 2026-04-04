@@ -34,7 +34,6 @@ export function MemberList({ members }: { members: any[] }) {
                 <DialogTrigger asChild>
                     <div className="flex items-center gap-1.5 cursor-pointer hover:text-foreground/80 transition-colors">
                         <Users className="h-3.5 w-3.5" />
-                        <span className="text-sm font-medium">4</span>
                     </div>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">
