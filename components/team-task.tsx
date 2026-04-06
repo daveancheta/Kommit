@@ -11,7 +11,7 @@ import { MemberList } from './member-list'
 import { UseChatStore } from '@/app/state/use-chat-store'
 
 function TeamTask() {
-    const { handleGetGroups, team, isLoading, handleGetTeamMembers, members } = UseGroupStore()
+    const { handleGetGroups, team, isLoading, handleGetTeamMembers, members, isFetching } = UseGroupStore()
     const { selectedTeam, setSelectedTeam } = UseChatStore()
 
     useEffect(() => {
@@ -77,7 +77,7 @@ function TeamTask() {
 
                                 <div className="flex items-center gap-4 text-sm mt-3 text-muted-foreground">
                                     <button onClick={() => setSelectedTeam(t.group.id)}>
-                                        <MemberList members={members} />
+                                        <MemberList members={members} isFetching={isFetching} />
                                     </button>
                                     <button onClick={() => setSelectedTeam(t.group.id)}>
                                         <TaskList />

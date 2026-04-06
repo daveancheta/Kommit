@@ -65,6 +65,7 @@ interface Groupstate {
     isSubmitting: boolean;
     isValidating: boolean;
     isLoading: boolean;
+    isFetching: boolean;
     team: Team[];
     members: Member[];
     handleCreateGroupValidation: (group: string, photo: File) => Promise<void>;
@@ -81,6 +82,7 @@ export const UseGroupStore = create<Groupstate>((set) => ({
     isSubmitting: false,
     isValidating: false,
     isLoading: false,
+    isFetching: false,
     team: [],
     members: [],
 
@@ -191,6 +193,7 @@ export const UseGroupStore = create<Groupstate>((set) => ({
     },
 
     handleGetTeamMembers: async (id: string) => {
+        set({ isFetching: true })
         try {
             const result = await fetch(`/api/group/members/${id}`)
 
@@ -199,6 +202,8 @@ export const UseGroupStore = create<Groupstate>((set) => ({
             set({ members: res.data })
         } catch (error) {
             console.log(error)
+        } finally {
+            set({ isFetching: false })
         }
     },
 

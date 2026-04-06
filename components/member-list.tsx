@@ -14,8 +14,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { useInitials } from "@/hooks/use-initials"
 import { UseTaskStore } from "@/app/state/use-task-store"
 import { UseChatStore } from "@/app/state/use-chat-store"
+import { Skeleton } from "./ui/skeleton"
 
-export function MemberList({ members }: { members: any[] }) {
+export function MemberList({ members, isFetching }: { members: any[], isFetching: boolean }) {
     const [selectedMember, setSelectedMember] = useState<string | null>(null)
     const getInitials = useInitials()
     const { handleAddTaskValidation, isSubmitting } = UseTaskStore()
@@ -43,7 +44,20 @@ export function MemberList({ members }: { members: any[] }) {
                         </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-3 py-4 max-h-[60vh] overflow-y-auto pr-2">
-                        {members.map((member) => (
+                        {isFetching ? (
+                            Array.from({ length: 3 }).map((_, i) => (
+                                <div className="flex flex-col gap-2 rounded-lg border p-3" key={i}>
+                                    <div className="flex items-center gap-3">
+                                        <Skeleton className="rounded-full w-10 h-10 shrink-0" />
+                                        <div className="flex flex-1 flex-col gap-1.5 py-1">
+                                            <Skeleton className="h-4 w-32" />
+                                            <Skeleton className="h-3 w-24" />
+                                        </div>
+                                        <Skeleton className="h-6 w-6 rounded-full shrink-0" />
+                                    </div>
+                                </div>
+                            ))
+                        ) : members.map((member) => (
                             <div key={member.id} className="flex flex-col gap-2 rounded-lg border p-3 transition-colors hover:bg-muted/50">
                                 <div
                                     className="flex items-center gap-3 cursor-pointer"
