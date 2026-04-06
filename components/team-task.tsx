@@ -77,9 +77,11 @@ function TeamTask() {
 
                                 <div className="flex items-center gap-4 text-sm mt-3 text-muted-foreground">
                                     <button onClick={() => setSelectedTeam(t.group.id)}>
-                                        <MemberList members={members}/>
+                                        <MemberList members={members} />
                                     </button>
-                                    <TaskList />
+                                    <button onClick={() => setSelectedTeam(t.group.id)}>
+                                        <TaskList />
+                                    </button>
                                 </div>
                             </div>
                         </div>
