@@ -8,11 +8,12 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import { Skeleton } from "@/components/ui/skeleton"
 import { CheckSquare } from "lucide-react"
 import { useEffect } from "react"
 
 export function TaskList() {
-    const { handleGetTasks, tasks } = UseTaskStore()
+    const { handleGetTasks, tasks, isLoading } = UseTaskStore()
     const { selectedTeam } = UseChatStore()
 
     useEffect(() => {
@@ -35,22 +36,41 @@ export function TaskList() {
                         </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-3 py-4">
-                        {tasks.map((task) =>
-                            <div className="flex flex-col gap-2 rounded-lg border p-4" key={task.id}>
-                                <div className="flex items-center justify-between">
-                                    <span className="font-semibold text-sm">{task.description}</span>
-                                    <span className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${
-                                        task.status?.toUpperCase() === 'PENDING' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-100 dark:text-yellow-700' :
-                                        task.status?.toUpperCase() === 'IN-PROGRESS' || task.status?.toUpperCase() === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-700 dark:bg-blue-100 dark:text-blue-700' :
-                                        task.status?.toUpperCase() === 'DONE' ? 'bg-green-100 text-green-700 dark:bg-green-100 dark:text-green-700' :
-                                        'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200'
-                                    }`}>{task.status}</span>
+                        {isLoading ? (
+                            Array.from({ length: 3 }).map((_, i) => (
+                                <div className="flex flex-col gap-2 rounded-lg border p-4" key={i}>
+                                    <div className="flex items-center justify-between">
+                                        <Skeleton className="h-5 w-3/4" />
+                                        <Skeleton className="h-5 w-16 rounded-full" />
+                                    </div>
+                                    <div className="flex items-center gap-1.5 mt-1">
+                                        <Skeleton className="h-4 w-16" />
+                                        <Skeleton className="h-4 w-24" />
+                                    </div>
                                 </div>
-                                <div className="text-xs text-muted-foreground flex items-center gap-1.5 mt-1">
-                                    <span>Assigned to:</span>
-                                    <span className="font-medium text-foreground">{task.user.name}</span>
-                                </div>
+                            ))
+                        ) : tasks.length === 0 ? (
+                            <div className="flex justify-center py-6 text-sm text-muted-foreground">
+                                No tasks assigned yet.
                             </div>
+                        ) : (
+                            tasks.map((task) =>
+                                <div className="flex flex-col gap-2 rounded-lg border p-4" key={task.id}>
+                                    <div className="flex items-center justify-between">
+                                        <span className="font-semibold text-sm">{task.description}</span>
+                                        <span className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${
+                                            task.status?.toUpperCase() === 'PENDING' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-100 dark:text-yellow-700' :
+                                            task.status?.toUpperCase() === 'IN-PROGRESS' || task.status?.toUpperCase() === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-700 dark:bg-blue-100 dark:text-blue-700' :
+                                            task.status?.toUpperCase() === 'DONE' ? 'bg-green-100 text-green-700 dark:bg-green-100 dark:text-green-700' :
+                                            'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200'
+                                        }`}>{task.status}</span>
+                                    </div>
+                                    <div className="text-xs text-muted-foreground flex items-center gap-1.5 mt-1">
+                                        <span>Assigned to:</span>
+                                        <span className="font-medium text-foreground">{task.user.name}</span>
+                                    </div>
+                                </div>
+                            )
                         )}
                     </div>
                 </DialogContent>

@@ -22,6 +22,7 @@ interface Task {
 
 interface TaskState {
     isSubmitting: boolean;
+    isLoading: boolean;
     tasks: Task[];
     handleAddTaskValidation: (user_id: string, group_id: string, description: string) => Promise<void>;
     handleGetTasks: (group_id: string) => Promise<void>;
@@ -29,10 +30,12 @@ interface TaskState {
 
 export const UseTaskStore = create<TaskState>((set) => ({
     isSubmitting: false,
+    isLoading: false,
     tasks: [],
 
     handleAddTaskValidation: async (user_id: string, group_id: string, description: string) => {
         set({ isSubmitting: true })
+
         try {
             await fetch('/api/group/task', {
                 method: "POST",
@@ -47,6 +50,8 @@ export const UseTaskStore = create<TaskState>((set) => ({
     },
 
     handleGetTasks: async (group_id: string) => {
+        set({ isLoading: true })
+
         try {
             const result = await fetch(`/api/group/task/${group_id}`)
 
@@ -55,6 +60,8 @@ export const UseTaskStore = create<TaskState>((set) => ({
             set({ tasks: res.data })
         } catch (error) {
             console.log(error)
+        } finally {
+            set({ isLoading: false })
         }
     }
 }))
