@@ -52,8 +52,19 @@ function TeamTask() {
 
             {isLoading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="animate-pulse rounded-xl bg-muted/50 border border-border/50 h-[160px]"></div>
+                    {Array.from({ length: 4 }).map((_, index) => (
+                        <div key={index} className="p-5 border border-border/50 rounded-xl bg-card flex flex-col gap-4">
+                            <div className="flex items-start justify-between">
+                                <div className="h-12 w-12 rounded-xl bg-muted animate-pulse shrink-0"></div>
+                            </div>
+                            <div>
+                                <div className="h-6 w-3/4 bg-muted animate-pulse rounded"></div>
+                                <div className="flex items-center gap-4 mt-3">
+                                    <div className="h-5 w-20 bg-muted animate-pulse rounded"></div>
+                                    <div className="h-5 w-20 bg-muted animate-pulse rounded"></div>
+                                </div>
+                            </div>
+                        </div>
                     ))}
                 </div>
             ) : (
