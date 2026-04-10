@@ -47,8 +47,8 @@ export function NavMain({
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
                   <Link href={item.url}>
-                    {item.icon}
-                    </Link>
+                    <span className="[&>svg]:size-6">{item.icon}</span>
+                  </Link>
                 </SidebarMenuButton>
               </CollapsibleTrigger>
               <CollapsibleContent>
