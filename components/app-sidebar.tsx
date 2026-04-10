@@ -12,7 +12,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, GitCommit, MessageCircle } from "lucide-react"
+import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, GitCommit, MessageCircle, Puzzle } from "lucide-react"
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
 
@@ -57,8 +57,16 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
     ],
     navMain: [
       {
+        title: "Team",
+        url: "/team",
+        icon: (
+          <Puzzle
+          />
+        ),
+      },
+       {
         title: "Chat",
-        url: "#",
+        url: "/chat",
         icon: (
           <MessageCircle
           />
