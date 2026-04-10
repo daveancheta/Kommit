@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
     Dialog,
     DialogContent,
@@ -15,6 +15,7 @@ import { useInitials } from "@/hooks/use-initials"
 import { UseTaskStore } from "@/app/state/use-task-store"
 import { UseChatStore } from "@/app/state/use-chat-store"
 import { Skeleton } from "./ui/skeleton"
+import { UseAuthStore } from "@/app/state/use-auth-store"
 
 export function MemberList({ members, isFetching }: { members: any[], isFetching: boolean }) {
     const [selectedMember, setSelectedMember] = useState<string | null>(null)
@@ -22,6 +23,11 @@ export function MemberList({ members, isFetching }: { members: any[], isFetching
     const { handleAddTaskValidation, isSubmitting } = UseTaskStore()
     const { selectedTeam } = UseChatStore()
     const [description, setDescription] = useState<string>("")
+    const { handleGetSession, auth } = UseAuthStore()
+
+    useEffect(() => {
+        handleGetSession()
+    }, [handleGetSession])
 
     const handleAddTask = (e: any) => {
         e.preventDefault()
@@ -69,7 +75,14 @@ export function MemberList({ members, isFetching }: { members: any[], isFetching
                                         }
                                     </Avatar>
                                     <div className="flex flex-1 flex-col">
-                                        <span className="text-sm font-medium">{member.user.name}</span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-sm font-medium">{member.user.name}</span>
+                                            {member.user.id === auth?.id && (
+                                                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                                                    You
+                                                </span>
+                                            )}
+                                        </div>
                                         <span className="text-xs text-muted-foreground">Backend Developer</span>
                                     </div>
                                     <div className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors" onClick={() => setSelectedMember(selectedMember === member.user.id ? null : member.user.id)}>
