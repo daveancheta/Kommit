@@ -15,6 +15,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import { cn } from "@/lib/utils"
 import { ChevronRightIcon } from "lucide-react"
 import Link from "next/link"
 
@@ -46,8 +47,9 @@ export function NavMain({
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
-                  <Link href={item.url}>
+                  <Link href={item.url} className="relative"> 
                     <span className="[&>svg]:size-6">{item.icon}</span>
+                    <div className={cn("absolute top-0 right-0 bg-red-400 p-1 rounded-full", item.url !== "/notification" && "hidden")}></div>
                   </Link>
                 </SidebarMenuButton>
               </CollapsibleTrigger>
