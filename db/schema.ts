@@ -137,6 +137,19 @@ export const meeting = pgTable("meeting", {
     .notNull(),
 });
 
+export const notification = pgTable("notification", {
+  id: text("id").primaryKey(),
+  groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade"}),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade"}),
+  message: text("message").notNull(),
+  isRead: boolean('is_read').default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
+
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),

@@ -92,6 +92,13 @@
       "when": 1775312336588,
       "tag": "0012_mean_toad_men",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1775820692402,
+      "tag": "0013_lazy_tarantula",
+      "breakpoints": true
     }
   ]
 }
