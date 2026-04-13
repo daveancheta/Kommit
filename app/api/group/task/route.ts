@@ -14,8 +14,14 @@ export async function POST(req: NextRequest) {
                 description
             })
 
-        console.log(error)
-        
+        await supabase
+        .from('notification')
+        .insert({
+            id: crypto.randomUUID(),
+            user_id,
+            message: `New task added: ${description}`,
+        })
+
         return NextResponse.json({
             success: true,
             data,

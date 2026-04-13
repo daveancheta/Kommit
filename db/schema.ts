@@ -139,7 +139,6 @@ export const meeting = pgTable("meeting", {
 
 export const notification = pgTable("notification", {
   id: text("id").primaryKey(),
-  groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade"}),
   userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade"}),
   message: text("message").notNull(),
   isRead: boolean('is_read').default(false).notNull(),
