@@ -1,4 +1,5 @@
 import { auth } from "@/lib/auth";
+import { supabase } from "@/lib/supbase/cient";
 import { supabaseAdmin } from "@/lib/supbase/server";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
@@ -17,17 +18,34 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const {data, error} = await supabaseAdmin
-        .from('meeting')
-        .insert({
+        const { data, error } = await supabaseAdmin
+            .from('meeting')
+            .insert({
+                id: crypto.randomUUID(),
+                title,
+                date,
+                time,
+                created_by: session.user.id,
+                group_id
+            })
+            .select()
+            .single()
+
+        const { data: members, error: memberError } = await supabase
+            .from("members")
+            .select()
+            .eq("group_id", data?.group_id)
+
+        const notification = members?.map((mem) => ({
             id: crypto.randomUUID(),
-            title,
-            date, 
-            time,
-            created_by: session.user.id,
-            group_id
-        })
-        
+            user_id: mem.user_id,
+            message: `New meeting scheduled: ${data.title} `
+        }))
+
+        await supabase
+            .from("notification")
+            .insert(notification)
+
         return NextResponse.json({
             success: true
         }, { status: 200 })
