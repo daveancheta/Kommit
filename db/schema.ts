@@ -128,8 +128,8 @@ export const meeting = pgTable("meeting", {
   title: text("title").notNull(),
   date: date("date").notNull(),
   time: time("time").notNull(),
-  createdBy: text("created_by").notNull().references(() => user.id, { onDelete: "cascade"}),
-  groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade"}),
+  createdBy: text("created_by").notNull().references(() => user.id, { onDelete: "cascade" }),
+  groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -139,10 +139,10 @@ export const meeting = pgTable("meeting", {
 
 export const notification = pgTable("notification", {
   id: text("id").primaryKey(),
-  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade"}),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
   message: text("message").notNull(),
   isRead: boolean('is_read').default(false).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
