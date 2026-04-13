@@ -11,13 +11,25 @@ interface User {
     updated_at: string;
 }
 
+interface Notification {
+    id: string;
+    user_id: string;
+    message: string;
+    is_read: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
 interface UserState {
     user: User[];
     handleGetUser: () => Promise<void>;
+    notification: Notification[];
+    handleGetNotifcation: () => Promise<void>;
 }
 
 export const UseUserStore = create<UserState>((set) => ({
     user: [],
+    notification: [],
 
     handleGetUser: async () => {
         try {
@@ -26,6 +38,18 @@ export const UseUserStore = create<UserState>((set) => ({
             const res = await result.json()
 
             set({ user: res.data })
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    handleGetNotifcation: async () => {
+        try {
+            const result = await fetch("/api/notification")
+
+            const res = await result.json()
+
+            set({ notification: res.data })
         } catch (error) {
             console.log(error)
         }

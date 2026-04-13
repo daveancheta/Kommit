@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bell, Check, CheckCheck, Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { UseUserStore } from "@/app/state/use-user-store";
+import { supabase } from "@/lib/supbase/cient";
+import { formatDistance } from "date-fns";
 
 type Notification = {
   id: string;
@@ -94,6 +97,32 @@ function groupByDate(notifications: Notification[]) {
 }
 
 export default function NotificationList() {
+
+  const { handleGetNotifcation, notification } = UseUserStore()
+
+  useEffect(() => {
+    handleGetNotifcation()
+  }, [])
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("notification:user")
+      .on("postgres_changes", {
+        event: "*",
+        schema: "public",
+        table: "notification"
+      },
+        async (payload) => {
+          handleGetNotifcation()
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  })
+
   const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
@@ -107,8 +136,6 @@ export default function NotificationList() {
       prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
     );
   }
-
-  const groups = groupByDate(notifications);
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-2">
@@ -143,57 +170,51 @@ export default function NotificationList() {
 
       {/* Groups */}
       <div className="flex flex-col gap-6">
-        {groups.map(([label, items]) => (
-          <section key={label}>
-            <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-widest mb-2 px-1">
-              {label}
-            </p>
+        <section >
+          <div className="flex flex-col divide-y divide-border rounded-xl border border-border overflow-hidden">
+            {notification.map((n) => (
+              <div
+                key={n.id}
+                onClick={() => markRead(n.id)}
+                className={cn(
+                  "flex items-start gap-3 px-4 py-3.5 cursor-pointer transition-colors duration-150",
+                  n.is_read
+                    ? "bg-card hover:bg-muted/40"
+                    : "bg-muted/20 hover:bg-muted/40"
+                )}
+              >
+                {/* Unread indicator */}
+                <div className="mt-1.5 shrink-0 w-4 flex justify-center">
+                  {!n.is_read ? (
+                    <Circle
+                      className="w-2 h-2 fill-primary text-primary"
+                      strokeWidth={0}
+                    />
+                  ) : (
+                    <Check className="w-3 h-3 text-muted-foreground/40" />
+                  )}
+                </div>
 
-            <div className="flex flex-col divide-y divide-border rounded-xl border border-border overflow-hidden">
-              {items.map((n) => (
-                <div
-                  key={n.id}
-                  onClick={() => markRead(n.id)}
+                {/* Message */}
+                <p
                   className={cn(
-                    "flex items-start gap-3 px-4 py-3.5 cursor-pointer transition-colors duration-150",
-                    n.isRead
-                      ? "bg-card hover:bg-muted/40"
-                      : "bg-muted/20 hover:bg-muted/40"
+                    "flex-1 text-sm leading-relaxed",
+                    n.is_read
+                      ? "text-muted-foreground"
+                      : "text-foreground font-medium"
                   )}
                 >
-                  {/* Unread indicator */}
-                  <div className="mt-1.5 flex-shrink-0 w-4 flex justify-center">
-                    {!n.isRead ? (
-                      <Circle
-                        className="w-2 h-2 fill-primary text-primary"
-                        strokeWidth={0}
-                      />
-                    ) : (
-                      <Check className="w-3 h-3 text-muted-foreground/40" />
-                    )}
-                  </div>
+                  {n.message}
+                </p>
 
-                  {/* Message */}
-                  <p
-                    className={cn(
-                      "flex-1 text-sm leading-relaxed",
-                      n.isRead
-                        ? "text-muted-foreground"
-                        : "text-foreground font-medium"
-                    )}
-                  >
-                    {n.message}
-                  </p>
-
-                  {/* Time */}
-                  <span className="flex-shrink-0 text-[11px] text-muted-foreground/60 mt-0.5 tabular-nums">
-                    {formatRelativeTime(n.createdAt)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </section>
-        ))}
+                {/* Time */}
+                <span className="shrink-0 text-[11px] text-muted-foreground/60 mt-0.5 tabular-nums">
+                  {formatDistance((new Date(), n.created_at), new Date(), { addSuffix: true })}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {notifications.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 text-muted-foreground gap-3">
