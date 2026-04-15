@@ -9,7 +9,7 @@ import { formatDistance } from "date-fns";
 
 export default function NotificationList() {
 
-  const { handleGetNotifcation, notification, isLoading, handleUpdateNotificationValidation } = UseUserStore()
+  const { handleGetNotifcation, notification, isLoading, handleUpdateNotificationValidation, handleUpdateNotificationByIdValidation } = UseUserStore()
 
   useEffect(() => {
     handleGetNotifcation(true)
@@ -39,6 +39,7 @@ export default function NotificationList() {
 
     handleUpdateNotificationValidation()
   }
+
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-2">
@@ -102,7 +103,8 @@ export default function NotificationList() {
               notification.map((n) => (
                 <div
                   key={n.id}
-                  onClick={() => handleUpdateNotification(n.id)}
+                  onClick={() => handleUpdateNotificationByIdValidation(n.id)
+                  }
                   className={cn(
                     "flex items-start gap-3 px-4 py-3.5 cursor-pointer transition-colors duration-150",
                     n.is_read
