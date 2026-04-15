@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { UseUserStore } from "@/app/state/use-user-store";
 import { supabase } from "@/lib/supbase/cient";
 import { formatDistance } from "date-fns";
-import { Skeleton } from "@/components/ui/skeleton";
 
 type Notification = {
   id: string;
@@ -99,11 +98,10 @@ function groupByDate(notifications: Notification[]) {
 
 export default function NotificationList() {
 
-  const { handleGetNotifcation, notification } = UseUserStore()
-  const [isLoading, setIsLoading] = useState(true);
+  const { handleGetNotifcation, notification, isLoading } = UseUserStore()
 
   useEffect(() => {
-    handleGetNotifcation().finally(() => setIsLoading(false));
+    handleGetNotifcation()
   }, [])
 
   useEffect(() => {
@@ -176,57 +174,70 @@ export default function NotificationList() {
           <div className="flex flex-col divide-y divide-border rounded-xl border border-border overflow-hidden">
             {isLoading ? (
               Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="flex items-start gap-3 px-4 py-3.5 bg-card">
+                <div
+                  key={i}
+                  className="flex items-start gap-3 px-4 py-3.5 bg-card"
+                >
+                  {/* Unread indicator skeleton */}
                   <div className="mt-1.5 shrink-0 w-4 flex justify-center">
-                    <Skeleton className="w-3 h-3 rounded-full" />
+                    <div className="w-2 h-2 rounded-full bg-muted animate-pulse" />
                   </div>
-                  <div className="flex-1 space-y-2 py-1">
-                    <Skeleton className="h-3.5 w-[85%]" />
+
+                  {/* Message skeleton */}
+                  <div className="flex-1 space-y-2 py-0.5">
+                    <div className="h-3.5 bg-muted rounded animate-pulse w-3/4" />
+                    <div className="h-3.5 bg-muted rounded animate-pulse w-1/2 opacity-60" />
                   </div>
-                  <Skeleton className="w-12 h-3 shrink-0 mt-1.5" />
+
+                  {/* Time skeleton */}
+                  <div className="shrink-0 mt-0.5">
+                    <div className="w-10 h-3 bg-muted rounded animate-pulse" />
+                  </div>
                 </div>
               ))
-            ) : notification.map((n) => (
-              <div
-                key={n.id}
-                onClick={() => markRead(n.id)}
-                className={cn(
-                  "flex items-start gap-3 px-4 py-3.5 cursor-pointer transition-colors duration-150",
-                  n.is_read
-                    ? "bg-card hover:bg-muted/40"
-                    : "bg-muted/20 hover:bg-muted/40"
-                )}
-              >
-                {/* Unread indicator */}
-                <div className="mt-1.5 shrink-0 w-4 flex justify-center">
-                  {!n.is_read ? (
-                    <Circle
-                      className="w-2 h-2 fill-primary text-primary"
-                      strokeWidth={0}
-                    />
-                  ) : (
-                    <Check className="w-3 h-3 text-muted-foreground/40" />
-                  )}
-                </div>
-
-                {/* Message */}
-                <p
+            ) : (
+              notification.map((n) => (
+                <div
+                  key={n.id}
+                  onClick={() => markRead(n.id)}
                   className={cn(
-                    "flex-1 text-sm leading-relaxed",
+                    "flex items-start gap-3 px-4 py-3.5 cursor-pointer transition-colors duration-150",
                     n.is_read
-                      ? "text-muted-foreground"
-                      : "text-foreground font-medium"
+                      ? "bg-card hover:bg-muted/40"
+                      : "bg-muted/20 hover:bg-muted/40"
                   )}
                 >
-                  {n.message}
-                </p>
+                  {/* Unread indicator */}
+                  <div className="mt-1.5 shrink-0 w-4 flex justify-center">
+                    {!n.is_read ? (
+                      <Circle
+                        className="w-2 h-2 fill-primary text-primary"
+                        strokeWidth={0}
+                      />
+                    ) : (
+                      <Check className="w-3 h-3 text-muted-foreground/40" />
+                    )}
+                  </div>
 
-                {/* Time */}
-                <span className="shrink-0 text-[11px] text-muted-foreground/60 mt-0.5 tabular-nums">
-                  {formatDistance((new Date(), n.created_at), new Date(), { addSuffix: true })}
-                </span>
-              </div>
-            ))}
+                  {/* Message */}
+                  <p
+                    className={cn(
+                      "flex-1 text-sm leading-relaxed",
+                      n.is_read
+                        ? "text-muted-foreground"
+                        : "text-foreground font-medium"
+                    )}
+                  >
+                    {n.message}
+                  </p>
+
+                  {/* Time */}
+                  <span className="shrink-0 text-[11px] text-muted-foreground/60 mt-0.5 tabular-nums">
+                    {formatDistance((new Date(), n.created_at), new Date(), { addSuffix: true })}
+                  </span>
+                </div>
+              ))
+            )}
           </div>
         </section>
 

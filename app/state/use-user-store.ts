@@ -25,11 +25,13 @@ interface UserState {
     handleGetUser: () => Promise<void>;
     notification: Notification[];
     handleGetNotifcation: () => Promise<void>;
+    isLoading: boolean;
 }
 
 export const UseUserStore = create<UserState>((set) => ({
     user: [],
     notification: [],
+    isLoading: false,
 
     handleGetUser: async () => {
         try {
@@ -44,6 +46,8 @@ export const UseUserStore = create<UserState>((set) => ({
     },
 
     handleGetNotifcation: async () => {
+        set({ isLoading: true })
+
         try {
             const result = await fetch("/api/notification")
 
@@ -52,6 +56,8 @@ export const UseUserStore = create<UserState>((set) => ({
             set({ notification: res.data })
         } catch (error) {
             console.log(error)
+        } finally {
+            set({ isLoading: false })
         }
     }
 }))
