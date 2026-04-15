@@ -1,5 +1,6 @@
 
 import * as React from "react"
+import Link from "next/link"
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
@@ -11,8 +12,19 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  SidebarSeparator,
 } from "@/components/ui/sidebar"
-import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, GitCommit, MessageCircle, Puzzle, Bell } from "lucide-react"
+import {
+  AudioLinesIcon,
+  Bell,
+  FrameIcon,
+  MapIcon,
+  MessageCircle,
+  PieChartIcon,
+  Puzzle,
+  Sparkles,
+  TerminalIcon,
+} from "lucide-react"
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth"
 
@@ -33,8 +45,7 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
       {
         name: "Kommit",
         logo: (
-          <GitCommit
-          />
+          <Sparkles />
         ),
         plan: "Enterprise",
       },
