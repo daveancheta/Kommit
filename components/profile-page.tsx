@@ -142,7 +142,7 @@ export default function ProfilePage() {
                 </h1>
               </div>
               <p className="mt-1 text-sm text-muted-foreground">
-                {auth?.email} · Quezon City
+                {auth?.email}
               </p>
 
               <div className="mt-4 flex flex-wrap gap-2">
@@ -171,7 +171,6 @@ export default function ProfilePage() {
             <Button variant="outline" size="sm">
               Edit profile
             </Button>
-            <Button size="sm">New task</Button>
           </div>
         </div>
       </header>
