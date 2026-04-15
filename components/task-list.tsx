@@ -69,6 +69,10 @@ export function TaskList() {
                                         <span>Assigned to:</span>
                                         <span className="font-medium text-foreground">{task.user.name}</span>
                                     </div>
+                                    <div className="text-xs text-muted-foreground flex items-center gap-1.5">
+                                        <span>Deadline:</span>
+                                        <span className="font-medium text-foreground">TBD</span>
+                                    </div>
                                 </div>
                             )
                         )}
