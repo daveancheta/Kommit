@@ -134,8 +134,8 @@ function Conversation() {
                                                                 : <AvatarFallback className="rounded-full">{getInitials(msg.user.name)}</AvatarFallback>
                                                             }
                                                         </Avatar>
-                                                        <div className='flex flex-col'>
-                                                            <h1 className='text-xs text-muted-foreground ml-1'>{msg.user.name}</h1>
+                                                        <div className='flex flex-col gap-1'>
+                                                            <h1 className='text-xs text-muted-foreground ml-1'>{msg.user.name.split(' ')[0]} {msg.user.name.split(' ')[1]}</h1>
                                                             <span className='bg-white dark:bg-black px-4 py-2.5 rounded-tl-sm rounded-bl-2xl rounded-br-2xl rounded-tr-2xl text-black dark:text-white w-fit max-w-sm break-all'>
                                                                 {msg.content}
                                                             </span>
