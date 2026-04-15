@@ -7,98 +7,9 @@ import { UseUserStore } from "@/app/state/use-user-store";
 import { supabase } from "@/lib/supbase/cient";
 import { formatDistance } from "date-fns";
 
-type Notification = {
-  id: string;
-  userId: string;
-  message: string;
-  isRead: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-const MOCK_NOTIFICATIONS: Notification[] = [
-  {
-    id: "1",
-    userId: "user_01",
-    message: "Alex assigned you a new task: \"Finalize Q2 roadmap\".",
-    isRead: false,
-    createdAt: new Date(Date.now() - 1000 * 60 * 5),
-    updatedAt: new Date(Date.now() - 1000 * 60 * 5),
-  },
-  {
-    id: "2",
-    userId: "user_01",
-    message: "Your meeting \"Sprint Planning\" starts in 15 minutes.",
-    isRead: false,
-    createdAt: new Date(Date.now() - 1000 * 60 * 20),
-    updatedAt: new Date(Date.now() - 1000 * 60 * 20),
-  },
-  {
-    id: "3",
-    userId: "user_01",
-    message: "Maria commented on your task: \"Looks good, minor tweaks needed.\"",
-    isRead: false,
-    createdAt: new Date(Date.now() - 1000 * 60 * 60),
-    updatedAt: new Date(Date.now() - 1000 * 60 * 60),
-  },
-  {
-    id: "4",
-    userId: "user_01",
-    message: "You were added to the group \"Design System v2\".",
-    isRead: true,
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 4),
-    updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 4),
-  },
-  {
-    id: "5",
-    userId: "user_01",
-    message: "Task \"Update API docs\" was marked as complete.",
-    isRead: true,
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24),
-    updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24),
-  },
-  {
-    id: "6",
-    userId: "user_01",
-    message: "New member joined your team: Jordan Lee.",
-    isRead: true,
-    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
-    updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
-  },
-];
-
-function formatRelativeTime(date: Date): string {
-  const now = Date.now();
-  const diff = now - date.getTime();
-  const mins = Math.floor(diff / 60000);
-  const hours = Math.floor(diff / 3600000);
-  const days = Math.floor(diff / 86400000);
-
-  if (mins < 1) return "Just now";
-  if (mins < 60) return `${mins}m ago`;
-  if (hours < 24) return `${hours}h ago`;
-  if (days === 1) return "Yesterday";
-  return `${days}d ago`;
-}
-
-function groupByDate(notifications: Notification[]) {
-  const groups: Record<string, Notification[]> = {};
-  const now = Date.now();
-
-  for (const n of notifications) {
-    const diff = now - n.createdAt.getTime();
-    const days = Math.floor(diff / 86400000);
-    const label =
-      days === 0 ? "Today" : days === 1 ? "Yesterday" : "Earlier";
-    groups[label] = [...(groups[label] ?? []), n];
-  }
-
-  return Object.entries(groups);
-}
-
 export default function NotificationList() {
 
-  const { handleGetNotifcation, notification, isLoading } = UseUserStore()
+  const { handleGetNotifcation, notification, isLoading, handleUpdateNotificationValidation } = UseUserStore()
 
   useEffect(() => {
     handleGetNotifcation()
@@ -106,7 +17,7 @@ export default function NotificationList() {
 
   useEffect(() => {
     const channel = supabase
-      .channel("notification:user")
+      .channel("user:notification")
       .on("postgres_changes", {
         event: "*",
         schema: "public",
@@ -121,20 +32,12 @@ export default function NotificationList() {
     return () => {
       supabase.removeChannel(channel)
     }
-  })
+  }, [])
 
-  const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
+  const handleUpdateNotification = (e: any) => {
+    e.preventDefault()
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
-
-  function markAllRead() {
-    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
-  }
-
-  function markRead(id: string) {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
-    );
+    handleUpdateNotificationValidation()
   }
 
   return (
@@ -150,16 +53,16 @@ export default function NotificationList() {
               Notifications
             </h1>
             <p className="text-xs text-muted-foreground">
-              {unreadCount > 0
-                ? `${unreadCount} unread`
+              {notification.filter((n) => !n.is_read).length > 0
+                ? `${notification.filter((n) => !n.is_read).length} unread`
                 : "All caught up"}
             </p>
           </div>
         </div>
 
-        {unreadCount > 0 && (
+        {notification.filter((n) => !n.is_read).length > 0 && (
           <button
-            onClick={markAllRead}
+            onClick={handleUpdateNotification}
             className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors duration-150 px-2.5 py-1.5 rounded-md hover:bg-muted"
           >
             <CheckCheck className="w-3.5 h-3.5" />
@@ -199,7 +102,7 @@ export default function NotificationList() {
               notification.map((n) => (
                 <div
                   key={n.id}
-                  onClick={() => markRead(n.id)}
+                  onClick={() => handleUpdateNotification(n.id)}
                   className={cn(
                     "flex items-start gap-3 px-4 py-3.5 cursor-pointer transition-colors duration-150",
                     n.is_read

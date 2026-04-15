@@ -26,6 +26,7 @@ interface UserState {
     notification: Notification[];
     handleGetNotifcation: () => Promise<void>;
     isLoading: boolean;
+    handleUpdateNotificationValidation: () => Promise<void>;
 }
 
 export const UseUserStore = create<UserState>((set) => ({
@@ -58,6 +59,16 @@ export const UseUserStore = create<UserState>((set) => ({
             console.log(error)
         } finally {
             set({ isLoading: false })
+        }
+    },
+
+    handleUpdateNotificationValidation: async () => {
+        try {
+            await fetch("/api/notification", {
+                method: "PATCH",
+            })
+        } catch (error) {
+            console.log(error)
         }
     }
 }))
