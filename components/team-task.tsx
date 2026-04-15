@@ -42,55 +42,71 @@ function TeamTask() {
     }, [])
     return (
         <div className="p-6 md:p-10 max-w-[1600px] mx-auto w-full">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-4">
-                <div>
-                    <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Your Teams</h1>
-                    <p className="text-muted-foreground mt-2">Manage your groups, members, and upcoming tasks.</p>
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
+                <div className="space-y-1">
+                    <h1 className="text-3xl md:text-5xl font-black tracking-tight text-foreground">Your Teams</h1>
+                    <p className="text-muted-foreground/80 text-base md:text-lg font-medium">Manage your groups, members, and upcoming tasks easily.</p>
                 </div>
-                <CreateGroup />
+                <div className="shrink-0">
+                    <CreateGroup />
+                </div>
             </div>
 
             {isLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {Array.from({ length: 4 }).map((_, index) => (
-                        <div key={index} className="p-5 border border-border/50 rounded-xl bg-card flex flex-col gap-4">
+                        <div key={index} className="p-6 border border-border/40 rounded-2xl bg-card/50 flex flex-col gap-5 shadow-sm">
                             <div className="flex items-start justify-between">
-                                <div className="h-12 w-12 rounded-xl bg-muted animate-pulse shrink-0"></div>
+                                <div className="h-14 w-14 rounded-2xl bg-muted animate-pulse shrink-0"></div>
                             </div>
                             <div>
-                                <div className="h-6 w-3/4 bg-muted animate-pulse rounded"></div>
-                                <div className="flex items-center gap-4 mt-3">
-                                    <div className="h-5 w-20 bg-muted animate-pulse rounded"></div>
-                                    <div className="h-5 w-20 bg-muted animate-pulse rounded"></div>
+                                <div className="h-6 w-3/4 bg-muted animate-pulse rounded mb-4"></div>
+                                <div className="flex items-center gap-3">
+                                    <div className="h-10 flex-1 bg-muted animate-pulse rounded-xl"></div>
+                                    <div className="h-10 flex-1 bg-muted animate-pulse rounded-xl"></div>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {team?.map((t: any) => (
-                        <div key={t.id} className="group p-5 border border-border/50 rounded-xl bg-card hover:bg-muted/30 transition-colors flex flex-col gap-4 cursor-pointer">
-                            <div className="flex items-start justify-between">
-                                <div className="h-12 w-12 rounded-xl bg-muted flex items-center justify-center font-medium text-lg overflow-hidden shrink-0">
+                        <div key={t.id} className="group relative overflow-hidden p-6 rounded-2xl border border-border/40 bg-card/50 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/5 hover:border-primary/30 transition-all duration-300 flex flex-col gap-5 cursor-pointer">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-150 duration-500"></div>
+                            
+                            <div className="flex items-start justify-between relative z-10">
+                                <div className="h-14 w-14 rounded-2xl bg-muted/50 flex items-center justify-center font-bold text-xl overflow-hidden shrink-0 ring-2 ring-border/50 group-hover:ring-primary/30 transition-all shadow-sm">
                                     {t.group?.photo ? (
                                         <img src={t.group.photo} alt={t.group.group_name} className="h-full w-full object-cover" />
                                     ) : (
-                                        <span className="text-muted-foreground">
+                                        <span className="text-primary/70">
                                             {t.group?.group_name?.substring(0, 2).toUpperCase()}
                                         </span>
                                     )}
                                 </div>
                             </div>
 
-                            <div>
-                                <h2 className="font-semibold text-lg truncate">{t.group?.group_name}</h2>
+                            <div className="relative z-10">
+                                <h2 className="font-bold text-xl tracking-tight text-foreground/90 group-hover:text-primary transition-colors truncate">{t.group?.group_name}</h2>
 
-                                <div className="flex items-center gap-4 text-sm mt-3 text-muted-foreground">
-                                    <button onClick={() => setSelectedTeam(t.group.id)}>
+                                <div className="flex items-center gap-3 mt-4">
+                                    <button 
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setSelectedTeam(t.group.id);
+                                        }}
+                                         className='w-full cursor-pointer'
+                                    >
                                         <MemberList members={members} isFetching={isFetching} />
                                     </button>
-                                    <button onClick={() => setSelectedTeam(t.group.id)}>
+                                    <button 
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setSelectedTeam(t.group.id);
+                                        }}
+                                        className='w-full cursor-pointer'
+                                    >
                                         <TaskList />
                                     </button>
                                 </div>

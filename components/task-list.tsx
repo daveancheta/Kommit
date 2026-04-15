@@ -24,7 +24,8 @@ export function TaskList() {
         <div>
             <Dialog>
                 <DialogTrigger asChild>
-                    <div className="flex items-center gap-1.5 cursor-pointer">
+                    <div className="flex-1 flex items-center justify-center py-2 px-3 rounded-xl bg-muted/40 hover:bg-primary/10 hover:text-primary transition-colors border border-transparent hover:border-primary/20 text-sm font-medium"
+                    >
                         <CheckSquare className="h-3.5 w-3.5" />
                     </div>
                 </DialogTrigger>
@@ -58,12 +59,11 @@ export function TaskList() {
                                 <div className="flex flex-col gap-2 rounded-lg border p-4" key={task.id}>
                                     <div className="flex items-center justify-between">
                                         <span className="font-semibold text-sm">{task.description}</span>
-                                        <span className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${
-                                            task.status?.toUpperCase() === 'PENDING' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-100 dark:text-yellow-700' :
-                                            task.status?.toUpperCase() === 'IN-PROGRESS' || task.status?.toUpperCase() === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-700 dark:bg-blue-100 dark:text-blue-700' :
-                                            task.status?.toUpperCase() === 'DONE' ? 'bg-green-100 text-green-700 dark:bg-green-100 dark:text-green-700' :
-                                            'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200'
-                                        }`}>{task.status}</span>
+                                        <span className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${task.status?.toUpperCase() === 'PENDING' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-100 dark:text-yellow-700' :
+                                                task.status?.toUpperCase() === 'IN-PROGRESS' || task.status?.toUpperCase() === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-700 dark:bg-blue-100 dark:text-blue-700' :
+                                                    task.status?.toUpperCase() === 'DONE' ? 'bg-green-100 text-green-700 dark:bg-green-100 dark:text-green-700' :
+                                                        'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200'
+                                            }`}>{task.status}</span>
                                     </div>
                                     <div className="text-xs text-muted-foreground flex items-center gap-1.5 mt-1">
                                         <span>Assigned to:</span>

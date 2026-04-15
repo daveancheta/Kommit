@@ -38,7 +38,8 @@ export function MemberList({ members, isFetching }: { members: any[], isFetching
         <div>
             <Dialog>
                 <DialogTrigger asChild>
-                    <div className="flex items-center gap-1.5 cursor-pointer hover:text-foreground/80 transition-colors">
+                    <div className="flex-1 flex items-center justify-center py-2 px-3 rounded-xl bg-muted/40 hover:bg-primary/10 hover:text-primary transition-colors border border-transparent hover:border-primary/20 text-sm font-medium"
+                    >
                         <Users className="h-3.5 w-3.5" />
                     </div>
                 </DialogTrigger>
