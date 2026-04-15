@@ -74,14 +74,14 @@ export function NavMain({
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
-                  <Link href={item.url} className="relative">
+                <Link href={item.url} className="relative">
+                  <SidebarMenuButton tooltip={item.title} className="w-full h-full">
                     <span>{item.icon}</span>
                     {notification.filter((n) => !n.is_read).length > 0 &&
                       <div className={cn("absolute top-0 right-0 bg-red-400 p-1 rounded-full", item.url !== "/notification" && "hidden")}></div>
                     }
-                  </Link>
-                </SidebarMenuButton>
+                  </SidebarMenuButton>
+                </Link>
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
