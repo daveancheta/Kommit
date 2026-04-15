@@ -30,6 +30,7 @@ export async function GET() {
         const { data } = await supabaseAdmin
             .from('members')
             .select()
+            .eq('status', 'member')
 
         return NextResponse.json({
             success: true,
