@@ -71,7 +71,7 @@ export function CalendarDrawer() {
                         <DrawerTitle className="font-bold">Meeting Schedule</DrawerTitle>
                     </DrawerHeader>
                     <div className="p-4 pb-0">
-                        <div ref={scrollRef} className="grid grid-flow-col auto-cols-[calc((100%-2.25rem)/4)] gap-3 w-full overflow-x-auto pb-4 snap-x scrollable-div">
+                        <div ref={scrollRef} className={`w-full overflow-x-auto pb-4 snap-x scrollable-div ${meeting.length > 0 ? "grid grid-flow-col auto-cols-[calc((100%-2.25rem)/4)] gap-3" : "flex justify-center items-center min-h-[150px]"}`}>
                             {
                                 meeting.length > 0
                                     ? meeting.map((meeting) => (
