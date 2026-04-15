@@ -13,19 +13,44 @@ interface User {
     email_verified: string;
 }
 
+interface Task {
+    id: string;
+    user_id: string;
+    group_id: string;
+    description: string;
+    status: string;
+    created_at: string;
+    updated_at: string;
+    deadline: Date;
+    group: {
+        id: string;
+        photo: string;
+        created_at: Date;
+        created_by: string;
+        group_name: string;
+    }
+}
+
 interface AuthState {
     isSubmitting: boolean;
     auth: User | null;
+    task: Task[];
+    taskCount: number;
+    groupCount: number;
     handleSignInValidation: (email: string, password: string) => Promise<void>;
     handleSignUpValidation: (name: string, date: string, email: string, password: string) => Promise<void>;
     handleSignOutValidation: () => Promise<void>;
     handleGetSession: () => Promise<void>;
     handleGithubSign: () => Promise<void>;
+    handleGetAuthProfile: () => Promise<void>;
 }
 
 export const UseAuthStore = create<AuthState>((set) => ({
     isSubmitting: false,
     auth: null,
+    task: [],
+    taskCount: 0,
+    groupCount: 0,
 
     handleSignInValidation: async (email, password) => {
         set({ isSubmitting: true })
@@ -115,6 +140,21 @@ export const UseAuthStore = create<AuthState>((set) => ({
             console.log(error)
         } finally {
             set({ isSubmitting: false })
+        }
+    },
+
+    handleGetAuthProfile: async () => {
+        try {
+            const result = await fetch('/api/group/task')
+
+            const res = await result.json()
+
+
+            set({ task: res.task })
+            set({ taskCount: res.taskCount })
+            set({ groupCount: res.groupCount })
+        } catch (error) {
+            console.log(error)
         }
     }
 }))

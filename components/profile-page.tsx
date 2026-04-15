@@ -15,52 +15,25 @@ import {
   ListTodo,
   Video,
   Users,
+  AlarmClockCheck,
 } from "lucide-react";
 import { UseAuthStore } from "@/app/state/use-auth-store";
+import { format } from "date-fns";
 
 type TabKey = "tasks" | "groups" | "meetings";
 
 export default function ProfilePage() {
   const [tab, setTab] = useState<TabKey>("tasks");
   const getInitials = useInitials();
-  const { handleGetSession, auth } = UseAuthStore()
+  const { handleGetSession, auth, handleGetAuthProfile, task, taskCount, groupCount } = UseAuthStore()
+
+  useEffect(() => {
+    handleGetAuthProfile()
+  }, [handleGetAuthProfile])
 
   useEffect(() => {
     handleGetSession()
   }, [handleGetSession])
-
-  const tasks = useMemo(
-    () => [
-      {
-        id: "t1",
-        title: "Refactor member assignment flow",
-        group: "Kommit Core",
-        due: "Apr 18",
-        status: "In progress",
-        statusTone: "secondary" as const,
-        icon: Clock3,
-      },
-      {
-        id: "t2",
-        title: "Design profile page tabs",
-        group: "UI/UX",
-        due: "Apr 16",
-        status: "Todo",
-        statusTone: "outline" as const,
-        icon: ListTodo,
-      },
-      {
-        id: "t3",
-        title: "Ship meeting agenda improvements",
-        group: "Meetings",
-        due: "Apr 20",
-        status: "Done",
-        statusTone: "default" as const,
-        icon: CheckCircle2,
-      },
-    ],
-    []
-  );
 
   const groups = useMemo(
     () => [
@@ -148,18 +121,18 @@ export default function ProfilePage() {
               <div className="mt-4 flex flex-wrap gap-2">
                 <div className="inline-flex items-center gap-2 rounded-2xl border border-border/60 bg-background/40 px-3 py-2 text-sm">
                   <FolderKanban className="size-4 text-primary" />
-                  <span className="font-medium">3</span>
+                  <span className="font-medium">{groupCount}</span>
                   <span className="text-muted-foreground">groups</span>
                 </div>
                 <div className="inline-flex items-center gap-2 rounded-2xl border border-border/60 bg-background/40 px-3 py-2 text-sm">
                   <Layers3 className="size-4 text-primary" />
-                  <span className="font-medium">4</span>
+                  <span className="font-medium">{taskCount}</span>
                   <span className="text-muted-foreground">open tasks</span>
                 </div>
                 <div className="inline-flex items-center gap-2 rounded-2xl border border-border/60 bg-background/40 px-3 py-2 text-sm">
                   <CheckCircle2 className="size-4 text-primary" />
                   <span className="font-medium">
-                    4
+                    {task.filter((t) => t.status !== "pending").length}
                   </span>
                   <span className="text-muted-foreground">done this week</span>
                 </div>
@@ -190,7 +163,7 @@ export default function ProfilePage() {
               variant={tab === "tasks" ? "default" : "outline"}
               className="ml-1"
             >
-              {tasks.length}
+              {task.length}
             </Badge>
           </Button>
 
@@ -257,8 +230,7 @@ export default function ProfilePage() {
 
         {tab === "tasks" ? (
           <div className="grid gap-3">
-            {tasks.map((t) => {
-              const Icon = t.icon;
+            {task.map((t) => {
               return (
                 <div
                   key={t.id}
@@ -267,28 +239,28 @@ export default function ProfilePage() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex min-w-0 items-start gap-3">
                       <span className="inline-flex size-9 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-border">
-                        <Icon className="size-4 text-primary" />
+                        <AlarmClockCheck className="size-4 text-primary" />
                       </span>
                       <div className="min-w-0">
                         <p className="truncate text-sm font-semibold">
-                          {t.title}
+                          {t.description}
                         </p>
                         <p className="mt-1 text-xs text-muted-foreground">
-                          {t.group}
+                          {t.group.group_name}
                         </p>
                       </div>
                     </div>
-                    <Badge variant={t.statusTone}>{t.status}</Badge>
+                    <Badge className="capitalize">{t.status}</Badge>
                   </div>
 
                   <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                     <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/20 px-2 py-0.5">
                       <CalendarClock className="size-3.5" />
-                      Due {t.due}
+                      Due {format(t.deadline, "MMM d, yyyy")}
                     </span>
                     <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/20 px-2 py-0.5">
                       <FolderKanban className="size-3.5" />
-                      {t.group}
+                      {t.group.group_name}
                     </span>
                   </div>
                 </div>
