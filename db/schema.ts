@@ -116,6 +116,7 @@ export const task = pgTable("task", {
   groupId: text("group_id").notNull().references(() => group.id, { onDelete: "cascade" }),
   description: text('description').notNull(),
   status: text("status").notNull().default("pending"),
+  deadline: date("deadline").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()

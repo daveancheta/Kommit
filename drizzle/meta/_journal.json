@@ -113,6 +113,13 @@
       "when": 1776077565867,
       "tag": "0015_hot_kylun",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1776242023237,
+      "tag": "0016_amazing_glorian",
+      "breakpoints": true
     }
   ]
 }

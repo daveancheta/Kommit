@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-    const { user_id, group_id, description } = await req.json()
+    const { user_id, group_id, description, deadline } = await req.json()
 
     const session = await auth.api.getSession({
         headers: await headers()
@@ -24,7 +24,8 @@ export async function POST(req: NextRequest) {
                 id: crypto.randomUUID(),
                 user_id,
                 group_id,
-                description
+                description,
+                deadline,
             })
 
         await supabaseAdmin

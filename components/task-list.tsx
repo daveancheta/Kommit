@@ -9,6 +9,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Skeleton } from "@/components/ui/skeleton"
+import { format } from "date-fns"
 import { CheckSquare } from "lucide-react"
 import { useEffect } from "react"
 
@@ -71,7 +72,7 @@ export function TaskList() {
                                     </div>
                                     <div className="text-xs text-muted-foreground flex items-center gap-1.5">
                                         <span>Deadline:</span>
-                                        <span className="font-medium text-foreground">TBD</span>
+                                        <span className="font-medium text-foreground">{format(task.deadline, 'MMM d, yyyy')}</span>
                                     </div>
                                 </div>
                             )

@@ -33,7 +33,7 @@ export function MemberList({ members, isFetching }: { members: any[], isFetching
     const handleAddTask = (e: any) => {
         e.preventDefault()
 
-        handleAddTaskValidation(selectedMember as string, selectedTeam as string, description)
+        handleAddTaskValidation(selectedMember as string, selectedTeam as string, description, deadline)
     }
     return (
         <div>
@@ -111,7 +111,7 @@ export function MemberList({ members, isFetching }: { members: any[], isFetching
                                         <button
                                             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-8 w-8 shrink-0"
 
-                                            disabled={!description.trim() || isSubmitting}
+                                            disabled={!description.trim() || isSubmitting || !deadline}
                                         >
                                             <Send className="h-4 w-4" />
                                         </button>
