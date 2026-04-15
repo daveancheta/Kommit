@@ -103,7 +103,7 @@ export default function NotificationList() {
               notification.map((n) => (
                 <div
                   key={n.id}
-                  onClick={() => handleUpdateNotificationByIdValidation(n.id)
+                  onClick={() => !n.is_read && handleUpdateNotificationByIdValidation(n.id)
                   }
                   className={cn(
                     "flex items-start gap-3 px-4 py-3.5 cursor-pointer transition-colors duration-150",
