@@ -1,5 +1,6 @@
 "use client"
 
+import { UseUserStore } from "@/app/state/use-user-store"
 import {
   Collapsible,
   CollapsibleContent,
@@ -15,9 +16,11 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import { supabase } from "@/lib/supbase/cient"
 import { cn } from "@/lib/utils"
 import { ChevronRightIcon } from "lucide-react"
 import Link from "next/link"
+import { useEffect } from "react"
 
 export function NavMain({
   items,
@@ -33,6 +36,31 @@ export function NavMain({
     }[]
   }[]
 }) {
+  const { notification, handleGetNotifcation } = UseUserStore()
+
+  useEffect(() => {
+    handleGetNotifcation(true)
+  }, [])
+
+  useEffect(() => {
+    const channel = supabase
+      .channel('user:isread')
+      .on('postgres_changes', {
+        event: "*",
+        schema: "public",
+        table: "notification"
+      },
+        async (payload) => {
+          handleGetNotifcation(false)
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [])
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -47,9 +75,11 @@ export function NavMain({
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
-                  <Link href={item.url} className="relative"> 
+                  <Link href={item.url} className="relative">
                     <span>{item.icon}</span>
-                    <div className={cn("absolute top-0 right-0 bg-red-400 p-1 rounded-full", item.url !== "/notification" && "hidden")}></div>
+                    {notification.filter((n) => !n.is_read).length > 0 &&
+                      <div className={cn("absolute top-0 right-0 bg-red-400 p-1 rounded-full", item.url !== "/notification" && "hidden")}></div>
+                    }
                   </Link>
                 </SidebarMenuButton>
               </CollapsibleTrigger>

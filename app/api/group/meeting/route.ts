@@ -1,5 +1,4 @@
 import { auth } from "@/lib/auth";
-import { supabase } from "@/lib/supbase/cient";
 import { supabaseAdmin } from "@/lib/supbase/server";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
@@ -31,7 +30,7 @@ export async function POST(req: NextRequest) {
             .select()
             .single()
 
-        const { data: members, error: memberError } = await supabase
+        const { data: members, error: memberError } = await supabaseAdmin
             .from("members")
             .select()
             .eq("group_id", data?.group_id)
@@ -42,7 +41,7 @@ export async function POST(req: NextRequest) {
             message: `New meeting scheduled: ${data.title} `
         }))
 
-        await supabase
+        await supabaseAdmin
             .from("notification")
             .insert(notification)
 

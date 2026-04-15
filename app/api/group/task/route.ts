@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth";
-import { supabase } from "@/lib/supbase/cient";
+import { supabaseAdmin } from "@/lib/supbase/server";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
         headers: await headers()
     })
 
-    if (!session ) {
+    if (!session) {
         return NextResponse.json({
             success: false,
             message: "Unauthorized. Please sign in to continue."
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
             .from('task')
             .insert({
                 id: crypto.randomUUID(),
@@ -27,13 +27,13 @@ export async function POST(req: NextRequest) {
                 description
             })
 
-        await supabase
-        .from('notification')
-        .insert({
-            id: crypto.randomUUID(),
-            user_id,
-            message: `${session.user.name.split(" ")[0]} assigned you a new task: "${description}"`,
-        })
+        await supabaseAdmin
+            .from('notification')
+            .insert({
+                id: crypto.randomUUID(),
+                user_id,
+                message: `${session.user.name.split(" ")[0]} assigned you a new task: "${description}"`,
+            })
 
         return NextResponse.json({
             success: true,
