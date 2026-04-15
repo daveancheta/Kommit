@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
             .from('chat')
             .insert({
                 id: crypto.randomUUID(),
-                user_id: 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu',
+                user_id: 'wM4Zfdo3hRLttz3h4rWsQ5HceIgoGryL',
                 content: `${data?.user?.name} added by ${session.user.name}`,
                 group_id,
             })

@@ -18,7 +18,7 @@ export async function GET() {
         const { data, error } = await supabase
             .from('user')
             .select()
-            .not('id', 'in', `("${session.user.id}","Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu")`)
+            .not('id', 'in', `("${session.user.id}","wM4Zfdo3hRLttz3h4rWsQ5HceIgoGryL")`)
 
         return NextResponse.json({
             success: true,

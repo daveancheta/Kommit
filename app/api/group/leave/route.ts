@@ -32,7 +32,7 @@ export async function PATCH(req: NextRequest) {
             .from('chat')
             .insert({
                 id: crypto.randomUUID(),
-                user_id: 'Xki9FRjvcZZypkUXt8YLBvwariNAG3qNu',
+                user_id: 'wM4Zfdo3hRLttz3h4rWsQ5HceIgoGryL',
                 content: `${session.user.name} left the team`,
                 group_id,
             })
