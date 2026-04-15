@@ -9,6 +9,7 @@ import { UseChatStore } from "@/app/state/use-chat-store"
 import { cn } from "@/lib/utils"
 import { formatDistance, subDays } from "date-fns"
 import TeamState from "./team-state"
+import { Users } from "lucide-react"
 
 function Teams() {
     const { team, handleGetGroups, isLoading } = UseGroupStore()
@@ -56,7 +57,17 @@ function Teams() {
         <div className='flex flex-col gap-4 cursor-pointer'>
             {isLoading
                 ? <TeamState />
-                : team.map((team) => (
+                : team.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center gap-2 py-8 px-4 text-center">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/50">
+                            <Users className="h-6 w-6 text-muted-foreground" />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <p className="text-sm font-medium">No teams yet</p>
+                            <p className="text-xs text-muted-foreground">You haven't joined any teams.</p>
+                        </div>
+                    </div>
+                ) : team.map((team) => (
                     <div key={team.id} className={cn('flex flex-row items-center gap-2 p-2 px-4',
                         team.group.id === selectedTeam && "bg-background dark:bg-neutral-800 rounded-xl"
                     )} onClick={() => {
