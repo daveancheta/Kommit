@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Button } from './ui/button'
-import { Crown, Ellipsis, LogOut, UserX } from 'lucide-react'
+import { Crown, Ellipsis, LogOut, UserRoundKey, UserX } from 'lucide-react'
 import { UseChatStore } from '@/app/state/use-chat-store'
 import { useInitials } from '@/hooks/use-initials'
 import { UseGroupStore } from '@/app/state/use-group-store'
@@ -15,12 +15,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { supabase } from '@/lib/supbase/cient'
 import { UseAuthStore } from '@/app/state/use-auth-store'
+import AddRole from './add-role'
 
 function TeamMembers() {
     const { auth, handleGetSession } = UseAuthStore()
     const { selectedTeam, selectedGroupCreator, setSelectedTeam, setSelectedTeamName } = UseChatStore()
     const { handleGetTeamMembers, members, handleRemoveMemberValidation, handleLeaveGroupValidation, isSubmitting } = UseGroupStore()
     const getInitials = useInitials()
+    const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
         handleGetSession()
@@ -79,6 +81,12 @@ function TeamMembers() {
                                         <UserX />
                                         View Profile
                                     </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                        onClick={() => setIsOpen(!isOpen)}
+                                        disabled={isSubmitting}>
+                                        <UserRoundKey />
+                                        Assign Role
+                                    </DropdownMenuItem>
                                     <DropdownMenuItem variant="destructive"
                                         onClick={() => handleRemoveMemberValidation(members.user.id, selectedTeam as string)}
                                         hidden={auth?.id !== selectedGroupCreator || auth?.id === members.user.id}
@@ -103,6 +111,7 @@ function TeamMembers() {
                     </div>
                 </AccordionContent>
             )}
+            <AddRole isOpen={isOpen} setIsOpen={setIsOpen}/>
         </div>
     )
 }
