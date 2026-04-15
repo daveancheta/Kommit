@@ -40,8 +40,8 @@ function ConversationMenu() {
     const [id, setId] = useState<string | null>(null)
     const [image, setImage] = useState<string | null>(null)
     const [search, setSearch] = useState<string | null>(null)
-    const [groupPhoto, setGroupPhoto] = useState<any>()
-    const [preview, setPreview] = useState<any>()
+    const [groupPhoto, setGroupPhoto] = useState<File | undefined>()
+    const [preview, setPreview] = useState<string | undefined>()
     const uploadRef = useRef<HTMLInputElement>(null)
     const [groupName, setGroupName] = useState<string>()
 
@@ -49,26 +49,27 @@ function ConversationMenu() {
         handleGetUser()
     }, [handleGetUser])
 
-    const handleAddMember = (e: any) => {
+    const handleAddMember = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         handleAddMemberValidation(id || "", selectedTeam as string)
     }
 
-    const handlePhotoUpdate = (e: any) => {
+    const handlePhotoUpdate = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
+        if (!groupPhoto) return
         handlePhotoUpdateValidation(groupPhoto, selectedTeam as string)
     }
 
-    const handleNameUpdate = (e: any) => {
+    const handleNameUpdate = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         handleNameUpdateValidation(groupName as string, selectedTeam as string)
     }
 
     return (
-        <div className='bg-neutral-200 dark:bg-neutral-900 p-4 w-100 h-[95vh] border rounded-sm overflow-y-auto'>
+        <aside className="scrollable-div h-full w-88 overflow-y-auto rounded-2xl border bg-background p-4 shadow-sm lg:w-96">
             <div className='flex justify-center items-center mt-5'>
                 <div className='flex flex-col gap-1 items-center'>
                     <Avatar key={selectedTeam} className='rounded-full w-20 h-20'>
@@ -85,16 +86,16 @@ function ConversationMenu() {
             </div>
 
             <div className='flex justify-center mt-5 gap-2'>
-                <Button variant='secondary' className='p-4 rounded-full'>
+                <Button variant='secondary' size="icon" className='rounded-full'>
                     <Bell className='size-4' />
                 </Button>
-                <Button variant='secondary' className='p-4 rounded-full'>
+                <Button variant='secondary' size="icon" className='rounded-full'>
                     <Search className='size-4' />
                 </Button>
 
                 <Dialog>
                     <DialogTrigger asChild>
-                        <Button variant='secondary' className='p-4 rounded-full'>
+                        <Button variant='secondary' size="icon" className='rounded-full'>
                             <UserRoundPlus className='size-4' />
                         </Button>
                     </DialogTrigger>
@@ -143,11 +144,19 @@ function ConversationMenu() {
                                 <h1 className='text-lg font-bold mb-4'>Suggested</h1>
                                 <div className='flex flex-col gap-2 items-start'>
                                     {user.slice(0, 5).map((user) =>
-                                        <div key={user.id} className={cn('cursor-pointer w-full hover:bg-neutral-800 rounded-md p-2 px-4 duration-300 transition-all ease-in-out', !user.name.toLocaleLowerCase().includes(search?.toLocaleLowerCase() || "") && "hidden")} onClick={() => {
+                                        <button
+                                            key={user.id}
+                                            type="button"
+                                            className={cn(
+                                                'w-full rounded-md p-2 px-4 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
+                                                !user.name.toLocaleLowerCase().includes(search?.toLocaleLowerCase() || "") && "hidden"
+                                            )}
+                                            onClick={() => {
                                             setUsername(user.name)
                                             setId(user.id)
                                             setImage(user.image)
-                                        }}>
+                                            }}
+                                        >
                                             <div className='flex flex-row items-center gap-2'>
                                                 <Avatar key={user.id} className='rounded-full w-15 h-15'>
                                                     {user.image && user.image.length > 0
@@ -160,7 +169,7 @@ function ConversationMenu() {
                                                     <p className='text-muted-foreground text-xs'>Joined {format(user.created_at, 'MMM dd, yyyy')}</p>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </button>
                                     )}
                                 </div>
                             </div>
@@ -284,7 +293,7 @@ function ConversationMenu() {
                     </AccordionItem>
                 </Accordion>
             </div>
-        </div>
+        </aside>
     )
 }
 

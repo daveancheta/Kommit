@@ -25,15 +25,13 @@ function Conversation() {
     const bottomRef = useRef<HTMLDivElement>(null)
     const [isActive, setIsActive] = useState<boolean>(false)
 
-    console.log(selectedTeamPhoto)
-
     useEffect(() => {
         if (bottomRef.current) {
             bottomRef.current.scrollIntoView({ behavior: "smooth" })
         }
     })
 
-    const handleSendMessage = (e: any) => {
+    const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         handleSendMessageValidation(content, selectedTeam as string)
@@ -69,31 +67,38 @@ function Conversation() {
     }, [selectedTeam])
 
     return (
-        <div className='w-full flex flex-row gap-2 overflow-hidden'>
-            <div className='w-full h-[95vh] border rounded-sm overflow-y-auto z-10 bg-neutral-200 dark:bg-neutral-900 flex flex-col justify-between'>
+        <div className="flex h-full w-full gap-4 overflow-hidden">
+            <section className="flex h-full min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border bg-background shadow-sm">
                 {!selectedTeam
                     ? <ConversationEmptyState />
                     : <>
-                        <div className='flex justify-between items-center px-4'>
-                            <div className='flex flex-row gap-4 items-center p-4'>
+                        <header className="flex items-center justify-between gap-3 border-b px-4 py-3">
+                            <div className="flex min-w-0 items-center gap-3">
                                 <Avatar key={selectedTeam} className="h-12 w-12 rounded-full">
                                     {selectedTeamPhoto !== null
                                         ? <AvatarImage src={selectedTeamPhoto as string} alt={selectedTeam} />
                                         : <AvatarFallback className="rounded-full">{getInitials(selectedTeamName as string)}</AvatarFallback>
                                     }
                                 </Avatar>
-                                <div>
-                                    <h1 className='font-bold text-lg'>{selectedTeamName}</h1>
-                                    <p className='text-muted-foreground text-sm'>5 Members</p>
+                                <div className="min-w-0">
+                                    <h1 className="truncate text-base font-semibold tracking-tight">{selectedTeamName}</h1>
+                                    <p className="truncate text-xs text-muted-foreground">Team chat</p>
                                 </div>
                             </div>
-                            <div className='flex flex-row'>
+                            <div className="flex items-center gap-1">
                                 <CalendarDrawer />
-                                <Button variant="ghost" onClick={() => setIsActive(!isActive)}><EllipsisVertical className='size-4' /></Button>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => setIsActive(!isActive)}
+                                    aria-label="Open conversation menu"
+                                >
+                                    <EllipsisVertical className="size-4" />
+                                </Button>
                             </div>
-                        </div>
-                        <div className='border-b-black border'></div>
-                        <div className='flex-1 p-8 flex flex-col gap-2 overflow-auto scrollable-div'>
+                        </header>
+
+                        <div className="scrollable-div flex-1 overflow-auto bg-background px-4 py-4">
                             {isLoading
                                 ? <MessageSkeleton />
                                 : messages.map((msg) => (
@@ -111,7 +116,7 @@ function Conversation() {
                                                     <div className='flex flex-row gap-2 items-end'>
                                                         <div className='flex flex-col gap-1'>
                                                             <h1 className='text-xs text-muted-foreground text-end mr-1'>You</h1>
-                                                            <span className='bg-black dark:bg-white px-4 py-2.5 rounded-tl-2xl rounded-bl-2xl rounded-br-2xl rounded-tr-sm text-white dark:text-black w-fit max-w-sm break-all'>
+                                                            <span className='bg-foreground px-4 py-2.5 rounded-tl-2xl rounded-bl-2xl rounded-br-2xl rounded-tr-sm text-background w-fit max-w-sm wrap-break-word shadow-sm'>
                                                                 {msg.content}
                                                             </span>
                                                         </div>
@@ -136,7 +141,7 @@ function Conversation() {
                                                         </Avatar>
                                                         <div className='flex flex-col gap-1'>
                                                             <h1 className='text-xs text-muted-foreground ml-1'>{msg.user.name.split(' ')[0]} {msg.user.name.split(' ')[1]}</h1>
-                                                            <span className='bg-white dark:bg-black px-4 py-2.5 rounded-tl-sm rounded-bl-2xl rounded-br-2xl rounded-tr-2xl text-black dark:text-white w-fit max-w-sm break-all'>
+                                                            <span className='bg-background px-4 py-2.5 rounded-tl-sm rounded-bl-2xl rounded-br-2xl rounded-tr-2xl text-foreground w-fit max-w-sm wrap-break-word border shadow-sm'>
                                                                 {msg.content}
                                                             </span>
                                                         </div>
@@ -147,20 +152,21 @@ function Conversation() {
                                 ))}
                             <div ref={bottomRef}></div>
                         </div>
-                        <form onSubmit={handleSendMessage}>
-                            <Field className='p-2'>
-                                <InputGroup className='bg-white'>
+
+                        <form onSubmit={handleSendMessage} className="border-t bg-background p-3">
+                            <Field>
+                                <InputGroup className="bg-background">
                                     <InputGroupTextarea
                                         id="block-end-textarea"
                                         placeholder="Write a message..."
                                         onChange={(e) => setContent(e.target.value)}
                                         value={content}
-                                        className='break-all'
+                                        className="min-h-[44px] resize-none wrap-break-word"
                                     />
                                     <InputGroupAddon align="block-end">
                                         <InputGroupText>0/280</InputGroupText>
-                                        <InputGroupButton type='submit' variant="default" size="sm" className="ml-auto" disabled={isSubmitting}>
-                                            <Send />
+                                        <InputGroupButton type='submit' variant="default" size="sm" className="ml-auto" disabled={isSubmitting || content.trim().length === 0}>
+                                            <Send className="size-4" />
                                         </InputGroupButton>
                                     </InputGroupAddon>
                                 </InputGroup>
@@ -168,10 +174,11 @@ function Conversation() {
                         </form>
                     </>
                 }
-            </div >
+            </section >
             <AnimatePresence>
                 {isActive &&
                     <motion.div
+                        className="hidden h-full shrink-0 md:block"
                         initial={{ x: 700 }}
                         animate={{ x: 0 }}
                         exit={{ x: 700 }}

@@ -1,13 +1,13 @@
 "use client"
 
 import { UseGroupStore } from "@/app/state/use-group-store"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { supabase } from "@/lib/supbase/cient"
 import { useInitials } from "@/hooks/use-initials"
 import { UseChatStore } from "@/app/state/use-chat-store"
 import { cn } from "@/lib/utils"
-import { formatDistance, subDays } from "date-fns"
+import { formatDistance } from "date-fns"
 import TeamState from "./team-state"
 import { Users } from "lucide-react"
 
@@ -54,7 +54,7 @@ function Teams() {
     }, [])
 
     return (
-        <div className='flex flex-col gap-4 cursor-pointer'>
+        <div className="flex flex-col gap-1">
             {isLoading
                 ? <TeamState />
                 : team.length === 0 ? (
@@ -64,19 +64,25 @@ function Teams() {
                         </div>
                         <div className="flex flex-col gap-1">
                             <p className="text-sm font-medium">No teams yet</p>
-                            <p className="text-xs text-muted-foreground">You haven't joined any teams.</p>
+                            <p className="text-xs text-muted-foreground">You haven&apos;t joined any teams.</p>
                         </div>
                     </div>
                 ) : team.map((team) => (
-                    <div key={team.id} className={cn('flex flex-row items-center gap-2 p-2 px-4',
-                        team.group.id === selectedTeam && "bg-background dark:bg-neutral-800 rounded-xl"
-                    )} onClick={() => {
+                    <button
+                        key={team.id}
+                        type="button"
+                        className={cn(
+                            "group flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+                            team.group.id === selectedTeam && "bg-muted"
+                        )}
+                        onClick={() => {
                         setSelectedTeam(team.group.id)
                         setSelectedTeamName(team.group.group_name)
-                        setSelectedTeamPhoto(team.group.photo as any ?? null)
+                        setSelectedTeamPhoto(team.group.photo && team.group.photo.length > 0 ? team.group.photo : null)
                         setSelectedGroupCreator(team.group.created_by as string ?? null)
-                    }}>
-                        <Avatar className="h-12 w-12 rounded-full">
+                        }}
+                    >
+                        <Avatar className="h-11 w-11 rounded-full">
                             {team.group.photo && team.group.photo.length > 0
                                 ? <AvatarImage src={team.group.photo} alt={team.group.group_name} />
                                 : <AvatarFallback className="rounded-full">{getInitials(team.group.group_name)}</AvatarFallback>
@@ -84,15 +90,18 @@ function Teams() {
                         </Avatar>
                         <div className='flex-1 min-w-0'>
                             <div className='flex items-center justify-between gap-2'>
-                                <h2 className='font-bold truncate'>{team.group.group_name}</h2>
+                                <h2 className="truncate text-sm font-semibold leading-none">{team.group.group_name}</h2>
                                 {team.group.chat[team.group.chat.length - 1]?.created_at &&
-                                    <p className='text-xs text-muted-foreground font-bold shrink-0'>{formatDistance((new Date(), team.group.chat[team.group.chat.length - 1]?.created_at), new Date(), { addSuffix: true })}</p>}
+                                    <p className="shrink-0 text-xs font-medium text-muted-foreground">
+                                        {formatDistance(new Date(team.group.chat[team.group.chat.length - 1]!.created_at), new Date(), { addSuffix: true })}
+                                    </p>
+                                }
                             </div>
-                            <p className={cn('text-muted-foreground text-sm truncate',
+                            <p className={cn('text-muted-foreground text-xs truncate',
                                 !team.group.chat[team.group.chat.length - 1]?.user?.name && 'hidden'
                             )}>{team.group.chat[team.group.chat.length - 1]?.user?.name}: {team.group.chat[team.group.chat.length - 1]?.content}</p>
                         </div>
-                    </div>
+                    </button>
                 ))
             }
         </div>

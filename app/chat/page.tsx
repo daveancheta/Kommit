@@ -7,16 +7,23 @@ function page() {
 
     return (
         <Sidebar>
-            <div className='flex flex-row gap-2'>
-                <div className='scrollable-div bg-neutral-200 dark:bg-neutral-900 p-4 w-130 h-[95vh] border rounded-sm overflow-y-auto'>
-                    <header className='flex justify-between items-center mb-2'>
-                        <h1 className='text-lg'>Chats</h1>
+            <div className="flex h-[calc(100vh-2rem)] flex-col gap-4 overflow-hidden md:flex-row">
+                <aside className="flex w-full flex-col overflow-hidden rounded-2xl border bg-background shadow-sm md:w-88 lg:w-96">
+                    <header className="flex items-center justify-between gap-3 border-b px-4 py-3">
+                        <div className="min-w-0">
+                            <h1 className="truncate text-base font-semibold tracking-tight">Chats</h1>
+                            <p className="truncate text-xs text-muted-foreground">Pick a group to start chatting.</p>
+                        </div>
                         <CreateGroup />
                     </header>
-                    <hr className='mb-4' />
-                    <Teams />
-                </div>
-               <Conversation />
+                    <div className="scrollable-div flex-1 overflow-y-auto p-2">
+                        <Teams />
+                    </div>
+                </aside>
+
+                <main className="min-w-0 flex-1 overflow-hidden">
+                    <Conversation />
+                </main>
             </div>
         </Sidebar>
     )

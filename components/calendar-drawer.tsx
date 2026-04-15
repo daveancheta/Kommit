@@ -54,7 +54,7 @@ export function CalendarDrawer() {
         }
     }
 
-    const handleCreateMeeting = (e: any) => {
+    const handleCreateMeeting = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         handleCreateMeetingValidation(title, date, time, selectedTeam as string)

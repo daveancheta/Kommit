@@ -22,12 +22,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 function CreateGroup() {
   const { isSubmitting, handleCreateGroupValidation } = UseGroupStore()
   const [groupName, setGroupName] = useState<string>("The Warriors")
-  const [file, setFile] = useState<any>()
+  const [file, setFile] = useState<File | undefined>()
   const getInitials = useInitials()
-  const [preview, setPreview] = useState<any>()
+  const [preview, setPreview] = useState<string | undefined>()
   const uploadRef = useRef<HTMLInputElement>(null)
 
-  const handleCreateGroup = (e: any) => {
+  const handleCreateGroup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     handleCreateGroupValidation(groupName, file)
@@ -37,8 +37,13 @@ function CreateGroup() {
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className='rounded-full'>
-            <Pen />
+          <Button
+            variant="secondary"
+            size="icon"
+            className="rounded-full"
+            aria-label="Create group"
+          >
+            <Pen className="size-4" />
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-sm">
@@ -57,11 +62,19 @@ function CreateGroup() {
                     : <AvatarFallback className="rounded-full">{getInitials(groupName)}</AvatarFallback>
                   }
                 </Avatar>
-                  <Button type="button" className="text-xs" onClick={() => uploadRef.current?.click()}>Upload</Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="text-xs"
+                  onClick={() => uploadRef.current?.click()}
+                >
+                  Upload
+                </Button>
               </div>
               <Field>
                 <Label htmlFor="name-1">Group Name</Label>
-                <Input type="text" id="name-1" onChange={(e) => setGroupName(e.target.value)} value={groupName}/>
+                <Input type="text" id="name-1" onChange={(e) => setGroupName(e.target.value)} value={groupName} />
               </Field>
 
               <Field className="hidden">
