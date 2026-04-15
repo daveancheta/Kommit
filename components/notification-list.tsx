@@ -12,7 +12,7 @@ export default function NotificationList() {
   const { handleGetNotifcation, notification, isLoading, handleUpdateNotificationValidation } = UseUserStore()
 
   useEffect(() => {
-    handleGetNotifcation()
+    handleGetNotifcation(true)
   }, [])
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function NotificationList() {
         table: "notification"
       },
         async (payload) => {
-          handleGetNotifcation()
+          handleGetNotifcation(false)
         }
       )
       .subscribe()

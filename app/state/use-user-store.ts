@@ -24,7 +24,7 @@ interface UserState {
     user: User[];
     handleGetUser: () => Promise<void>;
     notification: Notification[];
-    handleGetNotifcation: () => Promise<void>;
+    handleGetNotifcation: (showLoading: boolean) => Promise<void>;
     isLoading: boolean;
     handleUpdateNotificationValidation: () => Promise<void>;
 }
@@ -46,8 +46,10 @@ export const UseUserStore = create<UserState>((set) => ({
         }
     },
 
-    handleGetNotifcation: async () => {
-        set({ isLoading: true })
+    handleGetNotifcation: async (showLoading: boolean) => {
+        if (showLoading) {
+            set({ isLoading: true })
+        }
 
         try {
             const result = await fetch("/api/notification")
