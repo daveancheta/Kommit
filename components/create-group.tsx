@@ -72,7 +72,7 @@ function CreateGroup() {
                     setFile(selected)
                     setPreview(URL.createObjectURL(selected))
                   }
-                }} />
+                }} accept="image/*" />
               </Field>
             </FieldGroup>
             <DialogFooter>
