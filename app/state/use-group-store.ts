@@ -5,6 +5,7 @@ interface Team {
     id: string;
     user_id: string;
     group_id: string;
+    role: string;
     created_at: string;
     string: string;
     group: {
@@ -69,6 +70,7 @@ interface Groupstate {
     isFetching: boolean;
     team: Team[];
     members: Member[];
+    memberCount: Member[];
     handleCreateGroupValidation: (group: string, photo: File) => Promise<void>;
     handleGetGroups: (showLoading: boolean) => Promise<void>;
     handleAddMemberValidation: (member_id: string, group_id: string) => Promise<void>;
@@ -78,6 +80,7 @@ interface Groupstate {
     handleRemoveMemberValidation: (user_id: string, group_id: string) => Promise<void>;
     handleLeaveGroupValidation: (group_id: string) => Promise<void>;
     handleAssignRoleValidation: (user_id: string, group_id: string, role: string) => Promise<void>;
+    handleGetTeamMembersCount: () => Promise<void>;
 }
 
 export const UseGroupStore = create<Groupstate>((set) => ({
@@ -87,6 +90,7 @@ export const UseGroupStore = create<Groupstate>((set) => ({
     isFetching: false,
     team: [],
     members: [],
+    memberCount: [],
 
     handleCreateGroupValidation: async (group_name: string, photo: File) => {
         set({ isSubmitting: true })
@@ -257,5 +261,18 @@ export const UseGroupStore = create<Groupstate>((set) => ({
         } finally {
             set({ isSubmitting: false })
         }
+    },
+
+    handleGetTeamMembersCount: async () => {
+        try {
+            const result = await fetch("/api/group/members")
+
+            const res = await result.json()
+
+            set({ memberCount: res.data})
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 }))

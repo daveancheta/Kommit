@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { UseAuthStore } from "@/app/state/use-auth-store";
 import { format } from "date-fns";
+import { UseGroupStore } from "@/app/state/use-group-store";
 
 type TabKey = "tasks" | "groups" | "meetings";
 
@@ -26,6 +27,15 @@ export default function ProfilePage() {
   const [tab, setTab] = useState<TabKey>("tasks");
   const getInitials = useInitials();
   const { handleGetSession, auth, handleGetAuthProfile, task, taskCount, groupCount } = UseAuthStore()
+  const { team, handleGetGroups, isLoading, handleGetTeamMembersCount, memberCount } = UseGroupStore()
+
+  useEffect(() => {
+    handleGetTeamMembersCount()
+  }, [handleGetTeamMembersCount])
+
+  useEffect(() => {
+    handleGetGroups(true)
+  }, [])
 
   useEffect(() => {
     handleGetAuthProfile()
@@ -217,7 +227,7 @@ export default function ProfilePage() {
               {tab === "tasks"
                 ? "A quick snapshot of what you’re working on."
                 : tab === "groups"
-                  ? "Workspaces you’re currently part of."
+                  ? "Team you’re currently part of."
                   : "Upcoming meetings and recent notes."}
             </p>
           </div>
@@ -269,31 +279,28 @@ export default function ProfilePage() {
           </div>
         ) : tab === "groups" ? (
           <div className="grid gap-3 md:grid-cols-2">
-            {groups.map((g) => (
+            {team.map((g) => (
               <div
                 key={g.id}
                 className="rounded-2xl border border-border/60 bg-background/40 p-4"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold">{g.name}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      Updated {g.updated}
-                    </p>
+                    <p className="truncate text-sm font-semibold">{g.group.group_name}</p>
                   </div>
                   <Badge variant="outline" className="capitalize">
-                    {g.role}
+                    {g.role ?? "Member"}
                   </Badge>
                 </div>
 
                 <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/20 px-2 py-0.5">
                     <Users className="size-3.5" />
-                    {g.members} members
+                    {memberCount.filter((m) => m.group_id === g.group.id).length} {memberCount.filter((m) => m.group_id === g.group.id).length > 1 ? "members" : "member"}
                   </span>
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/20 px-2 py-0.5">
                     <FolderKanban className="size-3.5" />
-                    Workspace
+                    Team
                   </span>
                 </div>
               </div>

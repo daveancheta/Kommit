@@ -24,3 +24,20 @@ export async function PATCH(req: NextRequest) {
         }, { status: 400 })
     }
 }
+
+export async function GET() {
+    try {
+        const { data } = await supabaseAdmin
+            .from('members')
+            .select()
+
+        return NextResponse.json({
+            success: true,
+            data
+        }, { status: 200 })
+    } catch (error) {
+        return NextResponse.json({
+            success: false
+        }, { status: 400 })
+    }
+}
