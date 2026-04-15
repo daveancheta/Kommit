@@ -22,7 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 function CreateGroup() {
   const { isSubmitting, handleCreateGroupValidation } = UseGroupStore()
   const [groupName, setGroupName] = useState<string>("The Warriors")
-  const [file, setFile] = useState<File | undefined>()
+  const [file, setFile] = useState<any>()
   const getInitials = useInitials()
   const [preview, setPreview] = useState<string | undefined>()
   const uploadRef = useRef<HTMLInputElement>(null)
