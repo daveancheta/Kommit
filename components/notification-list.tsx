@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { UseUserStore } from "@/app/state/use-user-store";
 import { supabase } from "@/lib/supbase/cient";
 import { formatDistance } from "date-fns";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Notification = {
   id: string;
@@ -99,9 +100,10 @@ function groupByDate(notifications: Notification[]) {
 export default function NotificationList() {
 
   const { handleGetNotifcation, notification } = UseUserStore()
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    handleGetNotifcation()
+    handleGetNotifcation().finally(() => setIsLoading(false));
   }, [])
 
   useEffect(() => {
@@ -172,7 +174,19 @@ export default function NotificationList() {
       <div className="flex flex-col gap-6">
         <section >
           <div className="flex flex-col divide-y divide-border rounded-xl border border-border overflow-hidden">
-            {notification.map((n) => (
+            {isLoading ? (
+              Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="flex items-start gap-3 px-4 py-3.5 bg-card">
+                  <div className="mt-1.5 shrink-0 w-4 flex justify-center">
+                    <Skeleton className="w-3 h-3 rounded-full" />
+                  </div>
+                  <div className="flex-1 space-y-2 py-1">
+                    <Skeleton className="h-3.5 w-[85%]" />
+                  </div>
+                  <Skeleton className="w-12 h-3 shrink-0 mt-1.5" />
+                </div>
+              ))
+            ) : notification.map((n) => (
               <div
                 key={n.id}
                 onClick={() => markRead(n.id)}
@@ -216,7 +230,7 @@ export default function NotificationList() {
           </div>
         </section>
 
-        {notifications.length === 0 && (
+        {!isLoading && notification.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 text-muted-foreground gap-3">
             <Bell className="w-8 h-8 opacity-20" />
             <p className="text-sm">No notifications yet</p>
