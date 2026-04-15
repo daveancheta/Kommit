@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,28 +16,18 @@ import {
   Video,
   Users,
 } from "lucide-react";
+import { UseAuthStore } from "@/app/state/use-auth-store";
 
 type TabKey = "tasks" | "groups" | "meetings";
 
 export default function ProfilePage() {
   const [tab, setTab] = useState<TabKey>("tasks");
   const getInitials = useInitials();
+  const { handleGetSession, auth } = UseAuthStore()
 
-  const profile = useMemo(
-    () => ({
-      name: "Heaven Dave Ancheta",
-      title: "Product Engineer",
-      email: "dave@example.com",
-      location: "Philippines",
-      image: "",
-      stats: {
-        tasksOpen: 6,
-        tasksDoneThisWeek: 12,
-        groups: 3,
-      },
-    }),
-    []
-  );
+  useEffect(() => {
+    handleGetSession()
+  }, [handleGetSession])
 
   const tasks = useMemo(
     () => [
@@ -138,41 +128,38 @@ export default function ProfilePage() {
         <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-start gap-4">
             <Avatar size="lg" className="mt-0.5">
-              {profile.image ? (
-                <AvatarImage src={profile.image} alt={profile.name} />
+              {auth?.image ? (
+                <AvatarImage src={auth?.image} alt={auth?.name} />
               ) : (
-                <AvatarFallback>{getInitials(profile.name)}</AvatarFallback>
+                <AvatarFallback>{getInitials(auth?.name)}</AvatarFallback>
               )}
             </Avatar>
 
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="truncate text-xl font-semibold tracking-tight">
-                  {profile.name}
+                  {auth?.name}
                 </h1>
-                <Badge variant="outline" className="capitalize">
-                  {profile.title}
-                </Badge>
               </div>
               <p className="mt-1 text-sm text-muted-foreground">
-                {profile.email} · {profile.location}
+                {auth?.email} · Quezon City
               </p>
 
               <div className="mt-4 flex flex-wrap gap-2">
                 <div className="inline-flex items-center gap-2 rounded-2xl border border-border/60 bg-background/40 px-3 py-2 text-sm">
                   <FolderKanban className="size-4 text-primary" />
-                  <span className="font-medium">{profile.stats.groups}</span>
+                  <span className="font-medium">3</span>
                   <span className="text-muted-foreground">groups</span>
                 </div>
                 <div className="inline-flex items-center gap-2 rounded-2xl border border-border/60 bg-background/40 px-3 py-2 text-sm">
                   <Layers3 className="size-4 text-primary" />
-                  <span className="font-medium">{profile.stats.tasksOpen}</span>
+                  <span className="font-medium">4</span>
                   <span className="text-muted-foreground">open tasks</span>
                 </div>
                 <div className="inline-flex items-center gap-2 rounded-2xl border border-border/60 bg-background/40 px-3 py-2 text-sm">
                   <CheckCircle2 className="size-4 text-primary" />
                   <span className="font-medium">
-                    {profile.stats.tasksDoneThisWeek}
+                    4
                   </span>
                   <span className="text-muted-foreground">done this week</span>
                 </div>
