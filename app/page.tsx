@@ -12,6 +12,7 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+import LandingNav from "@/components/landing-nav";
 
 export default async function Home() {
   const session = await auth.api.getSession({
@@ -31,20 +32,7 @@ export default async function Home() {
             <span className="text-sm font-semibold tracking-wide">Kommit</span>
           </Link>
 
-          <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
-            <a className="hover:text-foreground" href="#features">
-              Features
-            </a>
-            <a className="hover:text-foreground" href="#workflow">
-              Workflow
-            </a>
-            <a className="hover:text-foreground" href="#pricing">
-              Pricing
-            </a>
-            <a className="hover:text-foreground" href="#faq">
-              FAQ
-            </a>
-          </nav>
+         <LandingNav />
 
           <div className="flex items-center gap-2">
             <Button asChild variant="ghost" size="sm">
@@ -165,7 +153,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="features" className="mx-auto max-w-6xl px-4 py-14">
+      <section id="features" className="mx-auto max-w-6xl px-4 py-14 scroll-mt-5">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
             <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
@@ -210,7 +198,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="workflow" className="border-y border-border/60 bg-muted/10">
+      <section id="workflow" className="border-y border-border/60 bg-muted/10 scroll-mt-5">
         <div className="mx-auto max-w-6xl px-4 py-14">
           <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
             A simple workflow that scales
@@ -271,7 +259,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="pricing" className="mx-auto max-w-6xl px-4 py-14">
+      <section id="pricing" className="mx-auto max-w-6xl px-4 py-14 scroll-mt-5">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
             <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">Pricing</h2>
@@ -355,7 +343,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="faq" className="border-t border-border/60 bg-muted/10">
+      <section id="faq" className="border-t border-border/60 bg-muted/10 scroll-mt-5">
         <div className="mx-auto max-w-6xl px-4 py-14">
           <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">FAQ</h2>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
