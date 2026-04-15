@@ -78,7 +78,7 @@ function Teams() {
                         onClick={() => {
                         setSelectedTeam(team.group.id)
                         setSelectedTeamName(team.group.group_name)
-                        setSelectedTeamPhoto(team.group.photo && team.group.photo.length > 0 ? team.group.photo : null)
+                        setSelectedTeamPhoto(team.group.photo as any ?? null)
                         setSelectedGroupCreator(team.group.created_by as string ?? null)
                         }}
                     >
