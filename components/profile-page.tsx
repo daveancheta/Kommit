@@ -285,8 +285,24 @@ export default function ProfilePage() {
                 className="rounded-2xl border border-border/60 bg-background/40 p-4"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold">{g.group.group_name}</p>
+                  <div className="flex flex-col gap-1">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold">{g.group.group_name}</p>
+                    </div>
+                    {(() => {
+                      const d = g.created_at ? new Date(g.created_at) : null;
+                      const memberSince =
+                        d && !Number.isNaN(d.getTime()) ? format(d, "MMM d, yyyy") : null;
+
+                      if (!memberSince) return null;
+
+                      return (
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/20 px-2 py-0.5 text-xs text-muted-foreground">
+                          <CalendarClock className="size-3.5" />
+                          Member since {memberSince}
+                        </span>
+                      );
+                    })()}
                   </div>
                   <Badge variant="outline" className="capitalize">
                     {g.role ?? "Member"}
