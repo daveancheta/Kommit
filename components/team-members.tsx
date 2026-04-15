@@ -23,6 +23,7 @@ function TeamMembers() {
     const { handleGetTeamMembers, members, handleRemoveMemberValidation, handleLeaveGroupValidation, isSubmitting } = UseGroupStore()
     const getInitials = useInitials()
     const [isOpen, setIsOpen] = useState(false)
+    const [user_id, setUserId] = useState<string>("")
 
     useEffect(() => {
         handleGetSession()
@@ -65,6 +66,9 @@ function TeamMembers() {
                             </Avatar>
                             <div className='flex flex-row items-center gap-2'>
                                 <h1>{members.user.name}</h1>
+                                <span className="text-xs px-2 py-0.5 rounded-full border bg-muted text-muted-foreground capitalize">
+                                    {members.role ?? "member"}
+                                </span>
                                 {members.user.id === selectedGroupCreator && <Crown
                                     className='w-4 h-4 fill-yellow-500 text-yellow-500' />}
                             </div>
@@ -82,7 +86,10 @@ function TeamMembers() {
                                         View Profile
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
-                                        onClick={() => setIsOpen(!isOpen)}
+                                        onClick={() => {
+                                            setIsOpen(!isOpen)
+                                            setUserId(members.user.id)
+                                        }}
                                         disabled={isSubmitting}>
                                         <UserRoundKey />
                                         Assign Role
@@ -111,7 +118,7 @@ function TeamMembers() {
                     </div>
                 </AccordionContent>
             )}
-            <AddRole isOpen={isOpen} setIsOpen={setIsOpen}/>
+            <AddRole isOpen={isOpen} setIsOpen={setIsOpen} user_id={user_id} group_id={selectedTeam as string} />
         </div>
     )
 }

@@ -39,6 +39,7 @@ interface Member {
     id: string;
     user_id: string;
     group_id: string;
+    role: string;
     created_at: string;
     string: string;
     group: {
@@ -76,6 +77,7 @@ interface Groupstate {
     handleGetTeamMembers: (id: string) => Promise<void>;
     handleRemoveMemberValidation: (user_id: string, group_id: string) => Promise<void>;
     handleLeaveGroupValidation: (group_id: string) => Promise<void>;
+    handleAssignRoleValidation: (user_id: string, group_id: string, role: string) => Promise<void>;
 }
 
 export const UseGroupStore = create<Groupstate>((set) => ({
@@ -234,6 +236,22 @@ export const UseGroupStore = create<Groupstate>((set) => ({
                 body: JSON.stringify({ group_id })
             })
 
+        } catch (error) {
+            console.log(error)
+        } finally {
+            set({ isSubmitting: false })
+        }
+    },
+
+    handleAssignRoleValidation: async (user_id: string, group_id: string, role: string) => {
+        set({ isSubmitting: true })
+
+        try {
+            await fetch("/api/group/members", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user_id, group_id, role })
+            })
         } catch (error) {
             console.log(error)
         } finally {

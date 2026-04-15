@@ -22,7 +22,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         }, { status: 200 })
     } catch (error) {
         console.log(error)
-        
+
         return NextResponse.json({
             success: false
         }, { status: 400 })
