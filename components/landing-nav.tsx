@@ -15,9 +15,6 @@ function LandingNav() {
             <button className="hover:text-foreground" onClick={() => scrollIntoView("workflow")}>
                 Workflow
             </button>
-            <button className="hover:text-foreground" onClick={() => scrollIntoView("pricing")}>
-                Pricing
-            </button>
             <button className="hover:text-foreground" onClick={() => scrollIntoView("faq")}>
                 FAQ
             </button>
