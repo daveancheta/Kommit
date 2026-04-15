@@ -85,7 +85,7 @@ export function MemberList({ members, isFetching }: { members: any[], isFetching
                                                 </span>
                                             )}
                                         </div>
-                                        <span className="text-xs text-muted-foreground">Backend Developer</span>
+                                        <span className="text-xs text-muted-foreground capitalize">{member.role ?? "Member"}</span>
                                     </div>
                                     <div className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors" onClick={() => setSelectedMember(selectedMember === member.user.id ? null : member.user.id)}>
                                         <Plus className="h-3.5 w-3.5" />
