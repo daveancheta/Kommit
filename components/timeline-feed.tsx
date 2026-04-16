@@ -38,6 +38,7 @@ export function TimelineFeed() {
   const [content, setContent] = useState<string>("")
   const [image, setImage] = useState<any>()
   const fileRef = useRef<HTMLInputElement>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null) 
 
   useEffect(() => {
     handleGetAllPost(true)
@@ -90,10 +91,31 @@ export function TimelineFeed() {
               onChange={(e) => setContent(e.target.value)}
               value={content}
             />
+            {imagePreview && (
+              <div className="relative mt-2">
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-full max-h-60 object-cover rounded-xl border border-zinc-200 dark:border-zinc-800"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImage(null)
+                    setImagePreview(null)
+                  }}
+                  className="absolute top-2 right-2 bg-black/60 text-white rounded-full px-2 py-1 text-xs hover:bg-black"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
             <input ref={fileRef} className="hidden" type="file" accept="image/*" onChange={(e) => {
               const selected = e.target.files?.[0]
               if (selected) {
                 setImage(selected)
+                setImagePreview(URL.createObjectURL(selected))
               }
             }}
             />
@@ -122,7 +144,7 @@ export function TimelineFeed() {
             <div className="absolute -left-[2.1rem] sm:-left-13 top-0 bg-white dark:bg-zinc-950 p-1 rounded-full z-10 border-2 border-zinc-100 dark:border-zinc-900 shadow-sm transition-transform group-hover:scale-110">
               <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
                 {post.user.image
-                ?  <AvatarImage src={post.user.image} />
+                  ? <AvatarImage src={post.user.image} />
                   : <AvatarFallback>{post.user.name.charAt(0)}</AvatarFallback>
                 }
               </Avatar>
