@@ -32,7 +32,7 @@ function TeamMembers() {
 
     useEffect(() => {
         handleGetTeamMembers(selectedTeam as string)
-    }, [])
+    }, [selectedTeam])
 
     useEffect(() => {
         const channel = supabase
