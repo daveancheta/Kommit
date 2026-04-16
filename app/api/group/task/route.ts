@@ -95,3 +95,26 @@ export async function GET() {
         }, { status: 400 })
     }
 }
+
+export async function PATCH(req: NextRequest) {
+    const { task_id, status } = await req.json()
+
+    try {
+        await supabaseAdmin
+            .from('task')
+            .update({
+                status
+            })
+            .eq('id', task_id)
+
+        return NextResponse.json({
+            success: true,
+        }, { status: 200 })
+    } catch (error) {
+        console.log(error)
+
+        return NextResponse.json({
+            success: false,
+        }, { status: 400 })
+    }
+}

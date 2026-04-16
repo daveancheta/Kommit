@@ -27,6 +27,7 @@ interface TaskState {
     tasks: Task[];
     handleAddTaskValidation: (user_id: string, group_id: string, description: string, deadline: string) => Promise<void>;
     handleGetTasks: (group_id: string) => Promise<void>;
+    handleUpdateTaskStatus: (task_id: string, status: string) => Promise<void>;
 }
 
 export const UseTaskStore = create<TaskState>((set) => ({
@@ -63,6 +64,22 @@ export const UseTaskStore = create<TaskState>((set) => ({
             console.log(error)
         } finally {
             set({ isLoading: false })
+        }
+    },
+
+    handleUpdateTaskStatus: async (task_id: string, status: string) => {
+        set({ isSubmitting: true })
+
+        try {
+            await fetch("/api/group/task", {
+                method: "PATCH",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task_id, status })
+            })
+        } catch (error) {
+            console.log(error)
+        } finally {
+            set({ isSubmitting: true })
         }
     }
 }))

@@ -32,13 +32,14 @@ import {
 import { UseAuthStore } from "@/app/state/use-auth-store";
 import { format } from "date-fns";
 import { UseGroupStore } from "@/app/state/use-group-store";
+import { UseTaskStore } from "@/app/state/use-task-store";
 
 type TabKey = "posts" | "tasks" | "groups" | "meetings";
 
 const STATUS_OPTIONS = [
-  { value: "pending",     label: "Pending",     icon: Circle,       color: "text-zinc-400" },
-  { value: "in-progress", label: "In Progress",  icon: Loader,       color: "text-blue-500" },
-  { value: "done",        label: "Done",         icon: CheckCircle2, color: "text-emerald-500" },
+  { value: "pending", label: "Pending", icon: Circle, color: "text-zinc-400" },
+  { value: "in-progress", label: "In Progress", icon: Loader, color: "text-blue-500" },
+  { value: "done", label: "Done", icon: CheckCircle2, color: "text-emerald-500" },
 ] as const;
 
 type StatusValue = typeof STATUS_OPTIONS[number]["value"];
@@ -49,6 +50,7 @@ export default function ProfilePage() {
   const getInitials = useInitials();
   const { handleGetSession, auth, handleGetAuthProfile, task, taskCount, groupCount } = UseAuthStore()
   const { team, handleGetGroups, isLoading, handleGetTeamMembersCount, memberCount } = UseGroupStore()
+  const { handleUpdateTaskStatus, isSubmitting } = UseTaskStore()
 
   const getStatus = (id: string, fallback: string): StatusValue => {
     if (taskStatuses[id]) return taskStatuses[id];
@@ -80,9 +82,9 @@ export default function ProfilePage() {
     <main className="mx-auto w-full max-w-5xl">
       <header className="rounded-xl overflow-hidden shadow-sm border border-zinc-200 dark:border-zinc-800">
         <div className="h-44 sm:h-56 w-full relative">
-          <img 
-            src="https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2070&auto=format&fit=crop" 
-            alt="Cover" 
+          <img
+            src="https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=2070&auto=format&fit=crop"
+            alt="Cover"
             className="w-full h-full object-cover"
           />
           <button className="absolute top-3 right-3 z-20 h-8 w-8 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-sm transition-colors">
@@ -197,19 +199,19 @@ export default function ProfilePage() {
               {tab === "posts"
                 ? "Your posts"
                 : tab === "tasks"
-                ? "Your tasks"
-                : tab === "groups"
-                  ? "Your groups"
-                  : "Your meetings"}
+                  ? "Your tasks"
+                  : tab === "groups"
+                    ? "Your groups"
+                    : "Your meetings"}
             </h2>
             <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
               {tab === "posts"
                 ? "Recent updates and snippets you've shared."
                 : tab === "tasks"
-                ? "A quick snapshot of what you’re working on."
-                : tab === "groups"
-                  ? "Team you’re currently part of."
-                  : "Upcoming meetings and recent notes."}
+                  ? "A quick snapshot of what you’re working on."
+                  : tab === "groups"
+                    ? "Team you’re currently part of."
+                    : "Upcoming meetings and recent notes."}
             </p>
           </div>
           <Button variant="outline" size="sm" className="border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800">
@@ -249,9 +251,9 @@ export default function ProfilePage() {
               </p>
 
               <div className="mb-4 overflow-hidden rounded-xl border border-zinc-100 dark:border-zinc-800/80">
-                <img 
-                  src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop" 
-                  alt="attachment" 
+                <img
+                  src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
+                  alt="attachment"
                   className="w-full h-auto max-h-[350px] object-cover hover:scale-[1.01] transition-transform duration-500"
                 />
               </div>
@@ -318,7 +320,10 @@ export default function ProfilePage() {
                           <DropdownMenuItem
                             key={value}
                             className="flex items-center gap-2 cursor-pointer"
-                            onClick={() => setStatus(t.id, value)}
+                            onClick={() => {
+                              setStatus(t.id, value)
+                              handleUpdateTaskStatus(t.id, value)
+                            }}
                           >
                             <Icon className={`size-3.5 ${color}`} />
                             <span>{label}</span>
