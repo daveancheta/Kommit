@@ -31,53 +31,10 @@ import { UsePostStore } from "@/app/state/use-post-store"
 import { formatDistance } from "date-fns"
 import { supabase } from "@/lib/supbase/cient"
 
-const MOCK_POSTS = [
-  {
-    id: 1,
-    author: {
-      name: "Jane Doe",
-      title: "Frontend Engineer",
-      avatar: "https://i.pravatar.cc/150?u=jane",
-    },
-    time: "2 hours ago",
-    content: "Just finished building the new timeline feature for our platform! Super excited to see how it improves team collaboration. 🚀",
-    tags: ["feature", "frontend"],
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
-    likes: 24,
-    comments: 3,
-  },
-  {
-    id: 2,
-    author: {
-      name: "Alex Smith",
-      title: "Product Manager",
-      avatar: "https://i.pravatar.cc/150?u=alex",
-    },
-    time: "5 hours ago",
-    content: "Design mockups for the new dashboard are ready for review. Please leave your feedback in the Figma file.",
-    tags: ["design", "review"],
-    likes: 12,
-    comments: 8,
-  },
-  {
-    id: 3,
-    author: {
-      name: "Sarah Jenkins",
-      title: "DevOps",
-      avatar: "https://i.pravatar.cc/150?u=sarah",
-    },
-    time: "Yesterday",
-    content: "The recent updates to our CI/CD pipeline have reduced deployment times by 40%. Huge shoutout to the infrastructure team for making this happen.",
-    tags: ["infrastructure", "milestone"],
-    likes: 45,
-    comments: 11,
-  }
-]
-
 export function TimelineFeed() {
   const { handleGetSession, auth } = UseAuthStore()
   const getInitials = useInitials()
-  const { handleCreatePostValidation, isSubmitting, handleGetAllPost, posts, isLoading } = UsePostStore()
+  const { handleCreatePostValidation, isSubmitting, handleGetAllPost, posts, isLoading, handleDeletePost } = UsePostStore()
   const [content, setContent] = useState<string>("")
   const [image, setImage] = useState<any>()
   const fileRef = useRef<HTMLInputElement>(null)
@@ -105,9 +62,9 @@ export function TimelineFeed() {
       )
       .subscribe()
 
-      return () => {
-        supabase.removeChannel(channel)
-      }
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   const handleCreatePost = (e: any) => {
@@ -212,10 +169,13 @@ export function TimelineFeed() {
                       Report
                     </DropdownMenuItem>
                     <DropdownMenuSeparator className="my-1 border-zinc-100 dark:border-zinc-800" />
-                    <DropdownMenuItem className="flex items-center gap-2.5 px-2 py-2 text-sm text-red-500 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-red-950/30 focus:bg-red-50 dark:focus:bg-red-950/30 focus:text-red-500">
-                      <Trash2 className="w-3.5 h-3.5" />
-                      Delete post
-                    </DropdownMenuItem>
+                    {auth?.id === post.user_id &&
+                      <DropdownMenuItem className="flex items-center gap-2.5 px-2 py-2 text-sm text-red-500 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-red-950/30 focus:bg-red-50 dark:focus:bg-red-950/30 focus:text-red-500"
+                        onClick={() => handleDeletePost(post.id)}>
+                        <Trash2 className="w-3.5 h-3.5" />
+                        Delete post
+                      </DropdownMenuItem>
+                    }
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>

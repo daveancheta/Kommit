@@ -24,6 +24,7 @@ interface PostState {
     posts: Post[];
     handleCreatePostValidation: (content: string, image: File) => Promise<void>;
     handleGetAllPost: (isShowLoading: boolean) => Promise<void>;
+    handleDeletePost: (post_id: string) => Promise<void>;
 }
 
 export const UsePostStore = create<PostState>((set) => ({
@@ -70,6 +71,19 @@ export const UsePostStore = create<PostState>((set) => ({
             console.log(error)
         } finally {
             set({ isLoading: false })
+        }
+    },
+
+    handleDeletePost: async (post_id: string) => {
+        try {
+            await fetch("/api/post", {
+                method: "DELETE",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ post_id })
+            })
+
+        } catch (error) {
+            console.log(error)
         }
     }
 }))

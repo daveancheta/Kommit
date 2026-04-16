@@ -65,3 +65,24 @@ export async function GET() {
         }, { status: 400 })
     }
 }
+
+export async function DELETE(req: NextRequest) {
+    const { post_id } = await req.json()
+
+    try {
+        await supabaseAdmin
+            .from('post')
+            .delete()
+            .eq('id', post_id)
+
+        return NextResponse.json({
+            success: true,
+        }, { status: 200 })
+    } catch (error) {
+        console.log(error)
+
+        return NextResponse.json({
+            success: false
+        }, { status: 400 })
+    }
+}
