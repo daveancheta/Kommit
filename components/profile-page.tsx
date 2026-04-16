@@ -45,39 +45,6 @@ export default function ProfilePage() {
     handleGetSession()
   }, [handleGetSession])
 
-  const meetings = useMemo(
-    () => [
-      {
-        id: "m1",
-        title: "Sprint planning",
-        group: "Kommit Core",
-        when: "Thu · 10:00 AM",
-        duration: "45m",
-        status: "Upcoming",
-        statusTone: "secondary" as const,
-      },
-      {
-        id: "m2",
-        title: "Design review",
-        group: "UI/UX",
-        when: "Fri · 2:00 PM",
-        duration: "30m",
-        status: "Upcoming",
-        statusTone: "outline" as const,
-      },
-      {
-        id: "m3",
-        title: "Retro",
-        group: "Meetings",
-        when: "Mon · 4:30 PM",
-        duration: "60m",
-        status: "Notes posted",
-        statusTone: "default" as const,
-      },
-    ],
-    []
-  );
-
   return (
     <main className="mx-auto w-full max-w-5xl">
       <header className="rounded-3xl border border-border/60 bg-card/40 p-6 shadow-sm backdrop-blur">
@@ -166,23 +133,6 @@ export default function ProfilePage() {
               {team.length}
             </Badge>
           </Button>
-
-          <Button
-            type="button"
-            size="sm"
-            variant={tab === "meetings" ? "secondary" : "ghost"}
-            onClick={() => setTab("meetings")}
-            className="flex-1 justify-center"
-          >
-            <Video className="size-4" />
-            Meetings
-            <Badge
-              variant={tab === "meetings" ? "default" : "outline"}
-              className="ml-1"
-            >
-              {meetings.length}
-            </Badge>
-          </Button>
         </div>
       </div>
 
@@ -250,7 +200,7 @@ export default function ProfilePage() {
               );
             })}
           </div>
-        ) : tab === "groups" ? (
+        ) : (
           <div className="grid gap-3 md:grid-cols-2">
             {team.map((g) => (
               <div
@@ -290,45 +240,6 @@ export default function ProfilePage() {
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/20 px-2 py-0.5">
                     <FolderKanban className="size-3.5" />
                     Team
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid gap-3">
-            {meetings.map((m) => (
-              <div
-                key={m.id}
-                className="rounded-2xl border border-border/60 bg-background/40 p-4"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex min-w-0 items-start gap-3">
-                    <span className="inline-flex size-9 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-border">
-                      <Video className="size-4 text-primary" />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold">{m.title}</p>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {m.group}
-                      </p>
-                    </div>
-                  </div>
-                  <Badge variant={m.statusTone}>{m.status}</Badge>
-                </div>
-
-                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/20 px-2 py-0.5">
-                    <CalendarClock className="size-3.5" />
-                    {m.when}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/20 px-2 py-0.5">
-                    <Clock3 className="size-3.5" />
-                    {m.duration}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/20 px-2 py-0.5">
-                    <FolderKanban className="size-3.5" />
-                    {m.group}
                   </span>
                 </div>
               </div>
