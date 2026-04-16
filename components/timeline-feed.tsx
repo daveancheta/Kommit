@@ -16,6 +16,8 @@ import {
 import { UseAuthStore } from "@/app/state/use-auth-store"
 import { useInitials } from "@/hooks/use-initials"
 import { UsePostStore } from "@/app/state/use-post-store"
+import { formatDistance } from "date-fns"
+import { supabase } from "@/lib/supbase/cient"
 
 const MOCK_POSTS = [
   {
@@ -63,14 +65,38 @@ const MOCK_POSTS = [
 export function TimelineFeed() {
   const { handleGetSession, auth } = UseAuthStore()
   const getInitials = useInitials()
-  const { handleCreatePostValidation, isSubmitting } = UsePostStore()
+  const { handleCreatePostValidation, isSubmitting, handleGetAllPost, posts, isLoading } = UsePostStore()
   const [content, setContent] = useState<string>("")
   const [image, setImage] = useState<any>()
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    handleGetAllPost(true)
+  }, [handleGetAllPost])
+
+  useEffect(() => {
     handleGetSession()
-  }, [handleGetSession])
+  }, [])
+
+  useEffect(() => {
+    const channel = supabase
+      .channel('user:post')
+      .on('postgres_changes',
+        {
+          event: "*",
+          schema: "public",
+          table: "post"
+        },
+        async (payload) => {
+          handleGetAllPost(false)
+        }
+      )
+      .subscribe()
+
+      return () => {
+        supabase.removeChannel(channel)
+      }
+  }, [])
 
   const handleCreatePost = (e: any) => {
     e.preventDefault()
@@ -122,12 +148,12 @@ export function TimelineFeed() {
       <div className="relative pl-6 sm:pl-10 ml-4 sm:ml-6 space-y-8 pb-10">
         <div className="absolute top-0 bottom-0 left-0 w-[2px] bg-linear-to-b from-zinc-200 via-zinc-200 to-transparent dark:from-zinc-800 dark:via-zinc-800 dark:to-transparent" />
 
-        {MOCK_POSTS.map((post) => (
+        {posts.map((post) => (
           <div key={post.id} className="relative group">
             <div className="absolute -left-[2.1rem] sm:-left-13 top-0 bg-white dark:bg-zinc-950 p-1 rounded-full z-10 border-2 border-zinc-100 dark:border-zinc-900 shadow-sm transition-transform group-hover:scale-110">
               <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
-                <AvatarImage src={post.author.avatar} />
-                <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
+                <AvatarImage src={post.user.image} />
+                <AvatarFallback>{post.user.name.charAt(0)}</AvatarFallback>
               </Avatar>
             </div>
 
@@ -135,10 +161,14 @@ export function TimelineFeed() {
               <div className="flex justify-between items-start mb-3">
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{post.author.name}</span>
-                    <span className="text-xs text-zinc-400 dark:text-zinc-500">• {post.time}</span>
+                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{post.user.name}</span>
+                    <span className="text-xs text-zinc-400 dark:text-zinc-500">•
+                      {formatDistance(new Date(post.created_at), new Date(), {
+                        addSuffix: true,
+                      })}
+                    </span>
                   </div>
-                  <span className="text-xs text-zinc-500 dark:text-zinc-400">{post.author.title}</span>
+                  <span className="text-xs text-zinc-500 dark:text-zinc-400">Software Engineer</span>
                 </div>
                 <button className="flex items-center gap-1.5 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors group/btn ml-auto">
                   <Share className="w-4 h-4" />
