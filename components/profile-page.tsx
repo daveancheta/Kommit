@@ -256,7 +256,7 @@ export default function ProfilePage() {
         <Separator className="my-5 bg-zinc-200 dark:bg-zinc-800" />
 
         {tab === "posts" ? (
-          <div className="grid gap-2">
+          <div className={cn("grid", posts.length > 1 && "grid-cols-2 gap-4 items-start")}>
             {posts.map((p) =>
               <div key={p.id} className="bg-white dark:bg-zinc-950/80 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex justify-between items-start mb-3">
