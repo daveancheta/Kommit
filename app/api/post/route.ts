@@ -45,3 +45,23 @@ export async function POST(req: NextRequest) {
         }, { status: 400 })
     }
 }
+
+export async function GET() {
+    try {
+        const { data } = await supabaseAdmin
+            .from('post')
+            .select(`*, 
+                user(*)`)
+
+        return NextResponse.json({
+            success: true,
+            data
+        }, { status: 200 })
+    } catch (error) {
+        console.log(error)
+
+        return NextResponse.json({
+            success: false
+        }, { status: 400 })
+    }
+}
