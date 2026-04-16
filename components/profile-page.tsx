@@ -188,6 +188,12 @@ export default function ProfilePage() {
           >
             <FileText className="size-4 mr-2" />
             Posts
+            <Badge
+              variant={tab === "posts" ? "default" : "outline"}
+              className={`ml-2 px-1.5 h-5 min-w-5 flex items-center justify-center ${tab === "posts" ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 hover:bg-zinc-800" : "border-zinc-200 dark:border-zinc-800 text-zinc-500"}`}
+            >
+              {posts.length}
+            </Badge>
           </Button>
 
           <Button

@@ -20,7 +20,7 @@ export async function GET() {
             .from('post')
             .select()
             .eq('user_id', session.user.id)
-            .order('created_at', { ascending: false})
+            .order('created_at', { ascending: false })
 
         return NextResponse.json({
             success: true,
