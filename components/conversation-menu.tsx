@@ -34,7 +34,7 @@ import TeamMembers from './team-members'
 function ConversationMenu() {
     const { selectedTeam, selectedTeamName, selectedTeamPhoto } = UseChatStore()
     const { user, handleGetUser } = UseUserStore()
-    const { handleAddMemberValidation, isSubmitting, handlePhotoUpdateValidation, handleNameUpdateValidation, isValidating } = UseGroupStore()
+    const { handleAddMemberValidation, isSubmitting, handlePhotoUpdateValidation, handleNameUpdateValidation, isValidating, memberCount, handleGetTeamMembersCount } = UseGroupStore()
     const getInitials = useInitials()
     const [username, setUsername] = useState<string | null>(null)
     const [id, setId] = useState<string | null>(null)
@@ -44,6 +44,10 @@ function ConversationMenu() {
     const [preview, setPreview] = useState<string | undefined>()
     const uploadRef = useRef<HTMLInputElement>(null)
     const [groupName, setGroupName] = useState<string>()
+
+    useEffect(() => {
+        handleGetTeamMembersCount()
+    }, [selectedTeam])
 
     useEffect(() => {
         handleGetUser()
@@ -80,12 +84,12 @@ function ConversationMenu() {
                     </Avatar>
                     <div className='flex flex-col items-center'>
                         <h1 className='font-medium'>{selectedTeamName}</h1>
-                        <p className='text-muted-foreground text-xs'>5 Members</p>
+                        <p className='text-muted-foreground text-xs'>{memberCount.filter((m) => m.group_id === selectedTeam).length}</p>
                     </div>
                 </div>
             </div>
 
-            <div className='flex justify-center mt-5 gap-2'>
+            <div className='flex justify-center mt-5 gap-2'>    
                 <Button variant='secondary' size="icon" className='rounded-full'>
                     <Bell className='size-4' />
                 </Button>
