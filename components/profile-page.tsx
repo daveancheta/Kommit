@@ -45,33 +45,6 @@ export default function ProfilePage() {
     handleGetSession()
   }, [handleGetSession])
 
-  const groups = useMemo(
-    () => [
-      {
-        id: "g1",
-        name: "Kommit Core",
-        role: "admin",
-        members: 8,
-        updated: "2h ago",
-      },
-      {
-        id: "g2",
-        name: "UI/UX",
-        role: "member",
-        members: 5,
-        updated: "yesterday",
-      },
-      {
-        id: "g3",
-        name: "Meetings",
-        role: "owner",
-        members: 4,
-        updated: "3d ago",
-      },
-    ],
-    []
-  );
-
   const meetings = useMemo(
     () => [
       {
@@ -190,7 +163,7 @@ export default function ProfilePage() {
               variant={tab === "groups" ? "default" : "outline"}
               className="ml-1"
             >
-              {groups.length}
+              {team.length}
             </Badge>
           </Button>
 
