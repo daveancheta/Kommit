@@ -25,6 +25,7 @@ interface PostState {
     handleCreatePostValidation: (content: string, image: File) => Promise<void>;
     handleGetAllPost: (isShowLoading: boolean) => Promise<void>;
     handleDeletePost: (post_id: string) => Promise<void>;
+    handleGetPostByUser: (isShowLoading: boolean) => Promise<void>;
 }
 
 export const UsePostStore = create<PostState>((set) => ({
@@ -85,5 +86,23 @@ export const UsePostStore = create<PostState>((set) => ({
         } catch (error) {
             console.log(error)
         }
-    }
+    },
+
+    handleGetPostByUser: async (isShowLoading: boolean) => {
+        if (isShowLoading) {
+            set({ isLoading: true })
+        }
+
+        try {
+            const result = await fetch("/api/post/user")
+
+            const res = await result.json()
+
+            set({ posts: res.data })
+        } catch (error) {
+            console.log(error)
+        } finally {
+            set({ isLoading: false })
+        }
+    },
 }))
