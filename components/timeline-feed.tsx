@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -12,6 +12,8 @@ import {
   Share,
   MoreVertical
 } from "lucide-react"
+import { UseAuthStore } from "@/app/state/use-auth-store"
+import { useInitials } from "@/hooks/use-initials"
 
 const MOCK_POSTS = [
   {
@@ -57,13 +59,22 @@ const MOCK_POSTS = [
 ]
 
 export function TimelineFeed() {
+  const { handleGetSession, auth } = UseAuthStore()
+  const getInitials = useInitials()
+
+  useEffect(() => {
+    handleGetSession()
+  }, [handleGetSession])
+
   return (
     <div className="flex flex-col w-full max-w-3xl mx-auto font-sans">
       <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm mb-8">
         <div className="flex gap-4 items-start">
           <Avatar className="w-10 h-10 ring-2 ring-zinc-50 dark:ring-zinc-900">
-            <AvatarImage src="https://i.pravatar.cc/150?u=current" />
-            <AvatarFallback>ME</AvatarFallback>
+            {auth?.image && auth.image.length > 0
+              ? <AvatarImage src={auth?.image} />
+              : <AvatarFallback>{getInitials(auth?.name)}</AvatarFallback>
+            }
           </Avatar>
           <div className="flex-1 space-y-3">
             <textarea
@@ -110,16 +121,6 @@ export function TimelineFeed() {
                   <MoreVertical className="w-4 h-4" />
                 </Button>
               </div>
-
-              {post.tags && (
-                <div className="flex gap-2 mb-3">
-                  {post.tags.map(tag => (
-                    <span key={tag} className="text-[10px] font-medium uppercase tracking-wider bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 px-2.5 py-1 rounded-full">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
 
               <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed mb-4 whitespace-pre-wrap">
                 {post.content}

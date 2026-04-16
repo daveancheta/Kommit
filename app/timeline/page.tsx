@@ -1,45 +1,14 @@
 import Sidebar from '@/components/sidebar-provider'
 import { TimelineFeed } from '@/components/timeline-feed'
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Bookmark, Users, Square, Plus, TrendingUp, Bell, Puzzle } from "lucide-react"
+import { Bell } from "lucide-react"
+import Profile from '@/components/profile'
 
 export default function TimelinePage() {
   return (
     <Sidebar>
       <div className="flex justify-center max-w-7xl mx-auto w-full gap-6 px-4 md:px-8 py-6 pb-20">
         <aside className="hidden lg:flex flex-col gap-4 w-[240px] shrink-0 sticky top-6 h-fit">
-          <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
-            <div className="h-16 bg-linear-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 relative">
-              <Avatar className="w-16 h-16 absolute -bottom-8 left-1/2 -translate-x-1/2 border-4 border-white dark:border-zinc-950">
-                <AvatarImage src="https://i.pravatar.cc/150?u=current" />
-                <AvatarFallback>ME</AvatarFallback>
-              </Avatar>
-            </div>
-            <div className="pt-10 pb-4 px-4 text-center">
-              <h2 className="text-base font-semibold hover:underline cursor-pointer">Dave Ancheta</h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Full Stack Developer | Building awesome things @ Kommit</p>
-            </div>
-
-            <div className="border-t border-zinc-100 dark:border-zinc-800/50 py-3">
-              <div className="px-4 py-1 flex justify-between hover:bg-zinc-50 dark:hover:bg-zinc-900 cursor-pointer text-xs font-semibold text-zinc-500">
-                <span>Task</span>
-                <span className="text-blue-600 dark:text-blue-400">42</span>
-              </div>
-              <div className="px-4 py-1 flex justify-between items-center hover:bg-zinc-50 dark:hover:bg-zinc-900 cursor-pointer text-xs font-semibold text-zinc-500">
-                <div className="flex items-center gap-1">
-                  <span>Team</span>
-                </div>
-                <span className="text-blue-600 dark:text-blue-400">120</span>
-              </div>
-            </div>
-
-            <div className="border-t border-zinc-100 dark:border-zinc-800/50 p-3 hover:bg-zinc-50 dark:hover:bg-zinc-900 cursor-pointer text-xs">
-              <div className="flex items-center gap-2 font-medium">
-                <Puzzle className="w-4 h-4 text-zinc-500" />
-                <span>My Teams</span>
-              </div>
-            </div>
-          </div>
+         <Profile />
         </aside>
 
         <div className="flex-1 max-w-[600px] w-full min-w-0">
