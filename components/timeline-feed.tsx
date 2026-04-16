@@ -11,8 +11,20 @@ import {
   Sparkles,
   Share,
   MoreVertical,
+  Trash2,
+  Edit2,
+  Link2,
+  Flag,
   Loader2
 } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { UseAuthStore } from "@/app/state/use-auth-store"
 import { useInitials } from "@/hooks/use-initials"
 import { UsePostStore } from "@/app/state/use-post-store"
@@ -170,12 +182,42 @@ export function TimelineFeed() {
                   </div>
                   <span className="text-xs text-zinc-500 dark:text-zinc-400">Software Engineer</span>
                 </div>
-                <button className="flex items-center gap-1.5 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors group/btn ml-auto">
-                  <Share className="w-4 h-4" />
-                </button>
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-zinc-400 hover:text-zinc-700 bg-transparent rounded-full -mt-2 -mr-2">
-                  <MoreVertical className="w-4 h-4" />
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 bg-transparent rounded-full -mt-2 -mr-2 transition-colors"
+                    >
+                      <MoreVertical className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    className="w-48 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-1"
+                  >
+                    <DropdownMenuLabel className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider px-2 pb-1">
+                      Post Actions
+                    </DropdownMenuLabel>
+                    <DropdownMenuItem className="flex items-center gap-2.5 px-2 py-2 text-sm text-zinc-700 dark:text-zinc-300 rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800">
+                      <Edit2 className="w-3.5 h-3.5 text-zinc-500" />
+                      Edit post
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex items-center gap-2.5 px-2 py-2 text-sm text-zinc-700 dark:text-zinc-300 rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800">
+                      <Link2 className="w-3.5 h-3.5 text-zinc-500" />
+                      Copy link
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex items-center gap-2.5 px-2 py-2 text-sm text-zinc-700 dark:text-zinc-300 rounded-lg cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-800">
+                      <Flag className="w-3.5 h-3.5 text-zinc-500" />
+                      Report
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="my-1 border-zinc-100 dark:border-zinc-800" />
+                    <DropdownMenuItem className="flex items-center gap-2.5 px-2 py-2 text-sm text-red-500 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-red-950/30 focus:bg-red-50 dark:focus:bg-red-950/30 focus:text-red-500">
+                      <Trash2 className="w-3.5 h-3.5" />
+                      Delete post
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
 
               <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed mb-4 whitespace-pre-wrap">
