@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(req: NextRequest) {
-    const { group_id } = await req.json()
+    const { group_id, id } = await req.json()
     const session = await auth.api.getSession({
         headers: await headers()
     })
@@ -24,8 +24,7 @@ export async function PATCH(req: NextRequest) {
             })
             .select(`*,
                 user (*)`)
-            .eq('user_id', session.user.id)
-            .eq('group_id', group_id)
+            .eq('id', id)
             .single()
 
         await supabaseAdmin

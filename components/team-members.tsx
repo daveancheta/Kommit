@@ -105,7 +105,7 @@ function TeamMembers() {
                                     </DropdownMenuItem>
                                     <DropdownMenuItem variant="destructive"
                                         onClick={() => {
-                                            handleLeaveGroupValidation(selectedTeam as string)
+                                            handleLeaveGroupValidation(selectedTeam as string, members.id)
                                             setSelectedTeam("")
                                             setSelectedTeamName("")
                                         }}
