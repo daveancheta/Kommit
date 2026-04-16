@@ -161,10 +161,12 @@ function Conversation() {
                                         placeholder="Write a message..."
                                         onChange={(e) => setContent(e.target.value)}
                                         value={content}
-                                        className="min-h-[44px] resize-none wrap-break-word"
+                                        className="min-h-[44px] resize-none w-full break-words whitespace-pre-wrap overflow-hidden"
+                                        style={{ overflowWrap: "anywhere" }}
+                                        maxLength={280}
                                     />
                                     <InputGroupAddon align="block-end">
-                                        <InputGroupText>0/280</InputGroupText>
+                                        <InputGroupText>{content.length}/280</InputGroupText>
                                         <InputGroupButton type='submit' variant="default" size="sm" className="ml-auto" disabled={isSubmitting || content.trim().length === 0}>
                                             <Send className="size-4" />
                                         </InputGroupButton>
