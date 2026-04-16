@@ -25,6 +25,11 @@ export const auth = betterAuth({
                 type: "string",
                 required: true,
                 fieldName: "birthdate",
+            },
+            bio: {
+                type: "string",
+                required: false,
+                fieldName: "bio",
             }
         }
     }

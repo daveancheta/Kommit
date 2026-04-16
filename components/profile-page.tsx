@@ -146,9 +146,11 @@ export default function ProfilePage() {
                 <p className="text-sm text-zinc-400 mt-0.5">
                   {auth?.email}
                 </p>
-                <p className="text-sm font-medium text-zinc-200 mt-2.5">
-                  Full Stack Developer | Building awesome things @ Kommit
-                </p>
+                {auth?.bio &&
+                  <p className="text-sm font-medium text-zinc-200 mt-2.5">
+                    {auth?.bio}
+                  </p>
+                }
               </div>
             </div>
 

@@ -7,6 +7,7 @@ interface User {
     name: string;
     email: string;
     image: string;
+    bio: string;
     birthdate: string;
     created_at: string;
     updated_at: string;

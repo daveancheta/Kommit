@@ -39,7 +39,11 @@ function Profile() {
             </div>
             <div className="pt-10 pb-4 px-4 text-center">
                 <h2 className="text-base font-semibold hover:underline cursor-pointer">{auth?.name}</h2>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Full Stack Developer | Building awesome things @ Kommit</p>
+                {auth?.bio &&
+                    <p className="text-sm font-medium text-zinc-200 mt-2.5">
+                        {auth?.bio}
+                    </p>
+                }
             </div>
 
             <div className="border-t border-zinc-100 dark:border-zinc-800/50 py-3">
