@@ -129,8 +129,8 @@ export default function ProfilePage() {
         <div className="bg-zinc-900 dark:bg-zinc-950 relative px-5 pb-5 pt-0">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4">
-              <div className="-mt-[52px] shrink-0">
-                <Avatar className="h-[104px] w-[104px] ring-4 ring-zinc-900 dark:ring-zinc-950 shadow-xl rounded-full">
+              <div className="-mt-13 shrink-0">
+                <Avatar className="h-26 w-26 ring-4 ring-zinc-900 dark:ring-zinc-950 shadow-xl rounded-full">
                   {auth?.image ? (
                     <AvatarImage src={auth?.image} alt={auth?.name} className="rounded-full" />
                   ) : (
@@ -145,6 +145,9 @@ export default function ProfilePage() {
                 </h1>
                 <p className="text-sm text-zinc-400 mt-0.5">
                   {auth?.email}
+                </p>
+                <p className="text-sm font-medium text-zinc-200 mt-2.5">
+                  Full Stack Developer | Building awesome things @ Kommit
                 </p>
               </div>
             </div>
@@ -184,7 +187,7 @@ export default function ProfilePage() {
             size="sm"
             variant={tab === "posts" ? "secondary" : "ghost"}
             onClick={() => setTab("posts")}
-            className={`flex-1 min-w-[100px] justify-center ${tab === "posts" ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"}`}
+            className={`flex-1 min-w-25 justify-center ${tab === "posts" ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"}`}
           >
             <FileText className="size-4 mr-2" />
             Posts
@@ -327,7 +330,7 @@ export default function ProfilePage() {
                     <img
                       src={p.image}
                       alt="attachment"
-                      className="w-full h-auto max-h-[350px] object-cover hover:scale-[1.01] transition-transform duration-500"
+                      className="w-full h-auto max-h-87.5 object-cover hover:scale-[1.01] transition-transform duration-500"
                     />
                   </div>
                 }
