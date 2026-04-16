@@ -24,6 +24,7 @@ function TeamMembers() {
     const getInitials = useInitials()
     const [isOpen, setIsOpen] = useState(false)
     const [user_id, setUserId] = useState<string>("")
+    const [memberId, setMemberId] = useState<string>("")
 
     useEffect(() => {
         handleGetSession()
@@ -89,6 +90,7 @@ function TeamMembers() {
                                         onClick={() => {
                                             setIsOpen(!isOpen)
                                             setUserId(members.user.id)
+                                            setMemberId(members.id)
                                         }}
                                         disabled={isSubmitting}>
                                         <UserRoundKey />
@@ -118,7 +120,7 @@ function TeamMembers() {
                     </div>
                 </AccordionContent>
             )}
-            <AddRole isOpen={isOpen} setIsOpen={setIsOpen} user_id={user_id} group_id={selectedTeam as string} />
+            <AddRole isOpen={isOpen} setIsOpen={setIsOpen} user_id={user_id} group_id={selectedTeam as string} member_id={memberId} />
         </div>
     )
 }

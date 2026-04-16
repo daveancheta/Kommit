@@ -14,11 +14,12 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { UseGroupStore } from '@/app/state/use-group-store'
 
-function AddRole({ isOpen, setIsOpen, user_id, group_id }: {
+function AddRole({ isOpen, setIsOpen, user_id, group_id, member_id }: {
   isOpen: boolean,
   setIsOpen: (isOpen: boolean) => void,
   user_id: string,
-  group_id: string
+  group_id: string,
+  member_id: string
 }) {
   const { handleAssignRoleValidation } = UseGroupStore()
   const [role, setRole] = useState<string>("")
@@ -26,7 +27,7 @@ function AddRole({ isOpen, setIsOpen, user_id, group_id }: {
   const handleAssignRole = (e: any) => {
     e.preventDefault()
 
-    handleAssignRoleValidation(user_id, group_id, role)
+    handleAssignRoleValidation(user_id, group_id, role, member_id)
   }
 
   return (
