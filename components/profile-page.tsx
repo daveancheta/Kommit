@@ -1,10 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useInitials } from "@/hooks/use-initials";
 import {
   CalendarClock,
@@ -18,6 +24,10 @@ import {
   Sparkles,
   FileText,
   Pencil,
+  ChevronDown,
+  Circle,
+  Loader,
+  CheckCircle2,
 } from "lucide-react";
 import { UseAuthStore } from "@/app/state/use-auth-store";
 import { format } from "date-fns";
@@ -25,11 +35,30 @@ import { UseGroupStore } from "@/app/state/use-group-store";
 
 type TabKey = "posts" | "tasks" | "groups" | "meetings";
 
+const STATUS_OPTIONS = [
+  { value: "pending",     label: "Pending",     icon: Circle,       color: "text-zinc-400" },
+  { value: "in-progress", label: "In Progress",  icon: Loader,       color: "text-blue-500" },
+  { value: "done",        label: "Done",         icon: CheckCircle2, color: "text-emerald-500" },
+] as const;
+
+type StatusValue = typeof STATUS_OPTIONS[number]["value"];
+
 export default function ProfilePage() {
   const [tab, setTab] = useState<TabKey>("posts");
+  const [taskStatuses, setTaskStatuses] = useState<Record<string, StatusValue>>({});
   const getInitials = useInitials();
   const { handleGetSession, auth, handleGetAuthProfile, task, taskCount, groupCount } = UseAuthStore()
   const { team, handleGetGroups, isLoading, handleGetTeamMembersCount, memberCount } = UseGroupStore()
+
+  const getStatus = (id: string, fallback: string): StatusValue => {
+    if (taskStatuses[id]) return taskStatuses[id];
+    const match = STATUS_OPTIONS.find((s) => s.value === fallback);
+    return match ? match.value : "pending";
+  };
+
+  const setStatus = (id: string, status: StatusValue) => {
+    setTaskStatuses((prev) => ({ ...prev, [id]: status }));
+  };
 
   useEffect(() => {
     handleGetTeamMembersCount()
@@ -270,7 +299,33 @@ export default function ProfilePage() {
                         </p>
                       </div>
                     </div>
-                    <Badge variant="outline" className="capitalize border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-950">{t.status}</Badge>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        {(() => {
+                          const current = STATUS_OPTIONS.find((s) => s.value === getStatus(t.id, t.status))!;
+                          const Icon = current.icon;
+                          return (
+                            <button className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-2.5 py-1 text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-sm">
+                              <Icon className={`size-3 ${current.color}`} />
+                              <span className="capitalize">{current.label}</span>
+                              <ChevronDown className="size-3 text-zinc-400" />
+                            </button>
+                          );
+                        })()}
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-40">
+                        {STATUS_OPTIONS.map(({ value, label, icon: Icon, color }) => (
+                          <DropdownMenuItem
+                            key={value}
+                            className="flex items-center gap-2 cursor-pointer"
+                            onClick={() => setStatus(t.id, value)}
+                          >
+                            <Icon className={`size-3.5 ${color}`} />
+                            <span>{label}</span>
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
 
                   <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
