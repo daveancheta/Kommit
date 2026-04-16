@@ -161,7 +161,7 @@ function Conversation() {
                                         placeholder="Write a message..."
                                         onChange={(e) => setContent(e.target.value)}
                                         value={content}
-                                        className="min-h-[44px] resize-none w-full break-words whitespace-pre-wrap overflow-hidden"
+                                        className="min-h-[44px] resize-none w-full wrap-break-word whitespace-pre-wrap overflow-hidden"
                                         style={{ overflowWrap: "anywhere" }}
                                         maxLength={280}
                                     />
