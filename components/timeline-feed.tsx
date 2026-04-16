@@ -86,11 +86,11 @@ export function TimelineFeed() {
       </div>
 
       <div className="relative pl-6 sm:pl-10 ml-4 sm:ml-6 space-y-8 pb-10">
-        <div className="absolute top-0 bottom-0 left-0 w-[2px] bg-gradient-to-b from-zinc-200 via-zinc-200 to-transparent dark:from-zinc-800 dark:via-zinc-800 dark:to-transparent" />
+        <div className="absolute top-0 bottom-0 left-0 w-[2px] bg-linear-to-b from-zinc-200 via-zinc-200 to-transparent dark:from-zinc-800 dark:via-zinc-800 dark:to-transparent" />
 
         {MOCK_POSTS.map((post) => (
           <div key={post.id} className="relative group">
-            <div className="absolute -left-[2.1rem] sm:-left-[3.25rem] top-0 bg-white dark:bg-zinc-950 p-1 rounded-full z-10 border-2 border-zinc-100 dark:border-zinc-900 shadow-sm transition-transform group-hover:scale-110">
+            <div className="absolute -left-[2.1rem] sm:-left-13 top-0 bg-white dark:bg-zinc-950 p-1 rounded-full z-10 border-2 border-zinc-100 dark:border-zinc-900 shadow-sm transition-transform group-hover:scale-110">
               <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
                 <AvatarImage src={post.author.avatar} />
                 <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
