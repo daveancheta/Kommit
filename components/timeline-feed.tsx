@@ -38,7 +38,7 @@ export function TimelineFeed() {
   const [content, setContent] = useState<string>("")
   const [image, setImage] = useState<any>()
   const fileRef = useRef<HTMLInputElement>(null)
-  const [imagePreview, setImagePreview] = useState<string | null>(null) 
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   useEffect(() => {
     handleGetAllPost(true)
@@ -143,9 +143,9 @@ export function TimelineFeed() {
           <div key={post.id} className="relative group">
             <div className="absolute -left-[2.1rem] sm:-left-13 top-0 bg-white dark:bg-zinc-950 p-1 rounded-full z-10 border-2 border-zinc-100 dark:border-zinc-900 shadow-sm transition-transform group-hover:scale-110">
               <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
-                {post.user.image
-                  ? <AvatarImage src={post.user.image} />
-                  : <AvatarFallback>{post.user.name.charAt(0)}</AvatarFallback>
+                {post?.user?.image && post?.user?.image.length > 0
+                  ? <AvatarImage src={post?.user?.image} />
+                  : <AvatarFallback>{post?.user?.name.charAt(0)}</AvatarFallback>
                 }
               </Avatar>
             </div>
@@ -154,9 +154,9 @@ export function TimelineFeed() {
               <div className="flex justify-between items-start mb-3">
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{post.user.name}</span>
+                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{post?.user?.name}</span>
                     <span className="text-xs text-zinc-400 dark:text-zinc-500">•
-                      {formatDistance(new Date(post.created_at), new Date(), {
+                      {formatDistance(new Date(post?.created_at), new Date(), {
                         addSuffix: true,
                       })}
                     </span>
@@ -193,7 +193,7 @@ export function TimelineFeed() {
                       Report
                     </DropdownMenuItem>
                     <DropdownMenuSeparator className="my-1 border-zinc-100 dark:border-zinc-800" />
-                    {auth?.id === post.user_id &&
+                    {auth?.id === post?.user_id &&
                       <DropdownMenuItem className="flex items-center gap-2.5 px-2 py-2 text-sm text-red-500 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-red-950/30 focus:bg-red-50 dark:focus:bg-red-950/30 focus:text-red-500"
                         onClick={() => handleDeletePost(post.id)}>
                         <Trash2 className="w-3.5 h-3.5" />
