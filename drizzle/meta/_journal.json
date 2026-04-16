@@ -127,6 +127,13 @@
       "when": 1776245889164,
       "tag": "0017_lush_virginia_dare",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1776319509186,
+      "tag": "0018_fresh_firestar",
+      "breakpoints": true
     }
   ]
 }

@@ -117,6 +117,9 @@ export function TimelineFeed() {
                   </div>
                   <span className="text-xs text-zinc-500 dark:text-zinc-400">{post.author.title}</span>
                 </div>
+                <button className="flex items-center gap-1.5 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors group/btn ml-auto">
+                  <Share className="w-4 h-4" />
+                </button>
                 <Button variant="ghost" size="icon" className="h-8 w-8 text-zinc-400 hover:text-zinc-700 bg-transparent rounded-full -mt-2 -mr-2">
                   <MoreVertical className="w-4 h-4" />
                 </Button>
@@ -135,24 +138,6 @@ export function TimelineFeed() {
                   />
                 </div>
               )}
-
-              <div className="flex items-center gap-4 pt-3 border-t border-zinc-100 dark:border-zinc-800/60">
-                <button className="flex items-center gap-1.5 text-zinc-500 hover:text-blue-500 transition-colors group/btn">
-                  <div className="p-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/50 group-hover/btn:bg-blue-100 dark:group-hover/btn:bg-blue-900/30">
-                    <Sparkles className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-medium">{post.likes}</span>
-                </button>
-                <button className="flex items-center gap-1.5 text-zinc-500 hover:text-emerald-500 transition-colors group/btn">
-                  <div className="p-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/50 group-hover/btn:bg-emerald-100 dark:group-hover/btn:bg-emerald-900/30">
-                    <MessageSquare className="w-4 h-4" />
-                  </div>
-                  <span className="text-xs font-medium">{post.comments}</span>
-                </button>
-                <button className="flex items-center gap-1.5 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors group/btn ml-auto">
-                  <Share className="w-4 h-4" />
-                </button>
-              </div>
             </div>
           </div>
         ))}
