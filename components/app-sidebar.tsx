@@ -17,6 +17,7 @@ import {
 import {
   AudioLinesIcon,
   Bell,
+  ChartNoAxesGantt,
   FrameIcon,
   MapIcon,
   MessageCircle,
@@ -67,6 +68,14 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
       },
     ],
     navMain: [
+      {
+        title: "Timeline",
+        url: "/timeline",
+        icon: (
+          <ChartNoAxesGantt
+          />
+        ),
+      },
       {
         title: "Team",
         url: "/team",
