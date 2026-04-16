@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,10 +10,12 @@ import {
   MessageSquare,
   Sparkles,
   Share,
-  MoreVertical
+  MoreVertical,
+  Loader2
 } from "lucide-react"
 import { UseAuthStore } from "@/app/state/use-auth-store"
 import { useInitials } from "@/hooks/use-initials"
+import { UsePostStore } from "@/app/state/use-post-store"
 
 const MOCK_POSTS = [
   {
@@ -61,10 +63,20 @@ const MOCK_POSTS = [
 export function TimelineFeed() {
   const { handleGetSession, auth } = UseAuthStore()
   const getInitials = useInitials()
+  const { handleCreatePostValidation, isSubmitting } = UsePostStore()
+  const [content, setContent] = useState<string>("")
+  const [image, setImage] = useState<any>()
+  const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     handleGetSession()
   }, [handleGetSession])
+
+  const handleCreatePost = (e: any) => {
+    e.preventDefault()
+
+    handleCreatePostValidation(content, image)
+  }
 
   return (
     <div className="flex flex-col w-full max-w-3xl mx-auto font-sans">
@@ -76,23 +88,34 @@ export function TimelineFeed() {
               : <AvatarFallback>{getInitials(auth?.name)}</AvatarFallback>
             }
           </Avatar>
-          <div className="flex-1 space-y-3">
+          <form className="flex-1 space-y-3" onSubmit={handleCreatePost}>
             <textarea
               placeholder="Share an update, snippet, or idea..."
-              className="w-full bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 mt-2 min-h-[60px]"
+              className="w-full bg-transparent resize-none outline-none text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 mt-2 min-h-[60px] scrollable-div"
+              onChange={(e) => setContent(e.target.value)}
+              value={content}
+            />
+            <input ref={fileRef} className="hidden" type="file" accept="image/*" onChange={(e) => {
+              const selected = e.target.files?.[0]
+              if (selected) {
+                setImage(selected)
+              }
+            }}
             />
             <div className="flex items-center justify-between border-t border-zinc-100 dark:border-zinc-800/60 pt-3">
               <div className="flex gap-1">
-                <Button variant="ghost" size="sm" className="text-zinc-500 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 rounded-full">
+                <Button type="button" variant="ghost" size="sm" className="text-zinc-500 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 rounded-full"
+                  onClick={() => fileRef.current?.click()}>
                   <ImageIcon className="w-4 h-4 mr-2" />
                   Image
                 </Button>
               </div>
-              <Button className="bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 rounded-full px-6">
-                Post
+              <Button disabled={!content.trim() || isSubmitting} className="bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 rounded-full px-6">
+                {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
+                {isSubmitting ? "Posting..." : "Post"}
               </Button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
 

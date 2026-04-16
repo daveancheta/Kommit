@@ -1,9 +1,21 @@
+import { auth } from "@/lib/auth";
 import cloudinary from "@/lib/cloudinary";
 import { supabaseAdmin } from "@/lib/supbase/server";
+import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
     const { content, image } = await req.json()
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    if (!session) {
+        return NextResponse.json({
+            success: false,
+            message: "Unauthorized. Please sign in to continue."
+        }, { status: 400 })
+    }
 
     let image_url: string | null = null
 
@@ -17,6 +29,7 @@ export async function POST(req: NextRequest) {
             .from('post')
             .insert({
                 id: crypto.randomUUID(),
+                user_id: session.user.id,
                 content,
                 image: image_url
             })
