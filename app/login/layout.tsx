@@ -9,13 +9,14 @@ async function layout({ children }: { children: React.ReactNode }) {
     })
 
     if (session) {
-        redirect('/chat')
+        redirect('/timeline')
     }
-return (
-    <div>
-        {children}
-    </div>
-)
+
+    return (
+        <div>
+            {children}
+        </div>
+    )
 }
 
 export default layout
