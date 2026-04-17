@@ -47,6 +47,8 @@ function EditProfile({ isEditProfileOpen, setIsEditProfileOpen }:
         bio === (auth?.bio ?? "") &&
         profile === (auth?.image ?? "");
 
+    console.log(isUnchanged)
+
     return (
         <motion.div
             initial={{ x: !isEditProfileOpen ? "100%" : "0" }}

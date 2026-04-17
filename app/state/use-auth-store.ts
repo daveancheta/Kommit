@@ -47,7 +47,7 @@ interface AuthState {
     handleUpdateProfileValidation: (name: string, email: string, bio: string, profile: File) => Promise<void>;
 }
 
-export const UseAuthStore = create<AuthState>((set) => ({
+export const UseAuthStore = create<AuthState>((set, get) => ({
     isSubmitting: false,
     auth: null,
     task: [],
@@ -162,13 +162,31 @@ export const UseAuthStore = create<AuthState>((set) => ({
 
     handleUpdateProfileValidation: async (name: string, email: string, bio: string, profile: File) => {
         set({ isSubmitting: true })
+        const tempId = `temp=${crypto.randomUUID()}`
+        const previousProfile = get().auth
 
-        const base64 = profile ? await new Promise<string>((resolve, reject) => {
-            const reader = new FileReader()
-            reader.onloadend = () => resolve(reader.result as string)
-            reader.onerror = reject
-            reader.readAsDataURL(profile)
-        }) : null
+        let base64 = null
+
+        if (previousProfile?.image !== profile.toString()) {
+            base64 = profile ? await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader()
+                reader.onloadend = () => resolve(reader.result as string)
+                reader.onerror = reject
+                reader.readAsDataURL(profile)
+            }) : null
+        }
+
+        const newProfile = {
+            id: tempId,
+            name: name,
+            email: email,
+            bio: bio,
+            image: profile instanceof File ? URL.createObjectURL(profile) as string : previousProfile?.image as string,
+            birthdate: tempId,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            email_verified: "",
+        }
 
         try {
             await fetch("/api/auth", {
@@ -176,6 +194,8 @@ export const UseAuthStore = create<AuthState>((set) => ({
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, email, bio, profile: base64 })
             })
+
+            set({ auth: newProfile })
         } catch (error) {
             console.log(error)
         } finally {
