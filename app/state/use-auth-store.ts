@@ -167,7 +167,7 @@ export const UseAuthStore = create<AuthState>((set, get) => ({
 
         let base64 = null
 
-        if (previousProfile?.image !== profile.toString()) {
+        if (previousProfile?.image !== profile?.toString()) {
             base64 = profile ? await new Promise<string>((resolve, reject) => {
                 const reader = new FileReader()
                 reader.onloadend = () => resolve(reader.result as string)
