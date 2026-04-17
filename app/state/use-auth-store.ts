@@ -44,6 +44,7 @@ interface AuthState {
     handleGetSession: () => Promise<void>;
     handleGithubSign: () => Promise<void>;
     handleGetAuthProfile: () => Promise<void>;
+    handleUpdateProfileValidation: (name: string, email: string, bio: string, profile: File) => Promise<void>;
 }
 
 export const UseAuthStore = create<AuthState>((set) => ({
@@ -156,6 +157,29 @@ export const UseAuthStore = create<AuthState>((set) => ({
             set({ groupCount: res.groupCount })
         } catch (error) {
             console.log(error)
+        }
+    },
+
+    handleUpdateProfileValidation: async (name: string, email: string, bio: string, profile: File) => {
+        set({ isSubmitting: true })
+
+        const base64 = profile ? await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onloadend = () => resolve(reader.result as string)
+            reader.onerror = reject
+            reader.readAsDataURL(profile)
+        }) : null
+
+        try {
+            await fetch("/api/auth", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, bio, profile: base64 })
+            })
+        } catch (error) {
+            console.log(error)
+        } finally {
+            set({ isSubmitting: false })
         }
     }
 }))
