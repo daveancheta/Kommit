@@ -42,6 +42,7 @@ import { UseTaskStore } from "@/app/state/use-task-store";
 import { UsePostStore } from "@/app/state/use-post-store";
 import { supabase } from "@/lib/supbase/cient";
 import { cn } from "@/lib/utils";
+import EditProfile from "./edit-profile";
 
 type TabKey = "posts" | "tasks" | "groups" | "meetings";
 
@@ -61,6 +62,7 @@ export default function ProfilePage() {
   const { team, handleGetGroups, isLoading, handleGetTeamMembersCount, memberCount } = UseGroupStore()
   const { handleUpdateTaskStatus, isSubmitting } = UseTaskStore()
   const { handleGetPostByUser, posts, handleDeletePost } = UsePostStore()
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false)
 
   useEffect(() => {
     handleGetPostByUser(true)
@@ -155,7 +157,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex items-center gap-2 pb-1 self-end">
-              <Button variant="outline" size="sm" className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white font-medium">
+              <Button onClick={() => setIsEditProfileOpen(!isEditProfileOpen)} variant="outline" size="sm" className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white font-medium">
                 Edit profile
               </Button>
             </div>
@@ -454,6 +456,7 @@ export default function ProfilePage() {
           </div>
         )}
       </section>
+      <EditProfile isEditProfileOpen={isEditProfileOpen} setIsEditProfileOpen={setIsEditProfileOpen} />
     </main>
   );
 }
