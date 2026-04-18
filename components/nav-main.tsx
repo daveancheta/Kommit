@@ -1,5 +1,6 @@
 "use client"
 
+import { UseAuthStore } from "@/app/state/use-auth-store"
 import { UseUserStore } from "@/app/state/use-user-store"
 import {
   Collapsible,
@@ -38,6 +39,11 @@ export function NavMain({
 }) {
   const { notification, handleGetNotification } = UseUserStore()
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const { handleGetSession, auth} = UseAuthStore()
+
+  useEffect(() => {
+    handleGetSession()
+  }, [handleGetSession])
 
   useEffect(() => {
     audioRef.current = new Audio("/sound/notification-sound.mp3")
@@ -55,9 +61,11 @@ export function NavMain({
         schema: "public",
         table: "notification"
       },
-        async (payload) => {
+        async (payload: any) => {
           handleGetNotification(false)
-          audioRef.current?.play()
+          if (payload.new.user_id === auth?.id) {
+            audioRef.current?.play()
+          }
         }
       )
       .subscribe()
