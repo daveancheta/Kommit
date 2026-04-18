@@ -24,7 +24,7 @@ interface UserState {
     user: User[];
     handleGetUser: () => Promise<void>;
     notification: Notification[];
-    handleGetNotifcation: (showLoading: boolean) => Promise<void>;
+    handleGetNotification: (showLoading: boolean) => Promise<void>;
     isLoading: boolean;
     handleUpdateNotificationValidation: () => Promise<void>;
     handleUpdateNotificationByIdValidation: (id: string) => Promise<void>;
@@ -47,7 +47,7 @@ export const UseUserStore = create<UserState>((set) => ({
         }
     },
 
-    handleGetNotifcation: async (showLoading: boolean) => {
+    handleGetNotification: async (showLoading: boolean) => {
         if (showLoading) {
             set({ isLoading: true })
         }

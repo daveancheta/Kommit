@@ -20,7 +20,7 @@ import { supabase } from "@/lib/supbase/cient"
 import { cn } from "@/lib/utils"
 import { ChevronRightIcon } from "lucide-react"
 import Link from "next/link"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 export function NavMain({
   items,
@@ -36,10 +36,15 @@ export function NavMain({
     }[]
   }[]
 }) {
-  const { notification, handleGetNotifcation } = UseUserStore()
+  const { notification, handleGetNotification } = UseUserStore()
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
-    handleGetNotifcation(true)
+    audioRef.current = new Audio("/sound/notification-sound.mp3")
+  }, [])
+
+  useEffect(() => {
+    handleGetNotification(true)
   }, [])
 
   useEffect(() => {
@@ -51,7 +56,8 @@ export function NavMain({
         table: "notification"
       },
         async (payload) => {
-          handleGetNotifcation(false)
+          handleGetNotification(false)
+          audioRef.current?.play()
         }
       )
       .subscribe()

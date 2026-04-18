@@ -9,7 +9,7 @@ import React, { useEffect } from 'react'
 
 function Notification() {
     const {
-        handleGetNotifcation,
+        handleGetNotification,
         notification,
         isLoading,
         handleUpdateNotificationValidation,
@@ -17,7 +17,7 @@ function Notification() {
     } = UseUserStore();
 
     useEffect(() => {
-        handleGetNotifcation(true)
+        handleGetNotification(true)
     }, [])
 
     useEffect(() => {
@@ -29,7 +29,7 @@ function Notification() {
                 table: "notification"
             },
                 async (payload) => {
-                    handleGetNotifcation(false)
+                    handleGetNotification(false)
                 }
             )
             .subscribe()

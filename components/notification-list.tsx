@@ -10,7 +10,7 @@ import { formatDistance } from "date-fns";
 export default function NotificationList() {
 
   const {
-    handleGetNotifcation,
+    handleGetNotification,
     notification,
     isLoading,
     handleUpdateNotificationValidation,
@@ -23,7 +23,7 @@ export default function NotificationList() {
   );
 
   useEffect(() => {
-    handleGetNotifcation(true)
+    handleGetNotification(true)
   }, [])
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function NotificationList() {
         table: "notification"
       },
         async (payload) => {
-          handleGetNotifcation(false)
+          handleGetNotification(false)
         }
       )
       .subscribe()
