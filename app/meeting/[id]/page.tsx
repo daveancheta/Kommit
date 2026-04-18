@@ -6,8 +6,13 @@ import {
 import '@livekit/components-styles'
 import { Track } from 'livekit-client'
 import { Camera, CameraOff, Mic, MicOff, PhoneOff, ScreenShare, ScreenShareOff } from 'lucide-react'
+import { Metadata } from 'next'
 import { useRouter } from 'next/navigation'
 import React, { use, useState } from 'react'
+
+export const metadata: Metadata = {
+    title: "Meeting",
+  };
 
 function VideoGrid() {
     const tracks = useTracks(

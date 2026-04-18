@@ -3,6 +3,11 @@ import { TimelineFeed } from '@/components/timeline-feed'
 import { Bell } from "lucide-react"
 import Profile from '@/components/profile'
 import Notification from '@/components/notification'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: "Timeline",
+};
 
 export default function TimelinePage() {
   return (
