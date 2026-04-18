@@ -2,11 +2,6 @@ import Conversation from '@/components/conversation'
 import CreateGroup from '@/components/create-group'
 import Sidebar from '@/components/sidebar-provider'
 import Teams from '@/components/team'
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-    title: "Chat",
-  };
 
 function page() {
 
