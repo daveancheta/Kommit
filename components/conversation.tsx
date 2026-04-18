@@ -24,6 +24,11 @@ function Conversation() {
     const [content, setContent] = useState<string>("")
     const bottomRef = useRef<HTMLDivElement>(null)
     const [isActive, setIsActive] = useState<boolean>(false)
+    const audioRef = useRef<HTMLAudioElement | null>(null)
+
+    useEffect(() => {
+        audioRef.current = new Audio("/sound/message-sound.mp3")
+    }, [])
 
     useEffect(() => {
         if (bottomRef.current) {
@@ -55,8 +60,11 @@ function Conversation() {
                 schema: 'public',
                 table: 'chat'
             },
-                async (payload) => {
+                async (payload: any) => {
                     await handleGetMessages(selectedTeam as string, false)
+                    if (payload.new.user_id !== auth?.id) {
+                        audioRef.current?.play()
+                    }
                 }
             )
             .subscribe()
