@@ -44,7 +44,7 @@ export function MemberList({ members, isFetching }: { members: any[], isFetching
                         <Users className="h-3.5 w-3.5" />
                     </div>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
+                <DialogContent className="sm:max-w-md max-h-[80vh] overflow-y-auto scrollable-div">
                     <DialogHeader>
                         <DialogTitle>Team Members</DialogTitle>
                         <DialogDescription>

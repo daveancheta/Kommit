@@ -30,14 +30,14 @@ export function TaskList() {
                         <CheckSquare className="h-3.5 w-3.5" />
                     </div>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-md sm:max-h-sm">
+                <DialogContent className="sm:max-w-md max-h-[80vh] overflow-y-auto scrollable-div">
                     <DialogHeader>
                         <DialogTitle>Team Tasks</DialogTitle>
                         <DialogDescription>
                             Current tasks assigned to this team.
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="space-y-3 py-4 overflow-auto">
+                    <div className="space-y-3 py-4">
                         {isLoading ? (
                             Array.from({ length: 3 }).map((_, i) => (
                                 <div className="flex flex-col gap-2 rounded-lg border p-4" key={i}>
