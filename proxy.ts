@@ -20,7 +20,7 @@ export const aj = arcjet({
         fixedWindow({
             mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
             window: "60s", // 60 second fixed window
-            max: 100, // allow a maximum of 100 requests
+            max: 200, // allow a maximum of 200 requests
         }),
     ],
 });
