@@ -25,7 +25,7 @@ export const aj = arcjet({
     ],
 });
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
     const decision = await aj.protect(req);
 
     if (decision.isDenied()) {
