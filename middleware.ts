@@ -1,9 +1,10 @@
-import arcjet, { detectBot } from "@arcjet/next";
+import arcjet, { detectBot, fixedWindow } from "@arcjet/next";
 import { isSpoofedBot } from "@arcjet/inspect";
 import { NextRequest, NextResponse } from "next/server";
 
 export const aj = arcjet({
     key: process.env.ARCJET_KEY!, // Get your site key from https://app.arcjet.com
+    characteristics: ["ip.src"], // track requests by IP address
     rules: [
         detectBot({
             mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
@@ -15,6 +16,11 @@ export const aj = arcjet({
                 //"CATEGORY:MONITOR", // Uptime monitoring services
                 //"CATEGORY:PREVIEW", // Link previews e.g. Slack, Discord
             ],
+        }),
+        fixedWindow({
+            mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
+            window: "60s", // 60 second fixed window
+            max: 100, // allow a maximum of 100 requests
         }),
     ],
 });
@@ -35,6 +41,8 @@ export async function middleware(req: NextRequest) {
             );
         }
     }
+
+    return NextResponse.next()
 }
 
 export const config = {
