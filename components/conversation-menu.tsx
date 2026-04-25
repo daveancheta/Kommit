@@ -84,12 +84,12 @@ function ConversationMenu() {
                     </Avatar>
                     <div className='flex flex-col items-center'>
                         <h1 className='font-medium'>{selectedTeamName}</h1>
-                        <p className='text-muted-foreground text-xs'>{memberCount.filter((m) => m.group_id === selectedTeam).length}</p>
+                        <p className='text-muted-foreground text-xs'>{memberCount.filter((m) => m.group_id === selectedTeam).length} {memberCount.filter((m) => m.group_id === selectedTeam).length > 1 ? "Members" : "Member"}</p>
                     </div>
                 </div>
             </div>
 
-            <div className='flex justify-center mt-5 gap-2'>    
+            <div className='flex justify-center mt-5 gap-2'>
                 <Button variant='secondary' size="icon" className='rounded-full'>
                     <Bell className='size-4' />
                 </Button>
@@ -156,9 +156,9 @@ function ConversationMenu() {
                                                 !user.name.toLocaleLowerCase().includes(search?.toLocaleLowerCase() || "") && "hidden"
                                             )}
                                             onClick={() => {
-                                            setUsername(user.name)
-                                            setId(user.id)
-                                            setImage(user.image)
+                                                setUsername(user.name)
+                                                setId(user.id)
+                                                setImage(user.image)
                                             }}
                                         >
                                             <div className='flex flex-row items-center gap-2'>
@@ -213,7 +213,7 @@ function ConversationMenu() {
                                             <FieldGroup>
                                                 <Field>
                                                     <Label htmlFor="name">Team Name</Label>
-                                                    <Input type='text' id='name' onChange={(e) => setGroupName(e.target.value)}/>
+                                                    <Input type='text' id='name' onChange={(e) => setGroupName(e.target.value)} />
                                                 </Field>
                                             </FieldGroup>
                                             <DialogFooter>

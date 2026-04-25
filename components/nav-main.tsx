@@ -19,12 +19,12 @@ import {
 } from "@/components/ui/sidebar"
 import { supabase } from "@/lib/supbase/cient"
 import { cn } from "@/lib/utils"
-import { ChevronRightIcon } from "lucide-react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useEffect, useRef } from "react"
 
 export function NavMain({
-  items,
+  items
 }: {
   items: {
     title: string
@@ -39,7 +39,10 @@ export function NavMain({
 }) {
   const { notification, handleGetNotification } = UseUserStore()
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const { handleGetSession, auth} = UseAuthStore()
+  const { handleGetSession, auth } = UseAuthStore()
+  const pathname = usePathname()
+
+  console.log(pathname)
 
   useEffect(() => {
     handleGetSession()
@@ -89,7 +92,7 @@ export function NavMain({
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <Link href={item.url} >
-                  <SidebarMenuButton tooltip={item.title}>
+                  <SidebarMenuButton tooltip={item.title} className={cn(pathname === item.url && "bg-sidebar-accent")}>
                     <span className="relative">
                       {item.icon}
                       {notification.filter((n) => !n.is_read).length > 0 &&
