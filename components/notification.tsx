@@ -51,7 +51,7 @@ function Notification() {
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        {notification.map((n) => (
+                        {notification.slice(0, 5).map((n) => (
                             <div key={n.id} className="flex gap-3 group cursor-pointer items-start">
                                 <div className="mt-1 flex w-2 shrink-0 justify-center">
                                     {!n.is_read ? (
